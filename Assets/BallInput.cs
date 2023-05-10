@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class BallInput : MonoBehaviour
 {
@@ -21,15 +22,14 @@ private bool GetVelocity = false;
 static bool globalGameStart = false;
 static bool shootEnable = false;
 private float startGameTimer = 0.0f;
-
+    private float initialAngle = 45f;
     public bool hasHitOtherObjects = false;
  
 void Start()
     {
         startTheTimer = true;
         Time.timeScale = 1;
-        if (Application.isEditor)
-            Time.fixedDeltaTime = 0.01f;
+        Time.fixedDeltaTime = 0.01f;
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<Rigidbody>().useGravity = false;
     }
@@ -94,7 +94,7 @@ void Start()
                             GetAngle();
                             GetComponent<Rigidbody>().isKinematic = false;
                             GetComponent<Rigidbody>().useGravity = true;
-                            GetComponent<Rigidbody>().AddForce(new Vector3((worldAngle.x * ballSpeed), 883.7209302f, (worldAngle.z * -8)));
+                            GetComponent<Rigidbody>().AddForce(new Vector3((worldAngle.x * ballSpeed), CalculateForce(), (worldAngle.z * -8)));
                             //PlayWhoosh();
 
                         }
@@ -110,6 +110,32 @@ void Start()
         {
             //Debug.Log("shot disabled!");
         }
+    }
+
+    float CalculateForce()
+    {
+        var rigid = GetComponent<Rigidbody>();
+
+        Vector3 p = ScoreCalculator.instance.ring.transform.position;
+
+        float gravity = Physics.gravity.magnitude;
+        float angle = initialAngle * Mathf.Deg2Rad;
+
+        Vector3 planarTarget = new Vector3(p.x, 0, p.z);
+        Vector3 planarPostion = new Vector3(transform.position.x, 0, transform.position.z);
+
+        float distance = Vector3.Distance(planarTarget, planarPostion);
+        float yOffset = transform.position.y - p.y;
+
+        float initialVelocity = (1 / Mathf.Cos(angle)) * Mathf.Sqrt((0.5f * gravity * Mathf.Pow(distance, 2)) / (distance * Mathf.Tan(angle) + yOffset));
+
+        Vector3 velocity = new Vector3(0, initialVelocity * Mathf.Sin(angle), initialVelocity * Mathf.Cos(angle));
+
+        float angleBetweenObjects = Vector3.Angle(Vector3.forward, planarTarget - planarPostion) * (p.x > transform.position.x ? 1 : -1);
+        Vector3 finalVelocity = Quaternion.AngleAxis(angleBetweenObjects, Vector3.up) * velocity;
+        Debug.Log(finalVelocity.y);
+        return Mathf.Abs(finalVelocity.y) * 125;
+
     }
 
     void timeIncrease()

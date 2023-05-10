@@ -14,7 +14,6 @@ public class TESTING : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameObject apple = GameObject.CreatePrimitive(PrimitiveType.Cube);
         Vector3 bottomLeft = new(0, 0, Vector3.Distance(Camera.main.transform.position, hoopObj.transform.position));
         Vector3 topRight = new(1, 1, Vector3.Distance(Camera.main.transform.position, hoopObj.transform.position));
         Vector3 worldBL = Camera.main.ViewportToWorldPoint(bottomLeft);

@@ -14,6 +14,7 @@ public class ScoreCalculator : MonoBehaviour
     public float timeToMoveBasket = 1f;
     private float timer = 0f;
     private bool startTimer = false;
+    public GameObject ring;
     private void Awake()
     {
         instance = this;

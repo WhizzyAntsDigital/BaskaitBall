@@ -1354,6 +1354,7 @@ MonoBehaviour:
   netComponent: {fileID: 8707273952259456151}
   moveBasket: {fileID: 5334037120160233111}
   timeToMoveBasket: 1
+  ring: {fileID: 832149484983733986}
 --- !u!135 &2001860032
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1616,7 +1617,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 832149484983733986}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: 0, y: 8.36, z: -0}
   m_LocalScale: {x: 6.0912, y: 6.091199, z: 6.091199}
   m_ConstrainProportionsScale: 0
   m_Children:
