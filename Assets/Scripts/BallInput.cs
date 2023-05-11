@@ -6,27 +6,31 @@ using static UnityEngine.GraphicsBuffer;
 
 public class BallInput : MonoBehaviour
 {
-    Vector2 touchStart;
-    Vector2 touchEnd;
-    float flickTime;
-    float flickLength = 0;
-    float ballVelocity;
-    float ballSpeed = 0;
-    Vector3 worldAngle;
-private bool GetVelocity = false;
-    GameObject[] whoosh;
-    public float comfortZone;
-    bool couldbeswipe;
-    float startCountdownLength = 0.0f;
-    bool startTheTimer = false;
-static bool globalGameStart = false;
-static bool shootEnable = false;
-private float startGameTimer = 0.0f;
+    private Vector2 touchStart;
+    private Vector2 touchEnd;
+    private float flickTime;
+    private float flickLength = 0;
+    private float ballVelocity;
+    private float ballSpeed = 0;
+    private Vector3 worldAngle;
+    private bool GetVelocity = false;
+    private float minimumSwipeLength;
+    private bool couldbeswipe;
+    private float startCountdownLength = 0.0f;
+    private bool startTheTimer = false;
+    private static bool globalGameStart = false;
+    private static bool shootEnable = false;
+    private float startGameTimer = 0.0f;
     private float initialAngle = 45f;
-    public bool hasHitOtherObjects = false;
+
+    private bool hasGotInput = false;
+    public bool hasHitOtherObjects { get; private set; } = false;
  
 void Start()
     {
+        minimumSwipeLength = InputValues.instance.minimumSwipeLength;
+        initialAngle = InputValues.instance.initialAngle;
+        
         startTheTimer = true;
         Time.timeScale = 1;
         Time.fixedDeltaTime = 0.01f;
@@ -50,7 +54,7 @@ void Start()
 
         if (shootEnable)
         {
-            if (Input.touchCount > 0)
+            if (Input.touchCount > 0 && !hasGotInput)
             {
                 var touch = Input.touches[0];
                 switch (touch.phase)
@@ -68,7 +72,7 @@ void Start()
                         {
                             couldbeswipe = false;
                         }
-                        else if (touch.position.y - touchStart.y < comfortZone)
+                        else if (touch.position.y - touchStart.y < minimumSwipeLength)
                         {
                             couldbeswipe = false;
                         }
@@ -79,7 +83,7 @@ void Start()
                         break;  
 
                     case TouchPhase.Stationary:
-                        if (Mathf.Abs(touch.position.y - touchStart.y) < comfortZone)
+                        if (Mathf.Abs(touch.position.y - touchStart.y) < minimumSwipeLength)
                         {
                             couldbeswipe = false;
                         }
@@ -87,16 +91,15 @@ void Start()
 
                     case TouchPhase.Ended:
                         var swipeDist = (touch.position - touchStart).magnitude;
-                        if (couldbeswipe && swipeDist > comfortZone) {
+                        if (couldbeswipe && swipeDist > minimumSwipeLength) {
                             GetVelocity = false;
                             touchEnd = touch.position;
                             GetSpeed();
                             GetAngle();
                             GetComponent<Rigidbody>().isKinematic = false;
                             GetComponent<Rigidbody>().useGravity = true;
-                            GetComponent<Rigidbody>().AddForce(new Vector3((worldAngle.x * ballSpeed), CalculateForce(), (worldAngle.z * -8)));
-                            //PlayWhoosh();
-
+                            GetComponent<Rigidbody>().AddForce(new Vector3((worldAngle.x * ballSpeed), CalculateForce(), (worldAngle.z * InputValues.instance.forwardSpeed)));
+                            hasGotInput = true;
                         }
                         break;
                 }
@@ -108,11 +111,11 @@ void Start()
         }
         if (!shootEnable)
         {
-            //Debug.Log("shot disabled!");
+            Debug.Log("shot disabled!");
         }
     }
 
-    float CalculateForce()
+    private float CalculateForce()
     {
         var rigid = GetComponent<Rigidbody>();
 
@@ -133,12 +136,11 @@ void Start()
 
         float angleBetweenObjects = Vector3.Angle(Vector3.forward, planarTarget - planarPostion) * (p.x > transform.position.x ? 1 : -1);
         Vector3 finalVelocity = Quaternion.AngleAxis(angleBetweenObjects, Vector3.up) * velocity;
-        Debug.Log(finalVelocity.y);
-        return Mathf.Abs(finalVelocity.y) * 125;
+        return Mathf.Abs(finalVelocity.y) * InputValues.instance.upwardSpeedMultiplier;
 
     }
 
-    void timeIncrease()
+    private void timeIncrease()
     {
         if (GetVelocity)
         {
@@ -146,7 +148,7 @@ void Start()
         }
     }
 
-    void GetSpeed()
+    private void GetSpeed()
     {
         flickLength = 90;
         if (flickTime > 0)
@@ -159,20 +161,14 @@ void Start()
         {
             ballSpeed = -33;
         }
-        //Debug.Log("flick was" + flickTime);
         flickTime = 5;
     }
 
-    void GetAngle()
+    private void GetAngle()
     {
         worldAngle = Camera.main.ScreenToWorldPoint(new Vector3(touchEnd.x, touchEnd.y + 800, ((Camera.main.nearClipPlane - 100) * 1.8f)));
     }
 
-    //void PlayWhoosh()
-    //{
-    //    var sound = Instantiate(whoosh[Random.Range(0, whoosh.length)], transform.position, transform.rotation) as GameObject;
-    //    Debug.Log("Whoosh!");
-    //}
     private void OnCollisionEnter(Collision collision)
     {
         hasHitOtherObjects = true;

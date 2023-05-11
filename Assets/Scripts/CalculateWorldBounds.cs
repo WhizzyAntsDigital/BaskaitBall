@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TESTING : MonoBehaviour
+public class CalculateWorldBounds : MonoBehaviour
 {
     public GameObject hoopObj;
     public GameObject groundObj;
