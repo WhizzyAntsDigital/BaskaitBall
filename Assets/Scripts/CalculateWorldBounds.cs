@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class CalculateWorldBounds : MonoBehaviour
 {
-    public GameObject hoopObj;
-    public GameObject groundObj;
-    public float offsetFromGround = 0.5f;
+    [field: Header("For Calculating World Bounds")]
+    [field: SerializeField] GameObject hoopObj;
+    [field: SerializeField] GameObject groundObj;
+    [field: SerializeField] float offsetFromGround = 0.5f;
+    [field: SerializeField] float offsetFromScreenTop = 4f;
+    [field: SerializeField] public float minXWRTObj {get; private set; }
+    [field: SerializeField] public float maxXWRTObj { get; private set; }
+    [field: SerializeField] public float minYWRTObj { get; private set; }
+    [field: SerializeField] public float maxYWRTObj { get; private set; }
     private float minX, maxX, minY, maxY;
-    public float minXWRTObj, maxXWRTObj, minYWRTObj, maxYWRTObj;
     private float objectWidth;
     private float objectHeight;
     // Start is called before the first frame update
@@ -21,7 +26,7 @@ public class CalculateWorldBounds : MonoBehaviour
         minX = worldBL.x;
         maxX = -worldBL.x;
         minY = groundObj.transform.position.y + offsetFromGround;
-        maxY = -worldBL.y;
+        maxY = -worldBL.y - offsetFromScreenTop;
         objectWidth = hoopObj.transform.GetComponent<Renderer>().bounds.extents.x;
         objectHeight = hoopObj.transform.GetComponent<Renderer>().bounds.extents.y;
         minXWRTObj = minX + objectWidth;

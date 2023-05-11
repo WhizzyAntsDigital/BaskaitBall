@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AssignPhysic : MonoBehaviour
 {
-    public PhysicMaterial bounceMaterial;
+    [field: SerializeField] PhysicMaterial bounceMaterial;
 
     private void OnTriggerEnter(Collider other)
     {

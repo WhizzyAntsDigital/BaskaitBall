@@ -4,19 +4,13 @@ using UnityEngine;
 
 public class GroundScript : MonoBehaviour
 {
-    public float timerAmount = 3f;
-    public RespawnBall respawnBall;
-    float timer = 0f;
-    bool startTimer = false;
+    [field: SerializeField] float timerAmount = 1f;
+    [field: SerializeField] RespawnBall respawnBall;
+    [field: SerializeField] GameObject ballParentObject;
     Collision collisionObj = null;
-    public GameObject ballParentObject;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    bool startTimer = false;
+    float timer = 0f;
 
-    // Update is called once per frame
     void Update()
     {
         if(startTimer)
@@ -42,8 +36,9 @@ public class GroundScript : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.CompareTag("Ball"))
+        if (collision.gameObject.CompareTag("Ball") && !collision.gameObject.GetComponent<BallInput>().hasHitRespawnColliders)
         {
+            collision.gameObject.GetComponent<BallInput>().hasHitRespawnColliders = true;
             startTimer = true;
             collisionObj = collision;
         }

@@ -18,13 +18,13 @@ public class BallInput : MonoBehaviour
     private bool couldbeswipe;
     private float startCountdownLength = 0.0f;
     private bool startTheTimer = false;
-    private static bool globalGameStart = false;
     private static bool shootEnable = false;
     private float startGameTimer = 0.0f;
     private float initialAngle = 45f;
 
     private bool hasGotInput = false;
     public bool hasHitOtherObjects { get; private set; } = false;
+    public bool hasHitRespawnColliders = false;
  
 void Start()
     {
@@ -46,7 +46,6 @@ void Start()
         }
         if (startGameTimer > startCountdownLength)
         {
-            globalGameStart = true;
             shootEnable = true;
             startTheTimer = false;
             startGameTimer = 0;
@@ -119,7 +118,7 @@ void Start()
     {
         var rigid = GetComponent<Rigidbody>();
 
-        Vector3 p = ScoreCalculator.instance.ring.transform.position;
+        Vector3 p = GameManager.instance.ringObj.transform.position;
 
         float gravity = Physics.gravity.magnitude;
         float angle = initialAngle * Mathf.Deg2Rad;

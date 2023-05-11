@@ -6,20 +6,23 @@ using TMPro;
 public class ScoreCalculator : MonoBehaviour
 {
     public static ScoreCalculator instance;
-    public TextMeshProUGUI scoreText;
-    public ParticleSystem explosion;
+    
+    [field: Header("Score Calculation Stuff")]
+    [field: SerializeField] TextMeshProUGUI scoreText;
+    [field: SerializeField] ParticleSystem basketParticle;
+    [field: SerializeField] MoveBasket moveBasket;
+    [field: SerializeField] float timeToMoveBasket = 1f;
+    [field: SerializeField] Cloth netComponent;
+
     private int scoreValue = 0;
-    public Cloth netComponent;
-    public MoveBasket moveBasket;
-    public float timeToMoveBasket = 1f;
     private float timer = 0f;
     private bool startTimer = false;
-    public GameObject ring;
+
     private void Awake()
     {
         instance = this;
     }
-    // Start is called before the first frame update
+
     void Start()
     {
         scoreValue = 0;
@@ -57,7 +60,7 @@ public class ScoreCalculator : MonoBehaviour
             scoreValue += 3;
             startTimer = true;
         }
-        explosion.Play();
+        basketParticle.Play();
         scoreText.text = scoreValue.ToString();
     }
 }
