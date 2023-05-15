@@ -22,7 +22,7 @@ public class BallInput : MonoBehaviour
     private float startGameTimer = 0.0f;
     private float initialAngle = 45f;
 
-    private bool hasGotInput = false;
+    public bool hasGotInput = false;
     public bool hasHitOtherObjects { get; private set; } = false;
     public bool hasHitRespawnColliders = false;
  
