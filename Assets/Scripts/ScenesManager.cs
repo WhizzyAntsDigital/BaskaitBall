@@ -12,8 +12,8 @@ public class ScenesManager : MonoBehaviour
         ChangeScene(button.gameObject.GetComponent<ButtonConfig>().scene);
     }
 
-    public void ChangeScene(SceneAsset scene)
+    public void ChangeScene(string scene)
     {
-        SceneManager.LoadScene(scene.name);
+        SceneManager.LoadScene(scene);
     }
 }

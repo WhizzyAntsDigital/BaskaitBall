@@ -7,5 +7,5 @@ using UnityEngine.SceneManagement;
 [System.Serializable]
 public class ButtonConfig : MonoBehaviour
 {
-    public SceneAsset scene;
+    public string scene;
 }

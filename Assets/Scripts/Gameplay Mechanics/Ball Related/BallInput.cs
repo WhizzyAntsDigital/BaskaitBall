@@ -28,6 +28,9 @@ public class BallInput : MonoBehaviour
     public bool CheckForUITouch = false;
     public bool hasHitOtherObjects { get; private set; } = false;
     public bool hasHitRespawnColliders = false;
+
+    public bool IsArcade = false;
+    public bool kinematic = true;
  
 void Start()
     {
@@ -36,8 +39,8 @@ void Start()
         
         startTheTimer = true;
         Time.fixedDeltaTime = 0.01f;
-        GetComponent<Rigidbody>().isKinematic = true;
-        GetComponent<Rigidbody>().useGravity = false;
+        GetComponent<Rigidbody>().isKinematic = kinematic;
+        GetComponent<Rigidbody>().useGravity = !kinematic;
     }
 
     void Update()
@@ -107,6 +110,10 @@ void Start()
                                 GetComponent<Rigidbody>().AddForce(new Vector3((worldAngle.x * ballSpeed), CalculateForce(), (worldAngle.z * InputValues.instance.forwardSpeed)));
                                 hasGotInput = true;
                                 touchWithinLimit = false;
+                                if (IsArcade)
+                                {
+                                    ArcadeLevel.Instance.MoveBallToCentre();
+                                }
                             }
                             break;
                     }

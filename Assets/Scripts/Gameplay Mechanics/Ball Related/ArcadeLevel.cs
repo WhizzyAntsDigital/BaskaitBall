@@ -2,11 +2,18 @@ using UnityEngine;
 
 public class ArcadeLevel : MonoBehaviour
 {
+    public static ArcadeLevel Instance;
     [SerializeField] private GameObject spawnPoint;
     [SerializeField] private float speedOfMovingToSpawn;
+    [SerializeField] private GameObject[] ballsInScene;
     private bool hitTrigger = false;
     private GameObject ballObj;
+    private int ballID = 0;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
     private void Update()
     {
         if(hitTrigger)
@@ -16,22 +23,27 @@ public class ArcadeLevel : MonoBehaviour
             if(ballObj.transform.position.x == spawnPoint.transform.position.x)
             {
                 hitTrigger = false;
-                //ballObj.GetComponent<BallInput>().hasGotInput = false;
-                //ballObj.GetComponent<Rigidbody>().velocity = Vector3.zero;
                 ballObj.GetComponent<Rigidbody>().isKinematic = true;
-                ballObj.GetComponent<Rigidbody>().isKinematic = false;
+                ballObj.GetComponent<BallInput>().hasGotInput = false;
                 ballObj = null;
             }
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.gameObject.CompareTag("Ball"))
+    //    {
+    //        other.gameObject.GetComponent<BallInput>().hasGotInput = false;
+    //    }
+    //}
+
+    public void MoveBallToCentre()
     {
-        if (other.gameObject.CompareTag("Ball"))
-        {
-            ballObj = other.gameObject;
-            hitTrigger = true;
-            other.gameObject.GetComponent<BallInput>().hasGotInput = false;
-        }
+        ballID++;
+        if(ballID >= ballsInScene.Length)
+        { ballID = 0; }
+        ballObj = ballsInScene[ballID];
+        hitTrigger = true;
     }
 }
