@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         StartCoroutine(CheckInternetConnection());
+        Time.timeScale = 0.5f;
     }
 
     private void Update()

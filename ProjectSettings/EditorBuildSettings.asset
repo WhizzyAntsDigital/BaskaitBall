@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Testing Singh.unity
+    path: Assets/Scenes/Stadium_1_Arcade.unity
     guid: 6b8dd5d2dc0324e6489674e1e4db07e2
   m_configObjects: {}

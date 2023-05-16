@@ -34,7 +34,7 @@ void Start()
         initialAngle = InputValues.instance.initialAngle;
         
         startTheTimer = true;
-        Time.timeScale = 1;
+        //Time.timeScale = 1;
         Time.fixedDeltaTime = 0.01f;
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<Rigidbody>().useGravity = false;
@@ -191,7 +191,6 @@ void Start()
             if (result.gameObject.CompareTag(InputValues.instance.uiElementTag))
             {
                 touchWithinLimit = true;
-                Debug.Log("UI Element Touched!");
                 break;
             }
         }

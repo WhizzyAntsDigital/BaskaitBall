@@ -13,6 +13,8 @@ public class ScoreCalculator : MonoBehaviour
     [field: SerializeField] MoveBasket moveBasket;
     [field: SerializeField] float timeToMoveBasket = 1f;
     [field: SerializeField] Cloth netComponent;
+    [field: SerializeField] private bool isTraining = false;
+    [field: SerializeField] private bool hasParticleEffect = false;
 
     private int scoreValue = 0;
     private float timer = 0f;
@@ -53,14 +55,23 @@ public class ScoreCalculator : MonoBehaviour
         if (other.gameObject.GetComponent<BallInput>().hasHitOtherObjects)
         {
             scoreValue++;
-            startTimer = true;
+            if(isTraining)
+            {
+                startTimer = true;
+            }
         }
         else
         {
             scoreValue += 3;
-            startTimer = true;
+            if (isTraining)
+            {
+                startTimer = true;
+            }
         }
-        basketParticle.Play();
+        if(hasParticleEffect)
+        {
+            basketParticle.Play();
+        }
         scoreText.text = scoreValue.ToString();
     }
 }
