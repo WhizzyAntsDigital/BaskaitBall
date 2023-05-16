@@ -25,6 +25,7 @@ public class BallInput : MonoBehaviour
     private bool touchWithinLimit = false;
 
     public bool hasGotInput = false;
+    public bool CheckForUITouch = false;
     public bool hasHitOtherObjects { get; private set; } = false;
     public bool hasHitRespawnColliders = false;
  
@@ -34,7 +35,6 @@ void Start()
         initialAngle = InputValues.instance.initialAngle;
         
         startTheTimer = true;
-        //Time.timeScale = 1;
         Time.fixedDeltaTime = 0.01f;
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<Rigidbody>().useGravity = false;
@@ -59,7 +59,6 @@ void Start()
             {
                 var touch = Input.touches[0];
                 Vector2 touchPosition = touch.position;
-
                 CheckUITouch(touchPosition);
                 if (touchWithinLimit)
                 {
