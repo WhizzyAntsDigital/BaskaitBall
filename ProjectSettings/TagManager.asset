@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ball
   - AlmostGround
+  - TouchLimit
   layers:
   - Default
   - TransparentFX

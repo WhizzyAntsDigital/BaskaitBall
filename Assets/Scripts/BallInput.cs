@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using static UnityEngine.GraphicsBuffer;
 
 public class BallInput : MonoBehaviour
@@ -21,6 +22,7 @@ public class BallInput : MonoBehaviour
     private static bool shootEnable = false;
     private float startGameTimer = 0.0f;
     private float initialAngle = 45f;
+    private bool touchWithinLimit = false;
 
     public bool hasGotInput = false;
     public bool hasHitOtherObjects { get; private set; } = false;
@@ -56,55 +58,63 @@ void Start()
             if (Input.touchCount > 0 && !hasGotInput)
             {
                 var touch = Input.touches[0];
-                switch (touch.phase)
-                {
-                    case TouchPhase.Began:
-                        flickTime = 5;
-                        timeIncrease();
-                        couldbeswipe = true;
-                        GetVelocity = true;
-                        touchStart = touch.position;
-                        break;
+                Vector2 touchPosition = touch.position;
 
-                    case TouchPhase.Moved:
-                        if (touch.position.y - touchStart.y < 0)
-                        {
-                            couldbeswipe = false;
-                        }
-                        else if (touch.position.y - touchStart.y < minimumSwipeLength)
-                        {
-                            couldbeswipe = false;
-                        }
-                        else
-                        {
+                CheckUITouch(touchPosition);
+                if (touchWithinLimit)
+                {
+                    switch (touch.phase)
+                    {
+                        case TouchPhase.Began:
+                            flickTime = 5;
+                            timeIncrease();
                             couldbeswipe = true;
-                        }
-                        break;  
+                            GetVelocity = true;
+                            touchStart = touch.position;
+                            break;
 
-                    case TouchPhase.Stationary:
-                        if (Mathf.Abs(touch.position.y - touchStart.y) < minimumSwipeLength)
-                        {
-                            couldbeswipe = false;
-                        }
-                        break;
+                        case TouchPhase.Moved:
+                            if (touch.position.y - touchStart.y < 0)
+                            {
+                                couldbeswipe = false;
+                            }
+                            else if (touch.position.y - touchStart.y < minimumSwipeLength)
+                            {
+                                couldbeswipe = false;
+                            }
+                            else
+                            {
+                                couldbeswipe = true;
+                            }
+                            break;
 
-                    case TouchPhase.Ended:
-                        var swipeDist = (touch.position - touchStart).magnitude;
-                        if (couldbeswipe && swipeDist > minimumSwipeLength) {
-                            GetVelocity = false;
-                            touchEnd = touch.position;
-                            GetSpeed();
-                            GetAngle();
-                            GetComponent<Rigidbody>().isKinematic = false;
-                            GetComponent<Rigidbody>().useGravity = true;
-                            GetComponent<Rigidbody>().AddForce(new Vector3((worldAngle.x * ballSpeed), CalculateForce(), (worldAngle.z * InputValues.instance.forwardSpeed)));
-                            hasGotInput = true;
-                        }
-                        break;
-                }
-                if (GetVelocity)
-                {
-                    flickTime++;
+                        case TouchPhase.Stationary:
+                            if (Mathf.Abs(touch.position.y - touchStart.y) < minimumSwipeLength)
+                            {
+                                couldbeswipe = false;
+                            }
+                            break;
+
+                        case TouchPhase.Ended:
+                            var swipeDist = (touch.position - touchStart).magnitude;
+                            if (couldbeswipe && swipeDist > minimumSwipeLength)
+                            {
+                                GetVelocity = false;
+                                touchEnd = touch.position;
+                                GetSpeed();
+                                GetAngle();
+                                GetComponent<Rigidbody>().isKinematic = false;
+                                GetComponent<Rigidbody>().useGravity = true;
+                                GetComponent<Rigidbody>().AddForce(new Vector3((worldAngle.x * ballSpeed), CalculateForce(), (worldAngle.z * InputValues.instance.forwardSpeed)));
+                                hasGotInput = true;
+                                touchWithinLimit = false;
+                            }
+                            break;
+                    }
+                    if (GetVelocity)
+                    {
+                        flickTime++;
+                    }
                 }
             }
         }
@@ -166,6 +176,25 @@ void Start()
     private void GetAngle()
     {
         worldAngle = Camera.main.ScreenToWorldPoint(new Vector3(touchEnd.x, touchEnd.y + 800, ((Camera.main.nearClipPlane - 100) * 1.8f)));
+    }
+
+    private void CheckUITouch(Vector2 position)
+    {
+        PointerEventData eventData = new PointerEventData(EventSystem.current);
+        eventData.position = position;
+
+        var results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+
+        foreach (RaycastResult result in results)
+        {
+            if (result.gameObject.CompareTag(InputValues.instance.uiElementTag))
+            {
+                touchWithinLimit = true;
+                Debug.Log("UI Element Touched!");
+                break;
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision collision)

@@ -10,6 +10,7 @@ public class InputValues : MonoBehaviour
     [field: SerializeField] public float initialAngle { get; private set; } = 45f;
     [field: SerializeField] public float forwardSpeed { get; private set; } = -8f;
     [field: SerializeField] public float upwardSpeedMultiplier { get; private set; } = 125;
+    [field: SerializeField] public string uiElementTag { get; private set; } = "TouchLimit";
 
     private void Awake()
     {
