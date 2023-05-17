@@ -16,7 +16,7 @@ public class ScoreCalculator : MonoBehaviour
     [field: SerializeField] private bool isTraining = false;
     [field: SerializeField] private bool hasParticleEffect = false;
 
-    private int scoreValue = 0;
+    public int scoreValue { get; private set; } = 0;
     private float timer = 0f;
     private bool startTimer = false;
 
@@ -52,26 +52,29 @@ public class ScoreCalculator : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.GetComponent<BallInput>().hasHitOtherObjects)
+        if (!GameManager.instance.isGameOver)
         {
-            scoreValue++;
-            if(isTraining)
+            if (other.gameObject.GetComponent<BallInput>().hasHitOtherObjects)
             {
-                startTimer = true;
+                scoreValue += 2;
+                if (isTraining)
+                {
+                    startTimer = true;
+                }
             }
-        }
-        else
-        {
-            scoreValue += 3;
-            if (isTraining)
+            else
             {
-                startTimer = true;
+                scoreValue += 3;
+                if (isTraining)
+                {
+                    startTimer = true;
+                }
             }
+            if (hasParticleEffect)
+            {
+                basketParticle.Play();
+            }
+            scoreText.text = scoreValue.ToString();
         }
-        if(hasParticleEffect)
-        {
-            basketParticle.Play();
-        }
-        scoreText.text = scoreValue.ToString();
     }
 }

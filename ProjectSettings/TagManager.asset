@@ -8,6 +8,7 @@ TagManager:
   - AlmostGround
   - TouchLimit
   - ArcadeParts
+  - Net
   layers:
   - Default
   - TransparentFX

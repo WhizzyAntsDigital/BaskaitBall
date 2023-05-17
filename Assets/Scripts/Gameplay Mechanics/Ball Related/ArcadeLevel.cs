@@ -14,6 +14,10 @@ public class ArcadeLevel : MonoBehaviour
     {
         Instance = this;
     }
+    private void Start()
+    {
+        GameManager.instance.onGameOver += () => { hitTrigger = false; };
+    }
     private void Update()
     {
         if(hitTrigger)
@@ -29,14 +33,6 @@ public class ArcadeLevel : MonoBehaviour
             }
         }
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.gameObject.CompareTag("Ball"))
-    //    {
-    //        other.gameObject.GetComponent<BallInput>().hasGotInput = false;
-    //    }
-    //}
 
     public void MoveBallToCentre()
     {

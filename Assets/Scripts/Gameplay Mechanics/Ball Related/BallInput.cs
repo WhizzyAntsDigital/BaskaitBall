@@ -41,6 +41,7 @@ void Start()
         Time.fixedDeltaTime = 0.01f;
         GetComponent<Rigidbody>().isKinematic = kinematic;
         GetComponent<Rigidbody>().useGravity = !kinematic;
+        GameManager.instance.onGameOver += () => { hasGotInput = true;};
     }
 
     void Update()
@@ -182,7 +183,7 @@ void Start()
 
     private void GetAngle()
     {
-        worldAngle = Camera.main.ScreenToWorldPoint(new Vector3(touchEnd.x, touchEnd.y + 800, ((Camera.main.nearClipPlane - 100) * 1.8f)));
+        worldAngle = Camera.main.ScreenToWorldPoint(new Vector3(touchEnd.x, touchEnd.y, ((Camera.main.nearClipPlane - 100) * 1.8f)));
     }
 
     private void CheckUITouch(Vector2 position)
@@ -205,7 +206,7 @@ void Start()
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!collision.gameObject.CompareTag("ArcadeParts"))
+        if (!collision.gameObject.CompareTag("ArcadeParts") && !collision.gameObject.CompareTag("Ball") && !collision.gameObject.CompareTag("Net"))
         {
             hasHitOtherObjects = true;
         }
