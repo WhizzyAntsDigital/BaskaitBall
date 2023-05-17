@@ -15,6 +15,6 @@ EditorBuildSettings:
     path: Assets/Scenes/TournamentLoadingScene.unity
     guid: bea47a2880cb6d9479b7088f5a6ee39d
   - enabled: 1
-    path: Assets/Scenes/Stadium_1_Arcade.unity
+    path: Assets/Scenes/TournamentMode.unity
     guid: 6b8dd5d2dc0324e6489674e1e4db07e2
   m_configObjects: {}

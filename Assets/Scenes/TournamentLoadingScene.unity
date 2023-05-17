@@ -444,7 +444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c467e3f37895c04da959234f1dee076, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scene: Stadium_1_Arcade
+  scene: TournamentMode
 --- !u!1 &478815195
 GameObject:
   m_ObjectHideFlags: 0

@@ -26,7 +26,7 @@ public class BallInput : MonoBehaviour
 
     public bool hasGotInput = false;
     public bool CheckForUITouch = false;
-    public bool hasHitOtherObjects { get; private set; } = false;
+    [field: SerializeField] public bool hasHitOtherObjects { get; private set; } = false;
     public bool hasHitRespawnColliders = false;
 
     public bool IsArcade = false;
@@ -112,6 +112,7 @@ void Start()
                                 touchWithinLimit = false;
                                 if (IsArcade)
                                 {
+                                    hasHitOtherObjects = false;
                                     ArcadeLevel.Instance.MoveBallToCentre();
                                 }
                             }
@@ -204,6 +205,9 @@ void Start()
 
     private void OnCollisionEnter(Collision collision)
     {
-        hasHitOtherObjects = true;
+        if (!collision.gameObject.CompareTag("ArcadeParts"))
+        {
+            hasHitOtherObjects = true;
+        }
     }
 }
