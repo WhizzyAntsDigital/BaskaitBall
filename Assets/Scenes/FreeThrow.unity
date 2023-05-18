@@ -2992,9 +2992,14 @@ MonoBehaviour:
   <isGameOver>k__BackingField: 0
   practiceStartingTime: 9
   startingTarget: 10
-  timeDecrementValue: 5
-  targetIncrementValue: 10
+  timeChangeValue: 5
+  delayBetweenRounds: 3
   targetScore: {fileID: 1800927948}
+  greenText: {fileID: 11400000, guid: 9db229bd34c6c8d43a93dbd29d06427c, type: 2}
+  redText: {fileID: 11400000, guid: 339d8015007ef294d939719c3eb35820, type: 2}
+  countDownText: {fileID: 11400000, guid: c3ede02553cfdd44c8ca7685f8e7d841, type: 2}
+  practiceTimerText: {fileID: 11400000, guid: 86f4320a6b563ba4794e6d1e0273faba, type: 2}
+  dontActivateInput: 0
 --- !u!114 &1466604149
 MonoBehaviour:
   m_ObjectHideFlags: 0

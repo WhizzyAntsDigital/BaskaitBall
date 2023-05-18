@@ -2713,6 +2713,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetFPS: 60
+  <isMainGame>k__BackingField: 1
   <ringObj>k__BackingField: {fileID: 7533052395341932244}
   internetConnectionCheckInterval: 3
   shouldCheckForInternetConnection: 1
@@ -2720,6 +2721,12 @@ MonoBehaviour:
   timerText: {fileID: 1000710196}
   startingBall: {fileID: 7903897553513181294}
   <isGameOver>k__BackingField: 0
+  practiceStartingTime: 30
+  startingTarget: 50
+  timeDecrementValue: 5
+  targetIncrementValue: 10
+  targetScore: {fileID: 0}
+  dontActivateInput: 0
 --- !u!114 &1466604149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2734,7 +2741,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 1199511073}
   speedOfMovingToSpawn: 5
-  ballsInScene:
+  <ballsInScene>k__BackingField:
   - {fileID: 7903897553513181291}
   - {fileID: 457477566}
   - {fileID: 1298887853}

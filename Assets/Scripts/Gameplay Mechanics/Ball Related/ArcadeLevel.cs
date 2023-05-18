@@ -28,7 +28,20 @@ public class ArcadeLevel : MonoBehaviour
             {
                 hitTrigger = false;
                 ballObj.GetComponent<Rigidbody>().isKinematic = true;
-                ballObj.GetComponent<BallInput>().hasGotInput = false;
+                if(!GameManager.instance.isMainGame && GameManager.instance.dontActivateInput)
+                {
+                    Debug.Log("Made it true");
+                    ballObj.GetComponent<BallInput>().hasGotInput = true;
+                }
+                else if(!GameManager.instance.isMainGame && !GameManager.instance.dontActivateInput)
+                {
+                    Debug.Log("Made it false");
+                    ballObj.GetComponent<BallInput>().hasGotInput = false;
+                }
+                else
+                {
+                    ballObj.GetComponent<BallInput>().hasGotInput = false;
+                }
                 ballObj = null;
             }
         }

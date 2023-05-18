@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     [field: SerializeField] private float matchLength = 30f;
     [field: SerializeField] private TextMeshProUGUI timerText;
     [field: SerializeField] private BallInput startingBall;
-    [field: SerializeField] public bool isGameOver {get; private set;} = false;
+    [field: SerializeField] public bool isGameOver { get; private set; } = false;
     public Action onGameOver;
     private float countDown = 3f;
     private bool startCountDown = false;
@@ -39,11 +39,16 @@ public class GameManager : MonoBehaviour
     [field: Header("Practice Game Flow")]
     [field: SerializeField] float practiceStartingTime = 30f;
     [field: SerializeField] int startingTarget = 50;
-    [field: SerializeField] int timeDecrementValue = 5;
-    [field: SerializeField] int targetIncrementValue = 10;
+    [field: SerializeField] int timeChangeValue = 5;
+    [field: SerializeField] int delayBetweenRounds = 3;
     [field: SerializeField] TextMeshProUGUI targetScore;
+    [field: SerializeField] TMP_FontAsset greenText;
+    [field: SerializeField] TMP_FontAsset redText;
+    [field: SerializeField] TMP_FontAsset countDownText;
+    [field: SerializeField] TMP_FontAsset practiceTimerText;
+    public bool dontActivateInput = false;
     private bool startPracticeTimer = false;
-    private float practiceTimer = 0f;
+    private float practiceTimer;
     private float incrementCount = 0;
 
     private void Awake()
@@ -56,9 +61,16 @@ public class GameManager : MonoBehaviour
         StartCoroutine(CheckInternetConnection());
         practiceTimer = practiceStartingTime;
         startCountDown = true;
-        startingBall.hasGotInput = true;
+        if (isMainGame)
+        {
+            startingBall.hasGotInput = true;
+        }
+        else
+        {
+            ArcadeLevel.Instance.ballsInScene[ArcadeLevel.Instance.ballID].GetComponent<BallInput>().hasGotInput = true;
+        }
         onGameOver += () => { isGameOver = true; };
-        if(!isMainGame)
+        if (!isMainGame)
         {
             targetScore.text = startingTarget.ToString();
         }
@@ -66,31 +78,41 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if(startCountDown)
+        if (startCountDown)
         {
             countDown -= Time.deltaTime;
-            if(countDown >=1)
+            if (countDown >= 1)
             {
+                if (!isMainGame) { timerText.font = countDownText; }
                 timerText.text = (Mathf.RoundToInt(countDown)).ToString();
             }
-            if(countDown <1 && countDown >= 0)
+            if (countDown < 1 && countDown >= 0)
             {
+                if (!isMainGame)
+                {
+                    timerText.font = greenText;
+                }
                 timerText.text = "START!";
-                if(isMainGame)
+                if (isMainGame)
                 {
                     AIScore.instance.OnGameStart?.Invoke();
                 }
-                if (!changedStartingBallValue)
+                if (isMainGame && !changedStartingBallValue)
                 {
                     startingBall.hasGotInput = false;
                     changedStartingBallValue = true;
                 }
+                else if (!isMainGame && !changedStartingBallValue)
+                {
+                    ArcadeLevel.Instance.ballsInScene[ArcadeLevel.Instance.ballID].GetComponent<BallInput>().hasGotInput = false;
+                    changedStartingBallValue = true;
+                }
             }
-            else if(countDown <-1)
+            else if (countDown <= 0)
             {
                 startCountDown = false;
-                if(isMainGame) 
-                { 
+                if (isMainGame)
+                {
                     startMatchTimer = true;
                 }
                 else
@@ -99,34 +121,41 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        if(startMatchTimer)
+        if (startMatchTimer)
         {
             matchLength -= Time.deltaTime;
             if (matchLength > 0)
             {
                 timerText.text = Mathf.RoundToInt(matchLength).ToString();
             }
-            if(matchLength <= 0)
+            if (matchLength <= 0)
             {
                 timerText.text = "END";
                 onGameOver?.Invoke();
-                startMatchTimer =false;
+                startMatchTimer = false;
             }
         }
 
         //For FreeThrow
-        if(startPracticeTimer)
+        if (startPracticeTimer)
         {
             practiceTimer -= Time.deltaTime;
-            if(practiceTimer > 0)
+            if (practiceTimer > 0)
             {
+                timerText.font = practiceTimerText;
                 timerText.text = Mathf.RoundToInt(practiceTimer).ToString();
             }
-            else if(practiceTimer <= 0)
+            else if (practiceTimer <= 0)
             {
+                dontActivateInput = true;
+                timerText.font = redText;
                 timerText.text = "END";
                 startPracticeTimer = false;
-                ArcadeLevel.Instance.ballsInScene[ArcadeLevel.Instance.ballID].GetComponent<BallInput>().hasGotInput = true;
+                int ballCount = ArcadeLevel.Instance.ballsInScene.Length;
+                for (int i = 0; i < ballCount; i++)
+                {
+                    ArcadeLevel.Instance.ballsInScene[i].GetComponent<BallInput>().hasGotInput = true;
+                }
                 freeThrowValuesUpdate();
             }
         }
@@ -138,7 +167,7 @@ public class GameManager : MonoBehaviour
         {
             if (Application.internetReachability == NetworkReachability.NotReachable)
             {
-                if(!whenDisconnectedActionsCarriedOut)
+                if (!whenDisconnectedActionsCarriedOut)
                 {
                     IsDisconnectedFromInternet?.Invoke();
                     whenDisconnectedActionsCarriedOut = true;
@@ -147,7 +176,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                if(!whenConnectedActionsCarriedOut)
+                if (!whenConnectedActionsCarriedOut)
                 {
                     IsConnectedToInternet?.Invoke();
                     whenConnectedActionsCarriedOut = true;
@@ -160,39 +189,40 @@ public class GameManager : MonoBehaviour
 
     private void freeThrowValuesUpdate()
     {
-        if(ScoreCalculator.instance.scoreValue < startingTarget)
+        if (ScoreCalculator.instance.scoreValue < startingTarget)
         {
             onGameOver?.Invoke();
         }
         else
         {
             int randomChance = UnityEngine.Random.Range(0, 2);
-            float testTimer = practiceStartingTime - (timeDecrementValue * incrementCount);
-            if(testTimer <= 0)
+            float checkTimer = practiceStartingTime - (timeChangeValue * incrementCount);
+            if (checkTimer <= 0)
             {
                 randomChance = 1;
             }
             if (randomChance == 0)
             {
-                startingTarget = ScoreCalculator.instance.scoreValue + (Mathf.RoundToInt(ScoreCalculator.instance.scoreValue * 0.2f));
-                practiceTimer = practiceStartingTime - (timeDecrementValue * incrementCount);
+                startingTarget = ScoreCalculator.instance.scoreValue + (Mathf.RoundToInt(ScoreCalculator.instance.scoreValue * UnityEngine.Random.Range(0.1f, 0.3f)));
+                practiceTimer = practiceStartingTime - (timeChangeValue * incrementCount);
             }
             else
             {
-                startingTarget = ScoreCalculator.instance.scoreValue + (Mathf.RoundToInt(ScoreCalculator.instance.scoreValue * 0.4f));
-                practiceTimer = practiceStartingTime + (timeDecrementValue * incrementCount);
+                startingTarget = ScoreCalculator.instance.scoreValue + (Mathf.RoundToInt(ScoreCalculator.instance.scoreValue * UnityEngine.Random.Range(0.2f, 0.45f)));
+                practiceTimer = practiceStartingTime + (timeChangeValue * incrementCount);
             }
             incrementCount++;
             countDown = 3f;
-            waitBroPlease();
+            StartNextRoundAfterDelay();
         }
     }
-    private async void waitBroPlease()
+    private async void StartNextRoundAfterDelay()
     {
-        await Task.Delay(3000);
+        await Task.Delay(delayBetweenRounds * 1000);
         timerText.text = practiceTimer.ToString();
         targetScore.text = startingTarget.ToString();
-        ArcadeLevel.Instance.ballsInScene[ArcadeLevel.Instance.ballID].GetComponent<BallInput>().hasGotInput = false;
         startCountDown = true;
+        changedStartingBallValue = false;
+        dontActivateInput = false;
     }
 }
