@@ -10,6 +10,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    [field: Header("General")]
+    [field: SerializeField] private int targetFPS = 60;
+
     [field: Header("For BallInput Script")]
     [field: SerializeField] public GameObject ringObj { get; private set; } //Used as reference to calculate force for ball by BallInput Script
 
@@ -29,6 +32,7 @@ public class GameManager : MonoBehaviour
     private float countDown = 3f;
     private bool startCountDown = false;
     private bool startMatchTimer = false;
+    bool changedStartingBallValue = false;
 
     private void Awake()
     {
@@ -36,6 +40,7 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
+        Application.targetFrameRate = targetFPS;
         StartCoroutine(CheckInternetConnection());
         startCountDown = true;
         startingBall.hasGotInput = true;
@@ -55,7 +60,11 @@ public class GameManager : MonoBehaviour
             {
                 timerText.text = "START!";
                 AIScore.instance.OnGameStart?.Invoke();
-                startingBall.hasGotInput = false;
+                if (!changedStartingBallValue)
+                {
+                    startingBall.hasGotInput = false;
+                    changedStartingBallValue = true;
+                }
             }
             else if(countDown <-1)
             {

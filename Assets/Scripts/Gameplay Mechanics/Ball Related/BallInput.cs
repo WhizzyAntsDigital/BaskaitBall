@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 using static UnityEngine.GraphicsBuffer;
 
 public class BallInput : MonoBehaviour
@@ -17,10 +18,6 @@ public class BallInput : MonoBehaviour
     private bool GetVelocity = false;
     private float minimumSwipeLength;
     private bool couldbeswipe;
-    private float startCountdownLength = 0.0f;
-    private bool startTheTimer = false;
-    private static bool shootEnable = false;
-    private float startGameTimer = 0.0f;
     private float initialAngle = 45f;
     private bool touchWithinLimit = false;
 
@@ -31,34 +28,25 @@ public class BallInput : MonoBehaviour
 
     public bool IsArcade = false;
     public bool kinematic = true;
- 
-void Start()
+    private float forceForArcade;
+
+    void Start()
     {
         minimumSwipeLength = InputValues.instance.minimumSwipeLength;
         initialAngle = InputValues.instance.initialAngle;
-        
-        startTheTimer = true;
+
         Time.fixedDeltaTime = 0.01f;
         GetComponent<Rigidbody>().isKinematic = kinematic;
         GetComponent<Rigidbody>().useGravity = !kinematic;
-        GameManager.instance.onGameOver += () => { hasGotInput = true;};
+        GameManager.instance.onGameOver += () => { hasGotInput = true; };
+        if (IsArcade)
+        {
+            forceForArcade = CalculateForce();
+        }
     }
 
     void Update()
     {
-        if (startTheTimer)
-        {
-            startGameTimer += Time.deltaTime;
-        }
-        if (startGameTimer > startCountdownLength)
-        {
-            shootEnable = true;
-            startTheTimer = false;
-            startGameTimer = 0;
-        }
-
-        if (shootEnable)
-        {
             if (Input.touchCount > 0 && !hasGotInput)
             {
                 var touch = Input.touches[0];
@@ -104,12 +92,24 @@ void Start()
                             {
                                 GetVelocity = false;
                                 touchEnd = touch.position;
+                                Vector3 directionOfShot = touchStart - touchEnd;
+                            if(directionOfShot.x >= -40 && directionOfShot.x <= 40)
+                            {
+                                float autoAim = UnityEngine.Random.Range(0f, 1f);
+                                {
+                                    if (autoAim >=0f && autoAim<=0.45f)
+                                    {
+                                        directionOfShot = new Vector3(0f, directionOfShot.y, directionOfShot.z);
+                                    }
+                                }
+                            }
                                 GetSpeed();
                                 GetAngle();
                                 GetComponent<Rigidbody>().isKinematic = false;
                                 GetComponent<Rigidbody>().useGravity = true;
-                                GetComponent<Rigidbody>().AddForce(new Vector3((worldAngle.x * ballSpeed), CalculateForce(), (worldAngle.z * InputValues.instance.forwardSpeed)));
-                                hasGotInput = true;
+                            //GetComponent<Rigidbody>().AddForce(new Vector3((worldAngle.x * ballSpeed), (IsArcade == true ? forceForArcade : CalculateForce()), (worldAngle.z * InputValues.instance.forwardSpeed)));
+                            GetComponent<Rigidbody>().AddForce(new Vector3((directionOfShot.x), (IsArcade == true ? forceForArcade : CalculateForce()), (worldAngle.z * InputValues.instance.forwardSpeed)));
+                            hasGotInput = true;
                                 touchWithinLimit = false;
                                 if (IsArcade)
                                 {
@@ -125,11 +125,6 @@ void Start()
                     }
                 }
             }
-        }
-        if (!shootEnable)
-        {
-            Debug.Log("shot disabled!");
-        }
     }
 
     private float CalculateForce()
@@ -169,7 +164,7 @@ void Start()
     {
         flickLength = 90;
         if (flickTime > 0)
-        {   
+        {
             ballVelocity = flickLength / (flickLength - flickTime);
         }
         ballSpeed = ballVelocity * 30;

@@ -37,8 +37,7 @@ public class ArcadeLevel : MonoBehaviour
     public void MoveBallToCentre()
     {
         ballID++;
-        if(ballID >= ballsInScene.Length)
-        { ballID = 0; }
+        ballID = ballID % ballsInScene.Length;
         ballObj = ballsInScene[ballID];
         hitTrigger = true;
     }

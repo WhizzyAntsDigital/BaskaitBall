@@ -10,6 +10,7 @@ public class AIScore : MonoBehaviour
 
     [field: Header("AI Score Calculations")]
     [field: SerializeField] float scoreCalculationInterval = 1f;
+    [field: SerializeField][field: Range(0f, 1f)] float playerWinPercentage;
     [field: SerializeField][field: Range(0f, 1f)] float percentageOfHittingShot;
     [field: SerializeField][field: Range(0f, 1f)] float percentageofHittingDirectShot;
     [field: SerializeField] TextMeshProUGUI AIScoreDisplay;
@@ -19,6 +20,7 @@ public class AIScore : MonoBehaviour
 
     private bool hasCoroutineStarted = false;
     private float timerRandomized;
+    private bool firstTimeIgnored = false;
     private void Awake()
     {
         instance = this;
@@ -27,22 +29,39 @@ public class AIScore : MonoBehaviour
     private void Start()
     {
         AIScoreDisplay.text = opponentScore.ToString();
-        percentageOfHittingShot = UnityEngine.Random.Range(0.5f, 1f);
-        percentageofHittingDirectShot = UnityEngine.Random.Range(0.2f, 0.8f);
+        float willPlayerWin = UnityEngine.Random.Range(0f, 1f);
+        if (willPlayerWin >= 0f && willPlayerWin <= playerWinPercentage)
+        {
+            percentageOfHittingShot = UnityEngine.Random.Range(0.1f, 0.5f);
+            percentageofHittingDirectShot = UnityEngine.Random.Range(0.1f, 0.2f);
+        }
+        else
+        {
+            percentageOfHittingShot = UnityEngine.Random.Range(0.4f, 1f);
+            percentageofHittingDirectShot = UnityEngine.Random.Range(0.2f, 0.5f);
+        }
+
         float AIWinPercentage = ((percentageOfHittingShot + percentageofHittingDirectShot) / 2) * 100;
-        winPercentage.text = AIWinPercentage.ToString();
-       // Debug.Log("Win Percentage = " + (100- AIWinPercentage) + "%");
+        winPercentage.text = AIWinPercentage.ToString(); //For Debugging Purposes
+
         OnGameStart += () => { if (!hasCoroutineStarted) { StartCoroutine(ScoreCalculator()); hasCoroutineStarted = true; } };
-        GameManager.instance.onGameOver += () => { StopCoroutine(ScoreCalculator()); hasCoroutineStarted = false; };
+        GameManager.instance.onGameOver += () => { StopCoroutine(ScoreCalculator()); hasCoroutineStarted = false; firstTimeIgnored = false; };
     }
 
     private IEnumerator ScoreCalculator()
     {
         while (!GameManager.instance.isGameOver)
         {
-            AIScoringChances();
-            AIScoreDisplay.text = opponentScore.ToString();
-            timerRandomized = UnityEngine.Random.Range((scoreCalculationInterval - 0.5f), (scoreCalculationInterval + 0.5f));
+            if (firstTimeIgnored)
+            {
+                AIScoringChances();
+                AIScoreDisplay.text = opponentScore.ToString();
+                timerRandomized = UnityEngine.Random.Range((scoreCalculationInterval - 0.5f), (scoreCalculationInterval + 0.5f));
+            }
+            else
+            {
+                firstTimeIgnored = true;
+            }
             yield return new WaitForSeconds(timerRandomized);
         }
     }
