@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
 
     [field: Header("General")]
     [field: SerializeField] private int targetFPS = 60;
+    [field: SerializeField] public bool timerNeeded { get; private set; } = true;
 
     [field: Header("For BallInput Script")]
     [field: SerializeField] public GameObject ringObj { get; private set; } //Used as reference to calculate force for ball by BallInput Script
@@ -42,8 +43,11 @@ public class GameManager : MonoBehaviour
     {
         Application.targetFrameRate = targetFPS;
         StartCoroutine(CheckInternetConnection());
-        startCountDown = true;
-        startingBall.hasGotInput = true;
+        if (timerNeeded)
+        {
+            startCountDown = true;
+            startingBall.hasGotInput = true;
+        }
         onGameOver += () => { isGameOver = true; };
     }
 

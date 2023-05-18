@@ -10,7 +10,7 @@ EditorBuildSettings:
     guid: f4b4e845565e74de0a2278e7c0efeb7c
   - enabled: 1
     path: Assets/Scenes/FreeThrow.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    guid: 169172999193cac4faee1b56d8e5ed7d
   - enabled: 1
     path: Assets/Scenes/TournamentLoadingScene.unity
     guid: bea47a2880cb6d9479b7088f5a6ee39d

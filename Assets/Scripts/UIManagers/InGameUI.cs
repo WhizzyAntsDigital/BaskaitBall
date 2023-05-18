@@ -17,7 +17,15 @@ public class InGameUI : MonoBehaviour
     {
         touchArea.SetActive(true);
         gameOverScene.SetActive(false);
-        GameManager.instance.onGameOver += () => { GameOverUI(); };
+        GameManager.instance.onGameOver += () => { 
+            if (GameManager.instance.timerNeeded) 
+            {
+                GameOverUI(); 
+            } 
+            else 
+            { 
+                FreeThrowUI(); 
+            } };
     }
 
     private void GameOverUI()
@@ -40,6 +48,20 @@ public class InGameUI : MonoBehaviour
         touchArea.SetActive(false);
         gameOverScene.SetActive(true);
         finalScore.text = ScoreCalculator.instance.scoreValue.ToString();
+    }
+
+    private void FreeThrowUI()
+    {
+        gameResult.text = "TRAINING OVER!";
+        gameResult.color = winColour;
+        touchArea.SetActive(false);
+        gameOverScene.SetActive(true);
+        finalScore.text = ScoreCalculator.instance.scoreValue.ToString();
+    }
+
+    public void InvokeGameOverButton()
+    {
+        GameManager.instance.onGameOver?.Invoke();
     }
 
 }
