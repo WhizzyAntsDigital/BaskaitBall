@@ -5,6 +5,7 @@ using System;
 using Unity.Collections;
 using TMPro;
 using Unity.VisualScripting;
+using System.Threading.Tasks;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class GameManager : MonoBehaviour
 
     [field: Header("General")]
     [field: SerializeField] private int targetFPS = 60;
-    [field: SerializeField] public bool timerNeeded { get; private set; } = true;
+    [field: SerializeField] public bool isMainGame { get; private set; } = true;
 
     [field: Header("For BallInput Script")]
     [field: SerializeField] public GameObject ringObj { get; private set; } //Used as reference to calculate force for ball by BallInput Script
@@ -35,6 +36,16 @@ public class GameManager : MonoBehaviour
     private bool startMatchTimer = false;
     bool changedStartingBallValue = false;
 
+    [field: Header("Practice Game Flow")]
+    [field: SerializeField] float practiceStartingTime = 30f;
+    [field: SerializeField] int startingTarget = 50;
+    [field: SerializeField] int timeDecrementValue = 5;
+    [field: SerializeField] int targetIncrementValue = 10;
+    [field: SerializeField] TextMeshProUGUI targetScore;
+    private bool startPracticeTimer = false;
+    private float practiceTimer = 0f;
+    private float incrementCount = 0;
+
     private void Awake()
     {
         instance = this;
@@ -43,12 +54,14 @@ public class GameManager : MonoBehaviour
     {
         Application.targetFrameRate = targetFPS;
         StartCoroutine(CheckInternetConnection());
-        if (timerNeeded)
-        {
-            startCountDown = true;
-            startingBall.hasGotInput = true;
-        }
+        practiceTimer = practiceStartingTime;
+        startCountDown = true;
+        startingBall.hasGotInput = true;
         onGameOver += () => { isGameOver = true; };
+        if(!isMainGame)
+        {
+            targetScore.text = startingTarget.ToString();
+        }
     }
 
     private void Update()
@@ -63,7 +76,10 @@ public class GameManager : MonoBehaviour
             if(countDown <1 && countDown >= 0)
             {
                 timerText.text = "START!";
-                AIScore.instance.OnGameStart?.Invoke();
+                if(isMainGame)
+                {
+                    AIScore.instance.OnGameStart?.Invoke();
+                }
                 if (!changedStartingBallValue)
                 {
                     startingBall.hasGotInput = false;
@@ -73,7 +89,14 @@ public class GameManager : MonoBehaviour
             else if(countDown <-1)
             {
                 startCountDown = false;
-                startMatchTimer = true;
+                if(isMainGame) 
+                { 
+                    startMatchTimer = true;
+                }
+                else
+                {
+                    startPracticeTimer = true;
+                }
             }
         }
         if(startMatchTimer)
@@ -88,6 +111,23 @@ public class GameManager : MonoBehaviour
                 timerText.text = "END";
                 onGameOver?.Invoke();
                 startMatchTimer =false;
+            }
+        }
+
+        //For FreeThrow
+        if(startPracticeTimer)
+        {
+            practiceTimer -= Time.deltaTime;
+            if(practiceTimer > 0)
+            {
+                timerText.text = Mathf.RoundToInt(practiceTimer).ToString();
+            }
+            else if(practiceTimer <= 0)
+            {
+                timerText.text = "END";
+                startPracticeTimer = false;
+                ArcadeLevel.Instance.ballsInScene[ArcadeLevel.Instance.ballID].GetComponent<BallInput>().hasGotInput = true;
+                freeThrowValuesUpdate();
             }
         }
     }
@@ -116,5 +156,43 @@ public class GameManager : MonoBehaviour
             }
             yield return new WaitForSeconds(internetConnectionCheckInterval);
         }
+    }
+
+    private void freeThrowValuesUpdate()
+    {
+        if(ScoreCalculator.instance.scoreValue < startingTarget)
+        {
+            onGameOver?.Invoke();
+        }
+        else
+        {
+            int randomChance = UnityEngine.Random.Range(0, 2);
+            float testTimer = practiceStartingTime - (timeDecrementValue * incrementCount);
+            if(testTimer <= 0)
+            {
+                randomChance = 1;
+            }
+            if (randomChance == 0)
+            {
+                startingTarget = ScoreCalculator.instance.scoreValue + (Mathf.RoundToInt(ScoreCalculator.instance.scoreValue * 0.2f));
+                practiceTimer = practiceStartingTime - (timeDecrementValue * incrementCount);
+            }
+            else
+            {
+                startingTarget = ScoreCalculator.instance.scoreValue + (Mathf.RoundToInt(ScoreCalculator.instance.scoreValue * 0.4f));
+                practiceTimer = practiceStartingTime + (timeDecrementValue * incrementCount);
+            }
+            incrementCount++;
+            countDown = 3f;
+            waitBroPlease();
+        }
+    }
+    private async void waitBroPlease()
+    {
+        await Task.Delay(3000);
+        timerText.text = practiceTimer.ToString();
+        targetScore.text = startingTarget.ToString();
+        ArcadeLevel.Instance.ballsInScene[ArcadeLevel.Instance.ballID].GetComponent<BallInput>().hasGotInput = false;
+        startCountDown = true;
     }
 }

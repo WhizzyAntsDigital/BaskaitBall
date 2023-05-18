@@ -18,7 +18,7 @@ public class InGameUI : MonoBehaviour
         touchArea.SetActive(true);
         gameOverScene.SetActive(false);
         GameManager.instance.onGameOver += () => { 
-            if (GameManager.instance.timerNeeded) 
+            if (GameManager.instance.isMainGame) 
             {
                 GameOverUI(); 
             } 

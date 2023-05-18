@@ -3,12 +3,12 @@ using UnityEngine;
 public class ArcadeLevel : MonoBehaviour
 {
     public static ArcadeLevel Instance;
-    [SerializeField] private GameObject spawnPoint;
-    [SerializeField] private float speedOfMovingToSpawn;
-    [SerializeField] private GameObject[] ballsInScene;
+    [field: SerializeField] private GameObject spawnPoint;
+    [field: SerializeField] private float speedOfMovingToSpawn;
+    [field: SerializeField] public GameObject[] ballsInScene { get; private set; }
+    public int ballID { get; private set; } = 0;
     private bool hitTrigger = false;
     private GameObject ballObj;
-    private int ballID = 0;
 
     private void Awake()
     {
