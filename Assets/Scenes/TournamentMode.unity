@@ -2719,7 +2719,7 @@ MonoBehaviour:
   <ringObj>k__BackingField: {fileID: 7533052395341932244}
   internetConnectionCheckInterval: 3
   shouldCheckForInternetConnection: 1
-  matchLength: 9
+  matchLength: 39
   overTimeLength: 5
   timerText: {fileID: 1000710196}
   startingBall: {fileID: 7903897553513181294}
@@ -2808,6 +2808,10 @@ MonoBehaviour:
     hasClaimedDailyRewardToday: 0
     practiceHighScore: 0
     numberOfWins: 0
+    numberOfLosses: 0
+    numberOfBaskets: 0
+    numberOf3Pointers: 0
+    numberOfMisses: 0
     winningStreak: 0
     losingStreak: 0
   mainGameModeSceneName: TournamentMode
