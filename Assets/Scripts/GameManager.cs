@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [field: Header("General")]
     [field: SerializeField] private int targetFPS = 60;
     [field: SerializeField] public bool isMainGame { get; private set; } = true;
+    [field: SerializeField] private InGameUI inGameUI;
 
     [field: Header("For BallInput Script")]
     [field: SerializeField] public GameObject ringObj { get; private set; } //Used as reference to calculate force for ball by BallInput Script
@@ -26,15 +27,17 @@ public class GameManager : MonoBehaviour
     private bool whenDisconnectedActionsCarriedOut = false;
 
     [field: Header("Main Game Flow")]
-    public float matchLength = 30f;
+    public float matchLength = 29f;
+    [field: SerializeField] public float overTimeLength = 5f;
     public TextMeshProUGUI timerText;
     [field: SerializeField] private BallInput startingBall;
     [field: SerializeField] public bool isGameOver { get; private set; } = false;
-    public Action onGameOver;
+    public Action onGameOver, onOvertime;
     private float countDown = 3f;
     private bool startCountDown = false;
     private bool startMatchTimer = false;
     bool changedStartingBallValue = false;
+    bool tieStarted = false;
 
     [field: Header("Practice Game Flow")]
     [field: SerializeField] float practiceStartingTime = 30f;
@@ -78,6 +81,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        #region Count Down
         if (startCountDown)
         {
             countDown -= Time.deltaTime;
@@ -114,6 +118,11 @@ public class GameManager : MonoBehaviour
                 if (isMainGame)
                 {
                     startMatchTimer = true;
+                    if(tieStarted)
+                    {
+                        ArcadeLevel.Instance.ballsInScene[ArcadeLevel.Instance.ballID].GetComponent<BallInput>().hasGotInput = false;
+                        tieStarted = false;
+                    }
                 }
                 else
                 {
@@ -121,6 +130,9 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        #endregion
+
+        #region Main Match Timer
         if (startMatchTimer)
         {
             matchLength -= Time.deltaTime;
@@ -131,12 +143,14 @@ public class GameManager : MonoBehaviour
             if (matchLength <= 0)
             {
                 timerText.text = "END";
-                onGameOver?.Invoke();
+                
+                inGameUI.CheckMatchResult();
                 startMatchTimer = false;
             }
         }
+        #endregion
 
-        //For FreeThrow
+        #region Practice Timer
         if (startPracticeTimer)
         {
             practiceTimer -= Time.deltaTime;
@@ -159,6 +173,35 @@ public class GameManager : MonoBehaviour
                 freeThrowValuesUpdate();
             }
         }
+        #endregion
+    }
+    
+    public void WhenMatchTies()
+    {
+        tieStarted = true;
+        int numberofballs = ArcadeLevel.Instance.ballsInScene.Length;
+        for(int i = 0; i < numberofballs-1; i++)
+        {
+            ArcadeLevel.Instance.ballsInScene[i].GetComponent<BallInput>().enabled = false;
+        }
+        onOvertime?.Invoke();
+        timerText.text = "TIE";
+        matchLength = overTimeLength;
+        countDown = 3f;
+        AfterTieDelay();
+        
+    }
+    private async void AfterTieDelay()
+    {
+        await Task.Delay(2000);
+        timerText.text = practiceTimer.ToString();
+        startCountDown = true;
+        int numberofballs = ArcadeLevel.Instance.ballsInScene.Length;
+        for (int i = 0; i < numberofballs - 1; i++)
+        {
+            ArcadeLevel.Instance.ballsInScene[i].GetComponent<BallInput>().enabled = true;
+        }
+        ArcadeLevel.Instance.ballsInScene[ArcadeLevel.Instance.ballID].GetComponent<BallInput>().hasGotInput = true;
     }
 
     private IEnumerator CheckInternetConnection()

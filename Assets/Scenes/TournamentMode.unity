@@ -2715,17 +2715,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetFPS: 60
   <isMainGame>k__BackingField: 1
+  inGameUI: {fileID: 1466604150}
   <ringObj>k__BackingField: {fileID: 7533052395341932244}
   internetConnectionCheckInterval: 3
   shouldCheckForInternetConnection: 1
-  matchLength: 29
+  matchLength: 9
+  overTimeLength: 5
   timerText: {fileID: 1000710196}
   startingBall: {fileID: 7903897553513181294}
   <isGameOver>k__BackingField: 0
-  practiceStartingTime: 30
-  startingTarget: 50
-  timeChangeValue: 5
-  delayBetweenRounds: 3
+  practiceStartingTime: 0
+  startingTarget: 0
+  timeChangeValue: 0
+  delayBetweenRounds: 0
   targetScore: {fileID: 0}
   greenText: {fileID: 0}
   redText: {fileID: 0}
@@ -2769,6 +2771,7 @@ MonoBehaviour:
   winColour: {r: 0.4009434, g: 1, b: 0.4315532, a: 1}
   loseColour: {r: 1, g: 0.3066038, b: 0.3066038, a: 1}
   tieColour: {r: 1, g: 0.8699743, b: 0.4481132, a: 1}
+  matchResult: 0
 --- !u!114 &1466604151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2807,9 +2810,7 @@ MonoBehaviour:
     numberOfWins: 0
     winningStreak: 0
     losingStreak: 0
-    playerLeftMidMatch: 0
-    exitAppStuff: NA
-  QuitText: {fileID: 0}
+  mainGameModeSceneName: TournamentMode
 --- !u!1 &1472134172
 GameObject:
   m_ObjectHideFlags: 0

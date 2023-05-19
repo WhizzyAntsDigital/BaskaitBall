@@ -45,6 +45,7 @@ public class AIScore : MonoBehaviour
         winPercentage.text = AIWinPercentage.ToString(); //For Debugging Purposes
 
         OnGameStart += () => { if (!hasCoroutineStarted) { StartCoroutine(ScoreCalculator()); hasCoroutineStarted = true; } };
+        GameManager.instance.onOvertime += () => { StopCoroutine(ScoreCalculator()); hasCoroutineStarted = false; firstTimeIgnored = false; };
         GameManager.instance.onGameOver += () => { StopCoroutine(ScoreCalculator()); hasCoroutineStarted = false; firstTimeIgnored = false; };
     }
 

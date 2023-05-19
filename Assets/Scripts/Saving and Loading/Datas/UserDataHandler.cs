@@ -27,31 +27,33 @@ public class UserDataHandler : MonoBehaviour
     }
 
     #region Check Application Loses Focus
+#if !UNITY_EDITOR
     private void OnApplicationFocus(bool focus)
     {
         if (focus == false && SceneManager.GetActiveScene().name == mainGameModeSceneName && !GameManager.instance.isGameOver)
         {
             closingTime = System.DateTime.Now;
         }
-        if(focus == true && SceneManager.GetActiveScene().name == mainGameModeSceneName)
+        if (focus == true && SceneManager.GetActiveScene().name == mainGameModeSceneName && closingTime != null)
         {
             openingTime = System.DateTime.Now;
             TimeSpan timediff = openingTime - closingTime;
-            if(timediff.TotalSeconds < GameManager.instance.matchLength)
+            if (timediff.TotalSeconds < GameManager.instance.matchLength)
             {
                 GameManager.instance.matchLength -= (float)timediff.TotalSeconds;
                 AIScore.instance.opponentScore += UnityEngine.Random.Range(0, 30);
             }
-            else if(timediff.TotalSeconds >= GameManager.instance.matchLength)
+            else if (timediff.TotalSeconds >= GameManager.instance.matchLength)
             {
                 GameManager.instance.matchLength = 0;
-                GameManager.instance.timerText.text= "END";
+                GameManager.instance.timerText.text = "END";
                 AIScore.instance.opponentScore += UnityEngine.Random.Range(0, 30);
                 GameManager.instance.onGameOver?.Invoke();
             }
         }
     }
-    #endregion
+#endif
+#endregion
 
     #region Return All Data
     public UserData ReturnSavedValues()
