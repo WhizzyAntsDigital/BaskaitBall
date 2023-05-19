@@ -26,8 +26,8 @@ public class GameManager : MonoBehaviour
     private bool whenDisconnectedActionsCarriedOut = false;
 
     [field: Header("Main Game Flow")]
-    [field: SerializeField] private float matchLength = 30f;
-    [field: SerializeField] private TextMeshProUGUI timerText;
+    public float matchLength = 30f;
+    public TextMeshProUGUI timerText;
     [field: SerializeField] private BallInput startingBall;
     [field: SerializeField] public bool isGameOver { get; private set; } = false;
     public Action onGameOver;
@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
         {
             ArcadeLevel.Instance.ballsInScene[ArcadeLevel.Instance.ballID].GetComponent<BallInput>().hasGotInput = true;
         }
-        onGameOver += () => { isGameOver = true; };
+        onGameOver += () => { isGameOver = true; startMatchTimer = false; startCountDown = false; startPracticeTimer = false; };
         if (!isMainGame)
         {
             targetScore.text = startingTarget.ToString();

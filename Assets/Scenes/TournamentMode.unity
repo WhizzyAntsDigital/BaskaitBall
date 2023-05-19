@@ -2661,6 +2661,7 @@ GameObject:
   - component: {fileID: 1466604149}
   - component: {fileID: 1466604150}
   - component: {fileID: 1466604151}
+  - component: {fileID: 1466604152}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -2723,9 +2724,13 @@ MonoBehaviour:
   <isGameOver>k__BackingField: 0
   practiceStartingTime: 30
   startingTarget: 50
-  timeDecrementValue: 5
-  targetIncrementValue: 10
+  timeChangeValue: 5
+  delayBetweenRounds: 3
   targetScore: {fileID: 0}
+  greenText: {fileID: 0}
+  redText: {fileID: 0}
+  countDownText: {fileID: 0}
+  practiceTimerText: {fileID: 0}
   dontActivateInput: 0
 --- !u!114 &1466604149
 MonoBehaviour:
@@ -2783,6 +2788,28 @@ MonoBehaviour:
   AIScoreDisplay: {fileID: 1523855607}
   winPercentage: {fileID: 1129098898}
   opponentScore: 0
+--- !u!114 &1466604152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466604145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42f34c22bc8d7294887cbd512223fbf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  userData:
+    userName: User69420
+    hasClaimedDailyRewardToday: 0
+    practiceHighScore: 0
+    numberOfWins: 0
+    winningStreak: 0
+    losingStreak: 0
+    playerLeftMidMatch: 0
+    exitAppStuff: NA
+  QuitText: {fileID: 0}
 --- !u!1 &1472134172
 GameObject:
   m_ObjectHideFlags: 0
