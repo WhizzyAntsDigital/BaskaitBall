@@ -81,6 +81,10 @@ public class UserData
     public bool hasClaimedDailyRewardToday = false;
     public int practiceHighScore = 0;
     public int numberOfWins = 0;
+    public int numberOfLosses = 0;
+    public int numberOfBaskets = 0;
+    public int numberOf3Pointers = 0;
+    public int numberOfMisses = 0;
     public int winningStreak = 0;
     public int losingStreak = 0;
 }
