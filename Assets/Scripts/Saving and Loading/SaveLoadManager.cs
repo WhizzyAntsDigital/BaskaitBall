@@ -7,10 +7,16 @@ public static class SaveLoadManager
 {
     public static List<PersistanceEntity> persistanceEntities = new List<PersistanceEntity>()
     {
-        new PersistanceEntity() {
-
+        new PersistanceEntity() 
+        {
             objectType = typeof(UserData),
-            fileName = "y1U10SduE4wRg.whizzyants"
+            fileName = "y1U10SduE4wRg.whizzyants",
+        },
+
+        new PersistanceEntity()
+        {
+            objectType = typeof(PurchaseTrackerData),
+            fileName = "m3Pd4UuRCHuAS06E.whizzyants",
         },
     };
     public static void SaveData<T>(T data)

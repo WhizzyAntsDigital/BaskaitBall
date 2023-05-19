@@ -26,10 +26,7 @@ public class UserDataHandler : MonoBehaviour
         }
     }
 
-    public void SetAllData(UserData data)
-    {
-        userData = data;
-    }
+    #region Check Application Loses Focus
     private void OnApplicationFocus(bool focus)
     {
         if (focus == false && SceneManager.GetActiveScene().name == mainGameModeSceneName && !GameManager.instance.isGameOver)
@@ -54,6 +51,7 @@ public class UserDataHandler : MonoBehaviour
             }
         }
     }
+    #endregion
 
     #region Return All Data
     public UserData ReturnSavedValues()
@@ -83,5 +81,4 @@ public class UserData
     public int numberOfWins = 0;
     public int winningStreak = 0;
     public int losingStreak = 0;
-    public bool playerLeftMidMatch = false;
 }
