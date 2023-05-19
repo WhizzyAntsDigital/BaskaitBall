@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
-using Unity.Collections;
 using TMPro;
-using Unity.VisualScripting;
 using System.Threading.Tasks;
 
 public class GameManager : MonoBehaviour
@@ -18,13 +14,6 @@ public class GameManager : MonoBehaviour
 
     [field: Header("For BallInput Script")]
     [field: SerializeField] public GameObject ringObj { get; private set; } //Used as reference to calculate force for ball by BallInput Script
-
-    [field: Header("Internet Connection Checking")]
-    [field: SerializeField] private float internetConnectionCheckInterval = 3f;
-    [field: SerializeField] private bool shouldCheckForInternetConnection = true;
-    public Action IsConnectedToInternet, IsDisconnectedFromInternet;
-    private bool whenConnectedActionsCarriedOut = false;
-    private bool whenDisconnectedActionsCarriedOut = false;
 
     [field: Header("Main Game Flow")]
     public float matchLength = 29f;
@@ -61,7 +50,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         Application.targetFrameRate = targetFPS;
-        StartCoroutine(CheckInternetConnection());
         practiceTimer = practiceStartingTime;
         startCountDown = true;
         if (isMainGame)
@@ -204,31 +192,7 @@ public class GameManager : MonoBehaviour
         ArcadeLevel.Instance.ballsInScene[ArcadeLevel.Instance.ballID].GetComponent<BallInput>().hasGotInput = true;
     }
 
-    private IEnumerator CheckInternetConnection()
-    {
-        while (shouldCheckForInternetConnection)
-        {
-            if (Application.internetReachability == NetworkReachability.NotReachable)
-            {
-                if (!whenDisconnectedActionsCarriedOut)
-                {
-                    IsDisconnectedFromInternet?.Invoke();
-                    whenDisconnectedActionsCarriedOut = true;
-                    whenConnectedActionsCarriedOut = false;
-                }
-            }
-            else
-            {
-                if (!whenConnectedActionsCarriedOut)
-                {
-                    IsConnectedToInternet?.Invoke();
-                    whenConnectedActionsCarriedOut = true;
-                    whenDisconnectedActionsCarriedOut = false;
-                }
-            }
-            yield return new WaitForSeconds(internetConnectionCheckInterval);
-        }
-    }
+   
 
     private void freeThrowValuesUpdate()
     {
