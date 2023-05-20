@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AIScore : MonoBehaviour
@@ -14,7 +15,8 @@ public class AIScore : MonoBehaviour
     [field: SerializeField][field: Range(0f, 1f)] float percentageOfHittingShot;
     [field: SerializeField][field: Range(0f, 1f)] float percentageofHittingDirectShot;
     [field: SerializeField] TextMeshProUGUI AIScoreDisplay;
-    [field: SerializeField] TextMeshProUGUI winPercentage;
+    [field: SerializeField] private int lossStreakThreshold = 2;
+    [field: SerializeField] private int winStreakThreshold = 2;
     public int opponentScore = 0;
     public Action OnGameStart;
 
@@ -30,6 +32,21 @@ public class AIScore : MonoBehaviour
     {
         AIScoreDisplay.text = opponentScore.ToString();
         float willPlayerWin = UnityEngine.Random.Range(0f, 1f);
+        float shouldFollowStreak = UnityEngine.Random.Range(0f, 1f);
+        if(UserDataHandler.instance.ReturnSavedValues().winningStreak >= winStreakThreshold)
+        {
+            if (shouldFollowStreak >= 0f && shouldFollowStreak <= 0.7f)
+            {
+                playerWinPercentage = UnityEngine.Random.Range(0.1f, 3f);
+            }
+        }
+        else if(UserDataHandler.instance.ReturnSavedValues().losingStreak >= lossStreakThreshold)
+        {
+            if (shouldFollowStreak >= 0f && shouldFollowStreak <= 0.7f)
+            {
+                playerWinPercentage = UnityEngine.Random.Range(0.8f, 1f);
+            }
+        }
         if (willPlayerWin >= 0f && willPlayerWin <= playerWinPercentage)
         {
             percentageOfHittingShot = UnityEngine.Random.Range(0.3f, 0.5f);
@@ -40,9 +57,6 @@ public class AIScore : MonoBehaviour
             percentageOfHittingShot = UnityEngine.Random.Range(0.4f, 0.8f);
             percentageofHittingDirectShot = UnityEngine.Random.Range(0.2f, 0.6f);
         }
-
-        float AIWinPercentage = ((percentageOfHittingShot + percentageofHittingDirectShot) / 2) * 100;
-        winPercentage.text = AIWinPercentage.ToString(); //For Debugging Purposes
 
         OnGameStart += () => { if (!hasCoroutineStarted) { StartCoroutine(ScoreCalculator()); hasCoroutineStarted = true; } };
         GameManager.instance.onOvertime += () => { StopCoroutine(ScoreCalculator()); hasCoroutineStarted = false; firstTimeIgnored = false; };

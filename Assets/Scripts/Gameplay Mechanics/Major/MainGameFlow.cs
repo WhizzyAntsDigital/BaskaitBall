@@ -5,8 +5,10 @@ using UnityEngine;
 using System;
 using System.Threading.Tasks;
 
+
 public class MainGameFlow : MonoBehaviour
 {
+    public static MainGameFlow Instance;
     [field: Header("Main Game Flow")]
     public float matchLength = 29f;
     [field: SerializeField] public float overTimeLength = 5f;
@@ -19,6 +21,10 @@ public class MainGameFlow : MonoBehaviour
     bool changedStartingBallValue = false;
     bool tieStarted = false;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
     private void Start()
     {
         startCountDown = true;

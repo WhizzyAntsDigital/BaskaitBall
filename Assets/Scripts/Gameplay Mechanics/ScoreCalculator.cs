@@ -57,6 +57,8 @@ public class ScoreCalculator : MonoBehaviour
             if (other.gameObject.GetComponent<BallInput>().hasHitOtherObjects)
             {
                 scoreValue += 2;
+                UserDataHandler.instance.ReturnSavedValues().numberOfBaskets++;
+                UserDataHandler.instance.SaveUserData();
                 if (isTraining)
                 {
                     startTimer = true;
@@ -65,6 +67,9 @@ public class ScoreCalculator : MonoBehaviour
             else
             {
                 scoreValue += 3;
+                UserDataHandler.instance.ReturnSavedValues().numberOfBaskets++;
+                UserDataHandler.instance.ReturnSavedValues().numberOf3Pointers++;
+                UserDataHandler.instance.SaveUserData();
                 if (isTraining)
                 {
                     startTimer = true;

@@ -24,6 +24,12 @@ public class UserDataHandler : MonoBehaviour
         {
             userData = new UserData();
         }
+        if(SceneManager.GetActiveScene().name == "MainMenu")
+        {
+            userData.firstRound = false;
+            userData.secondRound = false;
+            SaveUserData();
+        }
     }
 
     #region Check Application Loses Focus
@@ -38,17 +44,17 @@ public class UserDataHandler : MonoBehaviour
         {
             openingTime = System.DateTime.Now;
             TimeSpan timediff = openingTime - closingTime;
-            if (timediff.TotalSeconds < GameManager.instance.matchLength)
+            if (timediff.TotalSeconds < MainGameFlow.Instance.matchLength)
             {
-                GameManager.instance.matchLength -= (float)timediff.TotalSeconds;
+                MainGameFlow.Instance.matchLength -= (float)timediff.TotalSeconds;
                 AIScore.instance.opponentScore += UnityEngine.Random.Range(0, 30);
             }
-            else if (timediff.TotalSeconds >= GameManager.instance.matchLength)
+            else if (timediff.TotalSeconds >= MainGameFlow.Instance.matchLength)
             {
-                GameManager.instance.matchLength = 0;
-                GameManager.instance.timerText.text = "END";
+                MainGameFlow.Instance.matchLength = 0;
+                MainGameFlow.Instance.timerText.text = "END";
                 AIScore.instance.opponentScore += UnityEngine.Random.Range(0, 30);
-                GameManager.instance.onGameOver?.Invoke();
+                GameManager.instance.OnGameOver?.Invoke();
             }
         }
     }
@@ -84,7 +90,8 @@ public class UserData
     public int numberOfLosses = 0;
     public int numberOfBaskets = 0;
     public int numberOf3Pointers = 0;
-    public int numberOfMisses = 0;
     public int winningStreak = 0;
     public int losingStreak = 0;
+    public bool firstRound = false;
+    public bool secondRound = false;
 }
