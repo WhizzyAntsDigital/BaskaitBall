@@ -6,6 +6,7 @@ public class ArcadeLevel : MonoBehaviour
     [field: SerializeField] private GameObject spawnPoint;
     [field: SerializeField] private float speedOfMovingToSpawn;
     [field: SerializeField] public GameObject[] ballsInScene { get; private set; }
+    [field: SerializeField] private PracticeGameFlow practiceGameFlow;
     public int ballID { get; private set; } = 0;
     private bool hitTrigger = false;
     private GameObject ballObj;
@@ -16,7 +17,7 @@ public class ArcadeLevel : MonoBehaviour
     }
     private void Start()
     {
-        GameManager.instance.onGameOver += () => { hitTrigger = false; };
+        GameManager.instance.OnGameOver += () => { hitTrigger = false; };
     }
     private void Update()
     {
@@ -28,11 +29,11 @@ public class ArcadeLevel : MonoBehaviour
             {
                 hitTrigger = false;
                 ballObj.GetComponent<Rigidbody>().isKinematic = true;
-                if(!GameManager.instance.isMainGame && GameManager.instance.dontActivateInput)
+                if(!GameManager.instance.isMainGame && practiceGameFlow.dontActivateInput)
                 {
                     ballObj.GetComponent<BallInput>().hasGotInput = true;
                 }
-                else if(!GameManager.instance.isMainGame && !GameManager.instance.dontActivateInput)
+                else if(!GameManager.instance.isMainGame && !practiceGameFlow.dontActivateInput)
                 {
                     ballObj.GetComponent<BallInput>().hasGotInput = false;
                 }

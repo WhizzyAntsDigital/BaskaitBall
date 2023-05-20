@@ -20,12 +20,13 @@ public class InGameUI : MonoBehaviour
     [field: SerializeField] private Color winColour;
     [field: SerializeField] private Color loseColour;
     [field: SerializeField] private Color tieColour;
+    [field: SerializeField] private MainGameFlow mainGameFlow;
     public MatchResult matchResult;
     void Start()
     {
         touchArea.SetActive(true);
         gameOverScene.SetActive(false);
-        GameManager.instance.onGameOver += () => { 
+        GameManager.instance.OnGameOver += () => { 
             if (GameManager.instance.isMainGame) 
             {
                 GameOverUI(); 
@@ -74,7 +75,7 @@ public class InGameUI : MonoBehaviour
 
     public void InvokeGameOverButton()
     {
-        GameManager.instance.onGameOver?.Invoke();
+        GameManager.instance.OnGameOver?.Invoke();
     }
 
     public void CheckMatchResult()
@@ -82,17 +83,17 @@ public class InGameUI : MonoBehaviour
         if (ScoreCalculator.instance.scoreValue > AIScore.instance.opponentScore)
         {
             matchResult = MatchResult.PlayerWon;
-            GameManager.instance.onGameOver?.Invoke();
+            GameManager.instance.OnGameOver?.Invoke();
         }
         else if (ScoreCalculator.instance.scoreValue < AIScore.instance.opponentScore)
         {
             matchResult = MatchResult.PlayerLost;
-            GameManager.instance.onGameOver?.Invoke();
+            GameManager.instance.OnGameOver?.Invoke();
         }
         else if ((ScoreCalculator.instance.scoreValue == AIScore.instance.opponentScore))
         {
             matchResult = MatchResult.Tie;
-            GameManager.instance.WhenMatchTies();
+            mainGameFlow.WhenMatchTies();
         }
     }
 
