@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TournamentBracket : MonoBehaviour
+public class MatchMakingManager : MonoBehaviour
 {
     [field: Header("Tournament Bracket Generator")]
     [field: SerializeField] private TextMeshProUGUI playerUsername;
