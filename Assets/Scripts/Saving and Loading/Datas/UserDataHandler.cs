@@ -83,7 +83,7 @@ public class UserDataHandler : MonoBehaviour
 [System.Serializable]
 public class UserData
 {
-    public string userName = "User69420";
+    public string userName = null;
     public bool hasClaimedDailyRewardToday = false;
     public int practiceHighScore = 0;
     public int numberOfWins = 0;
