@@ -2662,6 +2662,7 @@ GameObject:
   - component: {fileID: 1466604150}
   - component: {fileID: 1466604151}
   - component: {fileID: 1466604152}
+  - component: {fileID: 1466604153}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -2714,26 +2715,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetFPS: 60
-  <isMainGame>k__BackingField: 1
   inGameUI: {fileID: 1466604150}
   <ringObj>k__BackingField: {fileID: 7533052395341932244}
-  internetConnectionCheckInterval: 3
-  shouldCheckForInternetConnection: 1
-  matchLength: 39
-  overTimeLength: 5
-  timerText: {fileID: 1000710196}
-  startingBall: {fileID: 7903897553513181294}
-  <isGameOver>k__BackingField: 0
-  practiceStartingTime: 0
-  startingTarget: 0
-  timeChangeValue: 0
-  delayBetweenRounds: 0
-  targetScore: {fileID: 0}
-  greenText: {fileID: 0}
-  redText: {fileID: 0}
-  countDownText: {fileID: 0}
-  practiceTimerText: {fileID: 0}
-  dontActivateInput: 0
+  isGameOver: 0
+  <isMainGame>k__BackingField: 1
 --- !u!114 &1466604149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2752,6 +2737,7 @@ MonoBehaviour:
   - {fileID: 7903897553513181291}
   - {fileID: 457477566}
   - {fileID: 1298887853}
+  practiceGameFlow: {fileID: 0}
 --- !u!114 &1466604150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2771,6 +2757,7 @@ MonoBehaviour:
   winColour: {r: 0.4009434, g: 1, b: 0.4315532, a: 1}
   loseColour: {r: 1, g: 0.3066038, b: 0.3066038, a: 1}
   tieColour: {r: 1, g: 0.8699743, b: 0.4481132, a: 1}
+  mainGameFlow: {fileID: 1466604153}
   matchResult: 0
 --- !u!114 &1466604151
 MonoBehaviour:
@@ -2785,7 +2772,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreCalculationInterval: 1
-  playerWinPercentage: 0.6
+  playerWinPercentage: 0
   percentageOfHittingShot: 0
   percentageofHittingDirectShot: 0
   AIScoreDisplay: {fileID: 1523855607}
@@ -2815,6 +2802,23 @@ MonoBehaviour:
     winningStreak: 0
     losingStreak: 0
   mainGameModeSceneName: TournamentMode
+--- !u!114 &1466604153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466604145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae1242b9096e8084c86c40468c6fbdf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  matchLength: 9
+  overTimeLength: 5
+  timerText: {fileID: 1000710196}
+  startingBall: {fileID: 7903897553513181294}
+  inGameUI: {fileID: 1466604150}
 --- !u!1 &1472134172
 GameObject:
   m_ObjectHideFlags: 0

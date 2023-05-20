@@ -38,7 +38,7 @@ public class BallInput : MonoBehaviour
         Time.fixedDeltaTime = 0.01f;
         GetComponent<Rigidbody>().isKinematic = kinematic;
         GetComponent<Rigidbody>().useGravity = !kinematic;
-        GameManager.instance.onGameOver += () => { hasGotInput = true; };
+        GameManager.instance.OnGameOver += () => { hasGotInput = true; };
         if (IsArcade)
         {
             forceForArcade = CalculateForce();

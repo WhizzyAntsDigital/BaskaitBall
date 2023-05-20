@@ -32,13 +32,13 @@ public class AIScore : MonoBehaviour
         float willPlayerWin = UnityEngine.Random.Range(0f, 1f);
         if (willPlayerWin >= 0f && willPlayerWin <= playerWinPercentage)
         {
-            percentageOfHittingShot = UnityEngine.Random.Range(0.1f, 0.5f);
-            percentageofHittingDirectShot = UnityEngine.Random.Range(0.1f, 0.2f);
+            percentageOfHittingShot = UnityEngine.Random.Range(0.3f, 0.5f);
+            percentageofHittingDirectShot = UnityEngine.Random.Range(0.1f, 0.3f);
         }
         else
         {
-            percentageOfHittingShot = UnityEngine.Random.Range(0.4f, 1f);
-            percentageofHittingDirectShot = UnityEngine.Random.Range(0.2f, 0.5f);
+            percentageOfHittingShot = UnityEngine.Random.Range(0.4f, 0.8f);
+            percentageofHittingDirectShot = UnityEngine.Random.Range(0.2f, 0.6f);
         }
 
         float AIWinPercentage = ((percentageOfHittingShot + percentageofHittingDirectShot) / 2) * 100;
@@ -46,7 +46,7 @@ public class AIScore : MonoBehaviour
 
         OnGameStart += () => { if (!hasCoroutineStarted) { StartCoroutine(ScoreCalculator()); hasCoroutineStarted = true; } };
         GameManager.instance.onOvertime += () => { StopCoroutine(ScoreCalculator()); hasCoroutineStarted = false; firstTimeIgnored = false; };
-        GameManager.instance.onGameOver += () => { StopCoroutine(ScoreCalculator()); hasCoroutineStarted = false; firstTimeIgnored = false; };
+        GameManager.instance.OnGameOver += () => { StopCoroutine(ScoreCalculator()); hasCoroutineStarted = false; firstTimeIgnored = false; };
     }
 
     private IEnumerator ScoreCalculator()
