@@ -24,6 +24,12 @@ public static class SaveLoadManager
             objectType = typeof(SkinsOwnershipData),
             fileName = "Se9K9I1pN98Slzh.whizzyants",
         },
+
+        new PersistanceEntity()
+        {
+             objectType = typeof(TournamentInfoData),
+            fileName = "TafO46Us65dRfNs.whizzyants",
+        },
     };
     public static void SaveData<T>(T data)
     {

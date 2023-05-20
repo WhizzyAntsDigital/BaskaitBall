@@ -14,11 +14,13 @@ public class MainMenuUIManager : MonoBehaviour
 
     [field: Header("Script References")]
     [field: SerializeField] private ProfileStatsManager profileStatsManager;
+    [field: SerializeField] private TournamentModesUIManager tournamentModesUIManager;
 
     public bool isOpen = false;
     private void Start()
     {
         profileStatsManager = GetComponent<ProfileStatsManager>();
+        tournamentModesUIManager = GetComponent<TournamentModesUIManager>();
 
         mainMenuCanvas.SetActive(true);
         settingsCanvas.SetActive(false);
@@ -75,6 +77,7 @@ public class MainMenuUIManager : MonoBehaviour
     {
         if (!isOpen)
         {
+            tournamentModesUIManager.AssignPrices();
             tournamentModesCanvas.SetActive(!isOpen);
             isOpen = true;
         }

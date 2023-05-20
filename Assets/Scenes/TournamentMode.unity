@@ -1512,7 +1512,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 561950906}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1466604150}
+        m_TargetAssemblyTypeName: InGameUI, Assembly-CSharp
+        m_MethodName: ReturnToMainMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &561950906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1634,9 +1646,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1466604150}
         m_TargetAssemblyTypeName: InGameUI, Assembly-CSharp
-        m_MethodName: InvokeGameOverButton
+        m_MethodName: ReturnToMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4400,6 +4412,14 @@ MonoBehaviour:
   gameResult: {fileID: 1563615794}
   finalScore: {fileID: 0}
   timerText: {fileID: 721639030}
+  playerText: {fileID: 859787096}
+  opponentText: {fileID: 1607111216}
+  currentTourneyReward: {fileID: 607815141}
+  playerWonIcon: {fileID: 611927501}
+  playerLostIcon: {fileID: 1469822673}
+  opponentWonIcon: {fileID: 1394175946}
+  opponentLostIcon: {fileID: 389600403}
+  confirmExit: {fileID: 892651788}
   timeToGoToNextScene: 3
   winColour: {r: 0.4009434, g: 1, b: 0.4315532, a: 1}
   loseColour: {r: 1, g: 0.3066038, b: 0.3066038, a: 1}
@@ -4418,7 +4438,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreCalculationInterval: 1
-  playerWinPercentage: 0
+  playerWinPercentage: 0.4
   percentageOfHittingShot: 0
   percentageofHittingDirectShot: 0
   AIScoreDisplay: {fileID: 1523855607}
@@ -4462,7 +4482,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae1242b9096e8084c86c40468c6fbdf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  matchLength: 39
+  matchLength: 9
   overTimeLength: 5
   timerText: {fileID: 1000710196}
   startingBall: {fileID: 7903897553513181294}
@@ -5452,7 +5472,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1890504334}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1466604150}
+        m_TargetAssemblyTypeName: InGameUI, Assembly-CSharp
+        m_MethodName: ConfirmExit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1890504334
 MonoBehaviour:
   m_ObjectHideFlags: 0

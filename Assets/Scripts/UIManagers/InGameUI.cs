@@ -19,6 +19,14 @@ public class InGameUI : MonoBehaviour
     [field: SerializeField] private TextMeshProUGUI gameResult;
     [field: SerializeField] private TextMeshProUGUI finalScore;
     [field: SerializeField] private TextMeshProUGUI timerText;
+    [field: SerializeField] private TextMeshProUGUI playerText;
+    [field: SerializeField] private TextMeshProUGUI opponentText;
+    [field: SerializeField] private TextMeshProUGUI currentTourneyReward;
+    [field: SerializeField] GameObject playerWonIcon;
+    [field: SerializeField] GameObject playerLostIcon;
+    [field: SerializeField] GameObject opponentWonIcon;
+    [field: SerializeField] GameObject opponentLostIcon;
+    [field: SerializeField] GameObject confirmExit;
     [field: SerializeField] private int timeToGoToNextScene = 3;
     [field: SerializeField] private Color winColour;
     [field: SerializeField] private Color loseColour;
@@ -27,15 +35,31 @@ public class InGameUI : MonoBehaviour
 
     private float timer;
     private bool startTimer = false;
+    private string SceneToLoad;
+
+    private int playersInvestingCoins;
+    private float tempPlayersInvestingCoins;
+    private int tournamentReward;
+    private float tempTournamentReward;
+
+
+    private float coinReductionRate;
+    private bool startCoinChange = false;
+    private bool tempRound1 = false;
+    private bool tempRound2 = false;
     void Start()
     {
         touchArea.SetActive(true);
         gameOverScene.SetActive(false);
+        confirmExit.SetActive(false);
+        tempRound1 = UserDataHandler.instance.ReturnSavedValues().firstRound;
+        tempRound2 = UserDataHandler.instance.ReturnSavedValues().secondRound;
         GameManager.instance.OnGameOver += () =>
         {
             if (GameManager.instance.isMainGame)
             {
                 GameOverUI();
+                confirmExit.SetActive(false);
             }
             else
             {
@@ -60,10 +84,78 @@ public class InGameUI : MonoBehaviour
                 timerText.text = "Loading...";
             }
         }
-    }
 
+        if (startCoinChange)
+        {
+            tempPlayersInvestingCoins += (Time.deltaTime * coinReductionRate);
+            tempTournamentReward -= (Time.deltaTime * (coinReductionRate * 2));
+            if (tempPlayersInvestingCoins <= tournamentReward && tempTournamentReward >= 0 )
+            {
+                if(matchResult == MatchResult.PlayerWon)
+                {
+                    playerText.text = Mathf.RoundToInt(tempPlayersInvestingCoins).ToString();
+                }
+                else
+                {
+                    opponentText.text = Mathf.RoundToInt(tempPlayersInvestingCoins).ToString();
+                }
+                currentTourneyReward.text = Mathf.RoundToInt(tempTournamentReward).ToString();
+            }
+            else 
+            {
+                if (matchResult == MatchResult.PlayerWon)
+                {
+                    playerText.text = tournamentReward.ToString();
+                }
+                else
+                {
+                    opponentText.text = tournamentReward.ToString();
+                }
+                currentTourneyReward.text = "0";
+                SceneChange(SceneToLoad);
+                startCoinChange = false;
+            }
+        }
+    }
+    private void AnimateCoins()
+    {
+        int selectedTournamentID = 0;
+        for (int i = 0; i <= 3; i++)
+        {
+            if (TournamentInfoDataHandler.instance.ReturnSavedValues().selected[i] == true)
+            {
+                selectedTournamentID = i;
+                break;
+            }
+        }
+        if (tempRound1 == true && tempRound2 == false)
+        {
+            playersInvestingCoins = TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID];
+            coinReductionRate = Mathf.Pow(10, ((TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID] * 4).ToString().Length - 2));
+            playerText.text = "0";
+            opponentText.text = "0";
+            tournamentReward = playersInvestingCoins * 2;
+            tempPlayersInvestingCoins = 0;
+            tempTournamentReward = tournamentReward;
+            currentTourneyReward.text = tournamentReward.ToString();
+            StartAnimatingCoins();
+        }
+        else if (tempRound1 == true && tempRound2 == true)
+        {
+            playersInvestingCoins = (TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID] * 2);
+            coinReductionRate = Mathf.Pow(10, ((TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID] * 4).ToString().Length - 2));
+            playerText.text = "0";
+            opponentText.text = "0";
+            tournamentReward = playersInvestingCoins * 2;
+            tempPlayersInvestingCoins = 0;
+            tempTournamentReward = tournamentReward;
+            currentTourneyReward.text = tournamentReward.ToString();
+            StartAnimatingCoins();
+        }
+    }
     private void GameOverUI()
     {
+        timerText.text = "Starting...";
         if(matchResult == MatchResult.PlayerWon)
         {
             gameResult.text = "YOU WIN!";
@@ -76,12 +168,15 @@ public class InGameUI : MonoBehaviour
         }
         touchArea.SetActive(false);
         gameOverScene.SetActive(true);
-        finalScore.text = ScoreCalculator.instance.scoreValue.ToString();
-        if(UserDataHandler.instance.ReturnSavedValues().firstRound == true && UserDataHandler.instance.ReturnSavedValues().secondRound == false && matchResult == MatchResult.PlayerWon)
+        if(UserDataHandler.instance.ReturnSavedValues().firstRound == true && UserDataHandler.instance.ReturnSavedValues().secondRound == false)
         {
             if (matchResult == MatchResult.PlayerWon)
             {
-                SceneChange("TournamentLoadingScene");
+                SceneToLoad = "TournamentLoadingScene";
+                playerWonIcon.SetActive(true);
+                playerLostIcon.SetActive(false);
+                opponentLostIcon.SetActive(true);
+                opponentWonIcon.SetActive(false);
             }
             else
             {
@@ -89,7 +184,11 @@ public class InGameUI : MonoBehaviour
                 UserDataHandler.instance.ReturnSavedValues().losingStreak++;
                 UserDataHandler.instance.ReturnSavedValues().winningStreak = 0;
                 UserDataHandler.instance.SaveUserData();
-                SceneChange("MainMenu");
+                SceneToLoad = "MainMenu";
+                playerLostIcon.SetActive(true);
+                playerWonIcon.SetActive(false);
+                opponentWonIcon.SetActive(true);
+                opponentLostIcon.SetActive(false);
             }
         }
         else if(UserDataHandler.instance.ReturnSavedValues().firstRound == true && UserDataHandler.instance.ReturnSavedValues().secondRound == true)
@@ -101,16 +200,25 @@ public class InGameUI : MonoBehaviour
                 UserDataHandler.instance.ReturnSavedValues().numberOfWins++;
                 UserDataHandler.instance.ReturnSavedValues().winningStreak++;
                 UserDataHandler.instance.ReturnSavedValues().losingStreak = 0;
+                playerWonIcon.SetActive(true);
+                playerLostIcon.SetActive(false);
+                opponentLostIcon.SetActive(true);
+                opponentWonIcon.SetActive(false);
             }
             else
             {
                 UserDataHandler.instance.ReturnSavedValues().numberOfLosses++;
                 UserDataHandler.instance.ReturnSavedValues().losingStreak++;
                 UserDataHandler.instance.ReturnSavedValues().winningStreak = 0;
+                playerLostIcon.SetActive(true);
+                playerWonIcon.SetActive(false);
+                opponentWonIcon.SetActive(true);
+                opponentLostIcon.SetActive(false);
             }
             UserDataHandler.instance.SaveUserData();
-            SceneChange("MainMenu");
+            SceneToLoad = "MainMenu";
         }
+        AnimateCoins();
     }
     private async void SceneChange(string sceneName)
     {
@@ -118,6 +226,11 @@ public class InGameUI : MonoBehaviour
         startTimer = true;
         await Task.Delay(timeToGoToNextScene * 1000);
         SceneManager.LoadScene(sceneName);
+    }
+    private async void StartAnimatingCoins()
+    {
+        await Task.Delay(1000);
+        startCoinChange = true;
     }
     private void FreeThrowUI()
     {
@@ -128,7 +241,32 @@ public class InGameUI : MonoBehaviour
         finalScore.text = ScoreCalculator.instance.scoreValue.ToString();
     }
 
-    public void InvokeGameOverButton()
+    public void ReturnToMainMenu()
+    {
+        confirmExit.SetActive(!confirmExit.activeInHierarchy);
+        if( !GameManager.instance.isMainGame && !confirmExit.activeInHierarchy)
+        {
+            Time.timeScale = 1.0f; 
+        }
+        else if(!GameManager.instance.isMainGame && confirmExit.activeInHierarchy)
+        {
+            Time.timeScale = 0.0f;
+        }
+    }
+    public void ConfirmExit()
+    {
+        if(GameManager.instance.isMainGame)
+        {
+            SceneManager.LoadScene("MainMenu");
+        }
+        else
+        {
+            confirmExit.SetActive(false);
+            Time.timeScale = 1.0f;
+            InvokeGameOverButton();
+        }
+    }
+    private void InvokeGameOverButton()
     {
         GameManager.instance.OnGameOver?.Invoke();
     }

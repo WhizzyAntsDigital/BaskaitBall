@@ -37,25 +37,25 @@ public class AIScore : MonoBehaviour
         {
             if (shouldFollowStreak >= 0f && shouldFollowStreak <= 0.7f)
             {
-                playerWinPercentage = UnityEngine.Random.Range(0.1f, 3f);
+                willPlayerWin = UnityEngine.Random.Range(0.1f, 3f);
             }
         }
         else if(UserDataHandler.instance.ReturnSavedValues().losingStreak >= lossStreakThreshold)
         {
             if (shouldFollowStreak >= 0f && shouldFollowStreak <= 0.7f)
             {
-                playerWinPercentage = UnityEngine.Random.Range(0.8f, 1f);
+                willPlayerWin = UnityEngine.Random.Range(0.8f, 1f);
             }
         }
         if (willPlayerWin >= 0f && willPlayerWin <= playerWinPercentage)
         {
-            percentageOfHittingShot = UnityEngine.Random.Range(0.3f, 0.5f);
-            percentageofHittingDirectShot = UnityEngine.Random.Range(0.1f, 0.3f);
+            percentageOfHittingShot = UnityEngine.Random.Range(0.5f, 0.5f);
+            percentageofHittingDirectShot = UnityEngine.Random.Range(0.3f, 0.5f);
         }
         else
         {
-            percentageOfHittingShot = UnityEngine.Random.Range(0.4f, 0.8f);
-            percentageofHittingDirectShot = UnityEngine.Random.Range(0.2f, 0.6f);
+            percentageOfHittingShot = UnityEngine.Random.Range(0.6f, 0.9f);
+            percentageofHittingDirectShot = UnityEngine.Random.Range(0.4f, 0.7f);
         }
 
         OnGameStart += () => { if (!hasCoroutineStarted) { StartCoroutine(ScoreCalculator()); hasCoroutineStarted = true; } };

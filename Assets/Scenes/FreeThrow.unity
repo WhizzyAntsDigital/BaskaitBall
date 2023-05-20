@@ -1262,7 +1262,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 354160472}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1466604150}
+        m_TargetAssemblyTypeName: InGameUI, Assembly-CSharp
+        m_MethodName: ConfirmExit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &354160472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1981,7 +1993,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1466604150}
         m_TargetAssemblyTypeName: InGameUI, Assembly-CSharp
-        m_MethodName: InvokeGameOverButton
+        m_MethodName: ReturnToMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3496,6 +3508,14 @@ MonoBehaviour:
   gameResult: {fileID: 1889945255}
   finalScore: {fileID: 1308431544}
   timerText: {fileID: 0}
+  playerText: {fileID: 0}
+  opponentText: {fileID: 0}
+  currentTourneyReward: {fileID: 0}
+  playerWonIcon: {fileID: 0}
+  playerLostIcon: {fileID: 0}
+  opponentWonIcon: {fileID: 0}
+  opponentLostIcon: {fileID: 0}
+  confirmExit: {fileID: 1923048353}
   timeToGoToNextScene: 3
   winColour: {r: 0.4009434, g: 1, b: 0.4315532, a: 1}
   loseColour: {r: 1, g: 0.3066038, b: 0.3066038, a: 1}
@@ -4368,7 +4388,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1917422723}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1466604150}
+        m_TargetAssemblyTypeName: InGameUI, Assembly-CSharp
+        m_MethodName: ReturnToMainMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1917422723
 MonoBehaviour:
   m_ObjectHideFlags: 0
