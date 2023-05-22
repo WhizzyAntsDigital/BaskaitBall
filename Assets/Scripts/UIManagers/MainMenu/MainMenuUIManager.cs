@@ -73,6 +73,7 @@ public class MainMenuUIManager : MonoBehaviour
         {
             shopCanvas.SetActive(!isOpen);
             isOpen = false;
+            SkinsOwnershipDataHandler.instance.SaveSkinData();
         }
     }
 

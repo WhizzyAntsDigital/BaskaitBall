@@ -25,13 +25,13 @@ public class SkinsOwnershipDataHandler : MonoBehaviour
     #endregion
 
     #region Saving
-    public void SaveUserData()
+    public void SaveSkinData()
     {
         SaveLoadManager.SaveData(skinsOwnershipData);
     }
     private void OnDisable()
     {
-        SaveUserData();
+        SaveSkinData();
     }
     #endregion
 }
@@ -39,6 +39,6 @@ public class SkinsOwnershipDataHandler : MonoBehaviour
 [System.Serializable]
 public class SkinsOwnershipData
 {
-    public bool[] isOwned;
-    public bool[] isEquipped;
+    public bool[] isOwned = {true, false, false, false};
+    public bool[] isEquipped = { true, false, false, false };
 }

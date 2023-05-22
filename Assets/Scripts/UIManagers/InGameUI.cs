@@ -54,6 +54,7 @@ public class InGameUI : MonoBehaviour
         confirmExit.SetActive(false);
         tempRound1 = UserDataHandler.instance.ReturnSavedValues().firstRound;
         tempRound2 = UserDataHandler.instance.ReturnSavedValues().secondRound;
+        currentTourneyReward.text = tournamentReward.ToString();
         GameManager.instance.OnGameOver += () =>
         {
             if (GameManager.instance.isMainGame)
