@@ -17,7 +17,7 @@ public class MainMenuUIManager : MonoBehaviour
     [field: SerializeField] private TournamentModesUIManager tournamentModesUIManager;
     [field: SerializeField] private SettingsManager settingsManager;
 
-    public bool isOpen = false;
+    [field: HideInInspector] public bool isOpen = false;
     private void Start()
     {
         profileStatsManager = GetComponent<ProfileStatsManager>();

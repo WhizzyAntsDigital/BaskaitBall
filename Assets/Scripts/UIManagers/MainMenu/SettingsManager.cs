@@ -15,9 +15,12 @@ public class SettingsManager : MonoBehaviour
     [field: SerializeField] private GameObject musicUnmuteIcon;
     [field: SerializeField] private GameObject musicMuteIcon;
     [field: SerializeField] private GameObject restorePurchasesPanel;
+    [field: SerializeField] private GameObject spotLight;
+    [field: SerializeField] private MainMenuUIManager mainMenuUIManager;
 
     private void Start()
     {
+        mainMenuUIManager = GetComponent<MainMenuUIManager>();
         restorePurchasesPanel.SetActive(false);
         UpdateAudioSources();
     }
@@ -38,10 +41,14 @@ public class SettingsManager : MonoBehaviour
         if(SettingsDataHandler.instance.ReturnSavedValues().musicMuted)
         {
             musicAudioSource.volume = 0f;
+            spotLight.GetComponent<LightFlicker>().enabled = true;
+            spotLight.GetComponent<LightSync>().enabled = false;
         }
         else
         {
             musicAudioSource.volume = 1f;
+            spotLight.GetComponent<LightSync>().enabled = true;
+            spotLight.GetComponent<LightFlicker>().enabled = false;
         }
 
         if (SettingsDataHandler.instance.ReturnSavedValues().soundMuted)
@@ -77,6 +84,7 @@ public class SettingsManager : MonoBehaviour
     public void OnRestoreSuccessful()
     {
         settingsPanel.SetActive(false);
+        mainMenuUIManager.isOpen = false;
         restorePurchasesPanel.SetActive(true);
         settingsExitButton.interactable = true;
     }

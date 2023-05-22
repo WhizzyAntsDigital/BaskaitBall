@@ -33,6 +33,8 @@ public class InGameUI : MonoBehaviour
     [field: SerializeField] private MainGameFlow mainGameFlow;
     [field: HideInInspector] public MatchResult matchResult;
 
+    [field: SerializeField] private TextMeshProUGUI highScore;
+
     private float timer;
     private bool startTimer = false;
     private string SceneToLoad;
@@ -69,6 +71,7 @@ public class InGameUI : MonoBehaviour
                 {
                     UserDataHandler.instance.ReturnSavedValues().practiceHighScore = ScoreCalculator.instance.scoreValue;
                     UserDataHandler.instance.SaveUserData();
+                    highScore.text = UserDataHandler.instance.ReturnSavedValues().practiceHighScore.ToString();
                 }
             }
         };
