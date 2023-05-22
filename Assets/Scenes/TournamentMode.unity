@@ -4510,7 +4510,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae1242b9096e8084c86c40468c6fbdf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  matchLength: 8
+  matchLength: 29
   overTimeLength: 5
   timerText: {fileID: 1000710196}
   startingBall: {fileID: 7903897553513181294}
@@ -4624,7 +4624,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1472134173
 MonoBehaviour:
   m_ObjectHideFlags: 0

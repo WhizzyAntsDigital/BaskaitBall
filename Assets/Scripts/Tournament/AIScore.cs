@@ -49,13 +49,13 @@ public class AIScore : MonoBehaviour
         }
         if (willPlayerWin >= 0f && willPlayerWin <= playerWinPercentage)
         {
-            percentageOfHittingShot = UnityEngine.Random.Range(0.5f, 0.5f);
-            percentageofHittingDirectShot = UnityEngine.Random.Range(0.3f, 0.5f);
+            percentageOfHittingShot = UnityEngine.Random.Range(0.7f, 0.8f);
+            percentageofHittingDirectShot = UnityEngine.Random.Range(0.4f, 0.6f);
         }
         else
         {
-            percentageOfHittingShot = UnityEngine.Random.Range(0.6f, 0.9f);
-            percentageofHittingDirectShot = UnityEngine.Random.Range(0.4f, 0.7f);
+            percentageOfHittingShot = UnityEngine.Random.Range(0.8f, 0.99f);
+            percentageofHittingDirectShot = UnityEngine.Random.Range(0.5f, 0.7f);
         }
 
         OnGameStart += () => { if (!hasCoroutineStarted) { StartCoroutine(ScoreCalculator()); hasCoroutineStarted = true; } };
