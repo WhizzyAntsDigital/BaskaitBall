@@ -77,7 +77,8 @@ public class InGameUI : MonoBehaviour
     {
         if(startTimer)
         {
-            timer-=Time.deltaTime;
+            timerText.gameObject.SetActive(true);
+            timer -=Time.deltaTime;
             timerText.text = "Continuing in " + Mathf.RoundToInt(timer) + "...";
             if(timer <= 0)
             {
@@ -87,8 +88,8 @@ public class InGameUI : MonoBehaviour
 
         if (startCoinChange)
         {
-            tempPlayersInvestingCoins += (Time.deltaTime * coinReductionRate);
-            tempTournamentReward -= (Time.deltaTime * (coinReductionRate * 2));
+            tempPlayersInvestingCoins += (Time.deltaTime * coinReductionRate * 2);
+            tempTournamentReward -= (Time.deltaTime * (coinReductionRate * 4));
             if (tempPlayersInvestingCoins <= tournamentReward && tempTournamentReward >= 0 )
             {
                 if(matchResult == MatchResult.PlayerWon)
@@ -155,7 +156,6 @@ public class InGameUI : MonoBehaviour
     }
     private void GameOverUI()
     {
-        timerText.text = "Starting...";
         if(matchResult == MatchResult.PlayerWon)
         {
             gameResult.text = "YOU WIN!";
@@ -172,6 +172,7 @@ public class InGameUI : MonoBehaviour
         {
             if (matchResult == MatchResult.PlayerWon)
             {
+                timerText.text = "Starting...";
                 SceneToLoad = "TournamentLoadingScene";
                 playerWonIcon.SetActive(true);
                 playerLostIcon.SetActive(false);
@@ -180,6 +181,7 @@ public class InGameUI : MonoBehaviour
             }
             else
             {
+                timerText.gameObject.SetActive(false);
                 UserDataHandler.instance.ReturnSavedValues().numberOfLosses++;
                 UserDataHandler.instance.ReturnSavedValues().losingStreak++;
                 UserDataHandler.instance.ReturnSavedValues().winningStreak = 0;
@@ -193,6 +195,7 @@ public class InGameUI : MonoBehaviour
         }
         else if(UserDataHandler.instance.ReturnSavedValues().firstRound == true && UserDataHandler.instance.ReturnSavedValues().secondRound == true)
         {
+            timerText.gameObject.SetActive(false); 
             UserDataHandler.instance.ReturnSavedValues().firstRound = false;
             UserDataHandler.instance.ReturnSavedValues().secondRound = false;
             if(matchResult == MatchResult.PlayerWon)

@@ -36,7 +36,14 @@ public class MatchMakingManager : MonoBehaviour
     {
         playerSearchingTime = Random.Range(3, maxTimeToSearchForPlayer);
         SetValues();
-        timerText.text = "Searching...";
+        if(UserDataHandler.instance.ReturnSavedValues().firstRound && !UserDataHandler.instance.ReturnSavedValues().secondRound)
+        {
+            timerText.text = "Searching...";
+        }
+        else if (UserDataHandler.instance.ReturnSavedValues().firstRound && UserDataHandler.instance.ReturnSavedValues().secondRound)
+        {
+            timerText.text = "Starting...";
+        }
         currentTourneyReward.text = "0";
         timer = timeToGoToGame;
     }
@@ -55,8 +62,8 @@ public class MatchMakingManager : MonoBehaviour
 
         if(startCoinChange)
         {
-            tempPlayersInvestingCoins -= (Time.deltaTime * coinReductionRate);
-            tempTournamentReward += (Time.deltaTime * (coinReductionRate * 2));
+            tempPlayersInvestingCoins -= (Time.deltaTime * coinReductionRate * 2);
+            tempTournamentReward += (Time.deltaTime * (coinReductionRate * 4));
 
             if (tempPlayersInvestingCoins >= 0 && tempTournamentReward <= tournamentReward)
             {
