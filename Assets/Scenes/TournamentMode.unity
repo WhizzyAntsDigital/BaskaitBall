@@ -4345,6 +4345,7 @@ GameObject:
   - component: {fileID: 1466604151}
   - component: {fileID: 1466604152}
   - component: {fileID: 1466604153}
+  - component: {fileID: 1466604154}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -4495,6 +4496,7 @@ MonoBehaviour:
     losingStreak: 0
     firstRound: 0
     secondRound: 0
+    amountOfCurrency: 5100
   mainGameModeSceneName: TournamentMode
 --- !u!114 &1466604153
 MonoBehaviour:
@@ -4508,11 +4510,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae1242b9096e8084c86c40468c6fbdf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  matchLength: 9
+  matchLength: 8
   overTimeLength: 5
   timerText: {fileID: 1000710196}
   startingBall: {fileID: 7903897553513181294}
   inGameUI: {fileID: 1466604150}
+--- !u!114 &1466604154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466604145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b997adb7430fcb47ae190c82d65cf02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinsText: []
+  tournamentModesUIManager: {fileID: 0}
+  shopManager: {fileID: 0}
 --- !u!1 &1469822673
 GameObject:
   m_ObjectHideFlags: 0
@@ -4607,7 +4624,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1472134173
 MonoBehaviour:
   m_ObjectHideFlags: 0

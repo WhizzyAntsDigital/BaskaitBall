@@ -56,7 +56,10 @@ public class InGameUI : MonoBehaviour
         confirmExit.SetActive(false);
         tempRound1 = UserDataHandler.instance.ReturnSavedValues().firstRound;
         tempRound2 = UserDataHandler.instance.ReturnSavedValues().secondRound;
-        currentTourneyReward.text = tournamentReward.ToString();
+        if(GameManager.instance.isMainGame)
+        {
+            currentTourneyReward.text = tournamentReward.ToString();
+        }
         GameManager.instance.OnGameOver += () =>
         {
             if (GameManager.instance.isMainGame)
@@ -71,8 +74,8 @@ public class InGameUI : MonoBehaviour
                 {
                     UserDataHandler.instance.ReturnSavedValues().practiceHighScore = ScoreCalculator.instance.scoreValue;
                     UserDataHandler.instance.SaveUserData();
-                    highScore.text = UserDataHandler.instance.ReturnSavedValues().practiceHighScore.ToString();
                 }
+                highScore.text = UserDataHandler.instance.ReturnSavedValues().practiceHighScore.ToString();
             }
         };
     }
@@ -124,7 +127,7 @@ public class InGameUI : MonoBehaviour
     }
     private void AnimateCoins()
     {
-        int selectedTournamentID = 0;
+         int selectedTournamentID = 0;
         for (int i = 0; i <= 3; i++)
         {
             if (TournamentInfoDataHandler.instance.ReturnSavedValues().selected[i] == true)
@@ -147,6 +150,7 @@ public class InGameUI : MonoBehaviour
         }
         else if (tempRound1 == true && tempRound2 == true)
         {
+            CurrencyManager.instance.AdjustCurrency((TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID] * 4));
             playersInvestingCoins = (TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID] * 2);
             coinReductionRate = Mathf.Pow(10, ((TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID] * 4).ToString().Length - 2));
             playerText.text = "0";

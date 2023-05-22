@@ -27,9 +27,21 @@ public class ShopManager : MonoBehaviour
         {
             if (SkinsOwnershipDataHandler.instance.ReturnSavedValues().isEquipped[i] == true)
             {
+                infoOnSkins[i].isEquipped = true;
                 skinIcon.sprite = infoOnSkins[i].skinIcon;
                 currentSkin = i;
                 actionButton.gameObject.SetActive(false);
+            }
+            else
+            {
+                infoOnSkins[i].isEquipped = false;
+            }
+        }
+        if(!String.IsNullOrEmpty(UserDataHandler.instance.ReturnSavedValues().userName))
+        {
+            for (int i = 0; i< infoOnSkins.Count; i++)
+            {
+                infoOnSkins[i].isOwned = SkinsOwnershipDataHandler.instance.ReturnSavedValues().isOwned[i];
             }
         }
     }
@@ -99,7 +111,7 @@ public class ShopManager : MonoBehaviour
         UpdateActionButton();
     }
 
-    private void UpdateActionButton()
+    public void UpdateActionButton()
     {
         if (infoOnSkins[currentSkin].isOwned == true)
         {
@@ -120,7 +132,24 @@ public class ShopManager : MonoBehaviour
         else if(infoOnSkins[currentSkin].isOwned == false)
         {
             actionButton.gameObject.SetActive(true);
+            if (infoOnSkins[currentSkin].skinPrice <= UserDataHandler.instance.ReturnSavedValues().amountOfCurrency)
+            {
+                actionButton.interactable = true;
+            }
+            else
+            {
+                actionButton.interactable = false;
+            }
             actionButton.GetComponentInChildren<TextMeshProUGUI>().text = "$" + infoOnSkins[currentSkin].skinPrice;
         }
+    }
+
+    public void UponPurchase()
+    {
+        infoOnSkins[currentSkin].isOwned = true;
+        SkinsOwnershipDataHandler.instance.ReturnSavedValues().isOwned[currentSkin] = true;
+        SkinsOwnershipDataHandler.instance.SaveSkinData();
+        CurrencyManager.instance.AdjustCurrency(-infoOnSkins[currentSkin].skinPrice);
+        UpdateActionButton();
     }
 }

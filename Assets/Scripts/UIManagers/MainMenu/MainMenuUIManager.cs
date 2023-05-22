@@ -23,7 +23,7 @@ public class MainMenuUIManager : MonoBehaviour
         profileStatsManager = GetComponent<ProfileStatsManager>();
         tournamentModesUIManager = GetComponent<TournamentModesUIManager>();
         settingsManager = GetComponent<SettingsManager>();
-
+        CurrencyManager.instance.UpdateCoinsAmount();
         mainMenuCanvas.SetActive(true);
         settingsCanvas.SetActive(false);
         profileCanvas.SetActive(false);
@@ -105,5 +105,10 @@ public class MainMenuUIManager : MonoBehaviour
             usernamePromptCanvas.SetActive(!isOpen);
             isOpen = false;
         }
+    }
+
+    public void OpenLink(string urlLink)
+    {
+            Application.OpenURL(urlLink);
     }
 }

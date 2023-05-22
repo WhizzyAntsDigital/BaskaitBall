@@ -94,4 +94,5 @@ public class UserData
     public int losingStreak = 0;
     public bool firstRound = false;
     public bool secondRound = false;
+    public int amountOfCurrency = 5100;
 }

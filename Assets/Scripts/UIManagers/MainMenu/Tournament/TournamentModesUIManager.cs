@@ -13,13 +13,22 @@ public class TournamentModesUIManager : MonoBehaviour
     public void SelectTournamentMode(int ID)
     {
         TournamentInfoDataHandler.instance.ReturnSavedValues().selected[ID] = true;
+        CurrencyManager.instance.AdjustCurrency(-TournamentInfoDataHandler.instance.ReturnSavedValues().prices[ID]);
         TournamentInfoDataHandler.instance.SaveTourneyData();
     }
     public void AssignPrices()
     {
-        for (int i = 0; i < TournamentInfoDataHandler.instance.ReturnSavedValues().prices.Length - 1; i++)
+        for (int i = 0; i < TournamentInfoDataHandler.instance.ReturnSavedValues().prices.Length; i++)
         {
             tourneyPriceTexts[i].text = TournamentInfoDataHandler.instance.ReturnSavedValues().prices[i].ToString();
+            if(UserDataHandler.instance.ReturnSavedValues().amountOfCurrency < TournamentInfoDataHandler.instance.ReturnSavedValues().prices[i])
+            {
+                tourneyButtons[i].interactable = false;
+            }
+            else
+            {
+                tourneyButtons[i].interactable = true;
+            }
         }
     }
 }
