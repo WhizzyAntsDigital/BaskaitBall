@@ -7626,6 +7626,7 @@ GameObject:
   - component: {fileID: 623034510}
   - component: {fileID: 623034511}
   - component: {fileID: 623034512}
+  - component: {fileID: 623034514}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -7799,6 +7800,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   internetConnectionCheckInterval: 3
   shouldCheckForInternetConnection: 1
+--- !u!114 &623034514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623034504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3da106f351ac504491878b37c1fde9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &629131714
 GameObject:
   m_ObjectHideFlags: 0
@@ -15760,10 +15773,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 623034511}
-        m_TargetAssemblyTypeName: CurrencyManager, Assembly-CSharp
-        m_MethodName: AdjustCurrency
-        m_Mode: 3
+      - m_Target: {fileID: 623034514}
+        m_TargetAssemblyTypeName: ADManager, Assembly-CSharp
+        m_MethodName: ShowRewardedAd
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
