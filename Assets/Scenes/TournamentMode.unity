@@ -5002,7 +5002,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreCalculationInterval: 1
-  playerWinPercentage: 0.4
+  playerWinPercentage: 0
   percentageOfHittingShot: 0
   percentageofHittingDirectShot: 0
   AIScoreDisplay: {fileID: 1523855607}

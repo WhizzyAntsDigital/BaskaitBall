@@ -7,7 +7,7 @@ public class TournamentInfoDataHandler : MonoBehaviour
 {
     public static TournamentInfoDataHandler instance;
     [SerializeField] private TournamentInfoData tournamentInfoData;
-    [SerializeField] private List<TournamentModesInfo> allGameModesSpecs;
+    [SerializeField] public List<TournamentModesInfo> allGameModesSpecs;
 
     private void Awake()
     {
@@ -60,4 +60,5 @@ public class TournamentInfoData
 {
     public int[] prices = {0,0,0,0};
     public bool[] selected = {false, false, false, false};
+    public bool[] unlocked = {true, false, false, false};
 }

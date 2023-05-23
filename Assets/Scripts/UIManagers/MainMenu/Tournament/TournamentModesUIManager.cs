@@ -4,12 +4,14 @@ using UnityEngine;
 using System;
 using TMPro;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class TournamentModesUIManager : MonoBehaviour
 {
     [field: Header("Tournament Mode UI Handler")]
     [field: SerializeField] private List<TextMeshProUGUI> tourneyPriceTexts;
     [field: SerializeField] private List<Button> tourneyButtons;
+    [field: SerializeField] private List<Button> tourneyUnlockButtons;
 
     [field: Header("For Internet Connection")]
     [field: SerializeField] private GameObject tournamentModesPanel;
@@ -36,14 +38,32 @@ public class TournamentModesUIManager : MonoBehaviour
     {
         for (int i = 0; i < TournamentInfoDataHandler.instance.ReturnSavedValues().prices.Length; i++)
         {
-            tourneyPriceTexts[i].text = TournamentInfoDataHandler.instance.ReturnSavedValues().prices[i].ToString();
-            if(UserDataHandler.instance.ReturnSavedValues().amountOfCurrency < TournamentInfoDataHandler.instance.ReturnSavedValues().prices[i])
+            if (TournamentInfoDataHandler.instance.ReturnSavedValues().unlocked[i] == true)
             {
-                tourneyButtons[i].interactable = false;
+                TournamentInfoDataHandler.instance.allGameModesSpecs[i].lockedOverlay.SetActive(false);
+                tourneyPriceTexts[i].text = TournamentInfoDataHandler.instance.ReturnSavedValues().prices[i].ToString();
+                if (UserDataHandler.instance.ReturnSavedValues().amountOfCurrency < TournamentInfoDataHandler.instance.ReturnSavedValues().prices[i])
+                {
+                    tourneyButtons[i].interactable = false;
+                }
+                else
+                {
+                    tourneyButtons[i].interactable = true;
+                }
             }
-            else
+            else if(TournamentInfoDataHandler.instance.ReturnSavedValues().unlocked[i] == false)
             {
-                tourneyButtons[i].interactable = true;
+                TournamentInfoDataHandler.instance.allGameModesSpecs[i].lockedOverlay.SetActive(true);
+                tourneyButtons[i].interactable = false;
+                tourneyPriceTexts[i].text = TournamentInfoDataHandler.instance.allGameModesSpecs[i].tournamentUnlockCost.ToString();
+                if(UserDataHandler.instance.ReturnSavedValues().amountOfCurrency >= TournamentInfoDataHandler.instance.allGameModesSpecs[i].tournamentUnlockCost)
+                {
+                    tourneyUnlockButtons[i].interactable = true;
+                }
+                else
+                {
+                    tourneyUnlockButtons[i].interactable = false;
+                }
             }
         }
     }
@@ -55,4 +75,11 @@ public class TournamentModesUIManager : MonoBehaviour
             mainMenuUIManager.isOpen = false;
         }
     }
+    public void OnUnlockTournament(int ID)
+    {
+        CurrencyManager.instance.AdjustCurrency(-TournamentInfoDataHandler.instance.allGameModesSpecs[ID].tournamentUnlockCost);
+        TournamentInfoDataHandler.instance.ReturnSavedValues().unlocked[ID] = true;
+        TournamentInfoDataHandler.instance.SaveTourneyData();
+        AssignPrices();
+    }    
 }
