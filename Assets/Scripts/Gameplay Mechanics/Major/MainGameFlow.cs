@@ -21,6 +21,9 @@ public class MainGameFlow : MonoBehaviour
     bool changedStartingBallValue = false;
     bool tieStarted = false;
 
+    [field: Header("For Internet Connectivity")]
+    [field: SerializeField] private GameObject noInternetPopup;
+
     private void Awake()
     {
         Instance = this;
@@ -30,6 +33,14 @@ public class MainGameFlow : MonoBehaviour
         startCountDown = true;
         startingBall.hasGotInput = true;
         GameManager.instance.OnGameOver += () => { GameManager.instance.isGameOver = true; startMatchTimer = false; startCountDown = false; };
+    }
+    private void OnEnable()
+    {
+        InternetConnectivityChecker.Instance.IsDisconnectedFromInternet += () => { OnInternetConnectionChange(false); };
+    }
+    private void OnDisable()
+    {
+        InternetConnectivityChecker.Instance.IsDisconnectedFromInternet -= () => { OnInternetConnectionChange(false); };
     }
 
     private void Update()
@@ -110,5 +121,13 @@ public class MainGameFlow : MonoBehaviour
             ArcadeLevel.Instance.ballsInScene[i].GetComponent<BallInput>().enabled = true;
         }
         ArcadeLevel.Instance.ballsInScene[ArcadeLevel.Instance.ballID].GetComponent<BallInput>().hasGotInput = true;
+    }
+    private void OnInternetConnectionChange(bool connected)
+    {
+        if (!connected)
+        {
+            Time.timeScale = 0f;
+            noInternetPopup.SetActive(true);
+        }
     }
 }

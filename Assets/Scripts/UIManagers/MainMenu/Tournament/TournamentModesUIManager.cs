@@ -10,6 +10,22 @@ public class TournamentModesUIManager : MonoBehaviour
     [field: Header("Tournament Mode UI Handler")]
     [field: SerializeField] private List<TextMeshProUGUI> tourneyPriceTexts;
     [field: SerializeField] private List<Button> tourneyButtons;
+
+    [field: Header("For Internet Connection")]
+    [field: SerializeField] private GameObject tournamentModesPanel;
+    [field: SerializeField] private MainMenuUIManager mainMenuUIManager;
+    private void Start()
+    {
+        mainMenuUIManager = GetComponent<MainMenuUIManager>();  
+    }
+    private void OnEnable()
+    {
+        InternetConnectivityChecker.Instance.IsDisconnectedFromInternet += () => { OnInternetConnectionChange(false); };
+    }
+    private void OnDisable()
+    {
+        InternetConnectivityChecker.Instance.IsDisconnectedFromInternet -= () => { OnInternetConnectionChange(false); };
+    }
     public void SelectTournamentMode(int ID)
     {
         TournamentInfoDataHandler.instance.ReturnSavedValues().selected[ID] = true;
@@ -29,6 +45,14 @@ public class TournamentModesUIManager : MonoBehaviour
             {
                 tourneyButtons[i].interactable = true;
             }
+        }
+    }
+    private void OnInternetConnectionChange(bool connected)
+    {
+        if(tournamentModesPanel.activeInHierarchy)
+        {
+            tournamentModesPanel.SetActive(false);
+            mainMenuUIManager.isOpen = false;
         }
     }
 }

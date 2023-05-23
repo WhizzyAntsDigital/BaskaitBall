@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class MainMenuUIManager : MonoBehaviour
@@ -17,9 +18,15 @@ public class MainMenuUIManager : MonoBehaviour
     [field: SerializeField] private TournamentModesUIManager tournamentModesUIManager;
     [field: SerializeField] private SettingsManager settingsManager;
 
+
+    [field: Header("For Internet Connection")]
+    [field: SerializeField] private Button tournamentButton;
+    [field: SerializeField] private Button noADsButton;
+
     [field: HideInInspector] public bool isOpen = false;
     private void Start()
     {
+        Time.timeScale = 1.0f;
         profileStatsManager = GetComponent<ProfileStatsManager>();
         tournamentModesUIManager = GetComponent<TournamentModesUIManager>();
         settingsManager = GetComponent<SettingsManager>();
@@ -30,8 +37,23 @@ public class MainMenuUIManager : MonoBehaviour
         shopCanvas.SetActive(false);
         tournamentModesCanvas.SetActive(false);
 
-        
+        if(!InternetConnectivityChecker.Instance.CheckForInternetConnectionUponCommand())
+        {
+            tournamentButton.interactable = false;
+            noADsButton.interactable = false;
+        }
     }
+    private void OnEnable()
+    {
+        InternetConnectivityChecker.Instance.IsConnectedToInternet += () => { OnInternetConnectionChange(true); };
+        InternetConnectivityChecker.Instance.IsDisconnectedFromInternet += () => { OnInternetConnectionChange(false); };
+    }
+    private void OnDisable()
+    {
+        InternetConnectivityChecker.Instance.IsConnectedToInternet -= () => { OnInternetConnectionChange(true); };
+        InternetConnectivityChecker.Instance.IsDisconnectedFromInternet -= () => { OnInternetConnectionChange(false); };
+    }
+
     public void SettingsUIControl()
     {
         if(!isOpen)
@@ -110,5 +132,10 @@ public class MainMenuUIManager : MonoBehaviour
     public void OpenLink(string urlLink)
     {
             Application.OpenURL(urlLink);
+    }
+    private void OnInternetConnectionChange(bool connected)
+    {
+        tournamentButton.interactable = connected;
+        noADsButton.interactable = connected;
     }
 }

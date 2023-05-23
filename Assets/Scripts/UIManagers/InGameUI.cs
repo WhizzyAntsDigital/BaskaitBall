@@ -47,6 +47,8 @@ public class InGameUI : MonoBehaviour
 
     private float coinReductionRate;
     private bool startCoinChange = false;
+
+    
     void Start()
     {
         touchArea.SetActive(true);
@@ -254,5 +256,4 @@ public class InGameUI : MonoBehaviour
             mainGameFlow.WhenMatchTies();
         }
     }
-
 }

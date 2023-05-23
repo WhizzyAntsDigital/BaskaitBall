@@ -18,13 +18,13 @@ public class SettingsManager : MonoBehaviour
     [field: SerializeField] private GameObject spotLight;
     [field: SerializeField] private MainMenuUIManager mainMenuUIManager;
 
+
     private void Start()
     {
         mainMenuUIManager = GetComponent<MainMenuUIManager>();
         restorePurchasesPanel.SetActive(false);
         UpdateAudioSources();
     }
-
     public void UpdateIcons()
     {
         soundUnmuteIcon.SetActive(!SettingsDataHandler.instance.ReturnSavedValues().soundMuted);

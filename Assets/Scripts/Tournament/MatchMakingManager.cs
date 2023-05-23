@@ -32,6 +32,9 @@ public class MatchMakingManager : MonoBehaviour
     private float coinReductionRate;
     private bool startCoinChange = false;
 
+    [field: Header("Internet Connection Checking")]
+    [field: SerializeField] private GameObject noInternetPopup;
+
     private void Start()
     {
         playerSearchingTime = Random.Range(3, maxTimeToSearchForPlayer);
@@ -39,11 +42,38 @@ public class MatchMakingManager : MonoBehaviour
         timerText.text = "Searching...";
         currentTourneyReward.text = "0";
         timer = timeToGoToGame;
+
+        if (!InternetConnectivityChecker.Instance.CheckForInternetConnectionUponCommand())
+        {
+            OnInternetConnectionChange(false);
+        }
+        else
+        {
+            noInternetPopup.SetActive(false);
+        }
+    }
+    private void OnEnable()
+    {
+        InternetConnectivityChecker.Instance.IsDisconnectedFromInternet += () => { OnInternetConnectionChange(false); };
+    }
+
+
+    private void OnDisable()
+    {
+        InternetConnectivityChecker.Instance.IsDisconnectedFromInternet += () => { OnInternetConnectionChange(false); };
+    }
+    private void OnInternetConnectionChange(bool connected)
+    {
+        if (!connected)
+        {
+            Time.timeScale = 0;
+            noInternetPopup.SetActive(true);
+        }
     }
 
     private void Update()
     {
-        if(startTimer)
+        if (startTimer)
         {
             timer -= Time.deltaTime;
             timerText.text = "Start in " + Mathf.RoundToInt(timer) + "...";
@@ -53,7 +83,7 @@ public class MatchMakingManager : MonoBehaviour
             }
         }
 
-        if(startCoinChange)
+        if (startCoinChange)
         {
             tempPlayersInvestingCoins -= (Time.deltaTime * coinReductionRate * 2);
             tempTournamentReward += (Time.deltaTime * (coinReductionRate * 4));
@@ -64,7 +94,7 @@ public class MatchMakingManager : MonoBehaviour
                 opponentText.text = Mathf.RoundToInt(tempPlayersInvestingCoins).ToString();
                 currentTourneyReward.text = Mathf.RoundToInt(tempTournamentReward).ToString();
             }
-            else if(tempPlayersInvestingCoins < 0 && tempTournamentReward > tournamentReward)
+            else if (tempPlayersInvestingCoins < 0 && tempTournamentReward > tournamentReward)
             {
                 playerText.text = "0";
                 opponentText.text = "0";
@@ -77,31 +107,31 @@ public class MatchMakingManager : MonoBehaviour
 
     private void SetValues()
     {
-            playerText.text = UserDataHandler.instance.ReturnSavedValues().userName;
-            roundTitle.text = firstRoundName;
-            opponentText.text = "???";
-            SetOpponentUsernameFirstRound();
+        playerText.text = UserDataHandler.instance.ReturnSavedValues().userName;
+        roundTitle.text = firstRoundName;
+        opponentText.text = "???";
+        SetOpponentUsernameFirstRound();
     }
     private void AnimateCoins()
     {
         int selectedTournamentID = 0;
-        for(int i = 0; i <=3; i++)
+        for (int i = 0; i <= 3; i++)
         {
             if (TournamentInfoDataHandler.instance.ReturnSavedValues().selected[i] == true)
             {
-                selectedTournamentID = i; 
+                selectedTournamentID = i;
                 break;
             }
         }
-            playersInvestingCoins = TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID];
-            coinReductionRate = Mathf.Pow(10,((TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID] * 4).ToString().Length-2));
-            playerText.text = playersInvestingCoins.ToString();
-            opponentText.text = playersInvestingCoins.ToString();
-            tournamentReward = playersInvestingCoins * 2;
-            tempPlayersInvestingCoins = playersInvestingCoins;
-            tempTournamentReward = 0;
-            currentTourneyReward.text = "0";
-            StartAnimatingCoins();
+        playersInvestingCoins = TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID];
+        coinReductionRate = Mathf.Pow(10, ((TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID] * 4).ToString().Length - 2));
+        playerText.text = playersInvestingCoins.ToString();
+        opponentText.text = playersInvestingCoins.ToString();
+        tournamentReward = playersInvestingCoins * 2;
+        tempPlayersInvestingCoins = playersInvestingCoins;
+        tempTournamentReward = 0;
+        currentTourneyReward.text = "0";
+        StartAnimatingCoins();
     }
     private async void SetOpponentUsernameFirstRound()
     {

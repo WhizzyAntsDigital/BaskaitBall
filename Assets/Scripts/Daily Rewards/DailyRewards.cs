@@ -12,8 +12,7 @@ public class DailyRewards : MonoBehaviour
     private void Start()
     {
         dailyRewardAmountText.text = dailyRewardAmount.ToString();
-        InternetConnectivityChecker.Instance.IsConnectedToInternet += () => { CheckIfDailyRewardClaimed(); };
-        InternetConnectivityChecker.Instance.IsDisconnectedFromInternet += () => { dailyRewardPanel.SetActive(false); };
+       
         if (InternetConnectivityChecker.Instance.CheckForInternetConnectionUponCommand())
         {
             dailyRewardPanel.SetActive(true);
@@ -23,6 +22,16 @@ public class DailyRewards : MonoBehaviour
         {
             dailyRewardPanel.SetActive(false);
         }
+    }
+    private void OnEnable()
+    {
+        InternetConnectivityChecker.Instance.IsConnectedToInternet += () => { CheckIfDailyRewardClaimed(); };
+        InternetConnectivityChecker.Instance.IsDisconnectedFromInternet += () => { dailyRewardPanel.SetActive(false); };
+    }
+    private void OnDisable()
+    {
+        InternetConnectivityChecker.Instance.IsConnectedToInternet -= () => { CheckIfDailyRewardClaimed(); };
+        InternetConnectivityChecker.Instance.IsDisconnectedFromInternet -= () => { dailyRewardPanel.SetActive(false); };
     }
 
     public void CheckIfDailyRewardClaimed()
@@ -38,6 +47,10 @@ public class DailyRewards : MonoBehaviour
             {
                 dailyRewardPanel.SetActive(false);
             }
+        }
+        else
+        {
+            dailyRewardPanel.SetActive(true);
         }
     }    
 

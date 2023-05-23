@@ -1684,8 +1684,10 @@ MonoBehaviour:
   tournamentModesCanvas: {fileID: 535565687}
   usernamePromptCanvas: {fileID: 637198915}
   profileStatsManager: {fileID: 196551827}
-  tournamentModesUIManager: {fileID: 0}
-  settingsManager: {fileID: 0}
+  tournamentModesUIManager: {fileID: 196551829}
+  settingsManager: {fileID: 196551830}
+  tournamentButton: {fileID: 1945168368}
+  noADsButton: {fileID: 402738630}
   isOpen: 0
 --- !u!4 &196551826
 Transform:
@@ -1756,6 +1758,8 @@ MonoBehaviour:
   - {fileID: 275524476}
   - {fileID: 703796767}
   - {fileID: 173516702}
+  tournamentModesPanel: {fileID: 535565687}
+  mainMenuUIManager: {fileID: 196551825}
 --- !u!114 &196551830
 MonoBehaviour:
   m_ObjectHideFlags: 0
