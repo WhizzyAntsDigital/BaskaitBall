@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class InternetConnectivitiyChecker : MonoBehaviour
+public class InternetConnectivityChecker : MonoBehaviour
 {
+    public static InternetConnectivityChecker Instance;
     [field: Header("Internet Connection Checking")]
     [field: SerializeField] private float internetConnectionCheckInterval = 3f;
     [field: SerializeField] private bool shouldCheckForInternetConnection = true;
@@ -12,6 +13,10 @@ public class InternetConnectivitiyChecker : MonoBehaviour
     private bool whenConnectedActionsCarriedOut = false;
     private bool whenDisconnectedActionsCarriedOut = false;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
     private void Start()
     {
         StartCoroutine(CheckInternetConnection());
@@ -39,6 +44,18 @@ public class InternetConnectivitiyChecker : MonoBehaviour
                 }
             }
             yield return new WaitForSeconds(internetConnectionCheckInterval);
+        }
+    }
+
+    public bool CheckForInternetConnectionUponCommand()
+    {
+        if (Application.internetReachability == NetworkReachability.NotReachable)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
         }
     }
 
