@@ -24,12 +24,6 @@ public class UserDataHandler : MonoBehaviour
         {
             userData = new UserData();
         }
-        if(SceneManager.GetActiveScene().name == "MainMenu")
-        {
-            userData.firstRound = false;
-            userData.secondRound = false;
-            SaveUserData();
-        }
     }
 
     #region Check Application Loses Focus
@@ -92,7 +86,5 @@ public class UserData
     public int numberOf3Pointers = 0;
     public int winningStreak = 0;
     public int losingStreak = 0;
-    public bool firstRound = false;
-    public bool secondRound = false;
     public int amountOfCurrency = 5100;
 }

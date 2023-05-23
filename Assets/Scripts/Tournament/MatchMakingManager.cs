@@ -36,14 +36,7 @@ public class MatchMakingManager : MonoBehaviour
     {
         playerSearchingTime = Random.Range(3, maxTimeToSearchForPlayer);
         SetValues();
-        if(UserDataHandler.instance.ReturnSavedValues().firstRound && !UserDataHandler.instance.ReturnSavedValues().secondRound)
-        {
-            timerText.text = "Searching...";
-        }
-        else if (UserDataHandler.instance.ReturnSavedValues().firstRound && UserDataHandler.instance.ReturnSavedValues().secondRound)
-        {
-            timerText.text = "Starting...";
-        }
+        timerText.text = "Searching...";
         currentTourneyReward.text = "0";
         timer = timeToGoToGame;
     }
@@ -84,31 +77,10 @@ public class MatchMakingManager : MonoBehaviour
 
     private void SetValues()
     {
-        if(!UserDataHandler.instance.ReturnSavedValues().firstRound)
-        {
-            UserDataHandler.instance.ReturnSavedValues().firstRound = true;
-            UserDataHandler.instance.SaveUserData();
             playerText.text = UserDataHandler.instance.ReturnSavedValues().userName;
             roundTitle.text = firstRoundName;
             opponentText.text = "???";
             SetOpponentUsernameFirstRound();
-        }
-        else if(UserDataHandler.instance.ReturnSavedValues().firstRound && !UserDataHandler.instance.ReturnSavedValues().secondRound)
-        {
-            UserDataHandler.instance.ReturnSavedValues().secondRound = true;
-            UserDataHandler.instance.SaveUserData();
-            playerText.text = UserDataHandler.instance.ReturnSavedValues().userName;
-            roundTitle.text = secondRoundName;
-            opponentText.text = AINamesGenerator.Utils.GetRandomName();
-            GoToCoinAnimation();
-        }
-        else
-        {
-            UserDataHandler.instance.ReturnSavedValues().firstRound = false;
-            UserDataHandler.instance.ReturnSavedValues().secondRound = false;
-            UserDataHandler.instance.SaveUserData();
-            return;
-        }
     }
     private void AnimateCoins()
     {
@@ -121,8 +93,6 @@ public class MatchMakingManager : MonoBehaviour
                 break;
             }
         }
-        if (UserDataHandler.instance.ReturnSavedValues().firstRound == true && UserDataHandler.instance.ReturnSavedValues().secondRound == false)
-        {
             playersInvestingCoins = TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID];
             coinReductionRate = Mathf.Pow(10,((TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID] * 4).ToString().Length-2));
             playerText.text = playersInvestingCoins.ToString();
@@ -132,19 +102,6 @@ public class MatchMakingManager : MonoBehaviour
             tempTournamentReward = 0;
             currentTourneyReward.text = "0";
             StartAnimatingCoins();
-        }
-        else if(UserDataHandler.instance.ReturnSavedValues().firstRound == true && UserDataHandler.instance.ReturnSavedValues().secondRound == true)
-        {
-            playersInvestingCoins = (TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID] * 2);
-            coinReductionRate = Mathf.Pow(10, ((TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID] * 4).ToString().Length - 2));
-            playerText.text = playersInvestingCoins.ToString();
-            opponentText.text = playersInvestingCoins.ToString();
-            tournamentReward = playersInvestingCoins * 2;
-            tempPlayersInvestingCoins = playersInvestingCoins;
-            tempTournamentReward = 0;
-            currentTourneyReward.text = "0";
-            StartAnimatingCoins();
-        }
     }
     private async void SetOpponentUsernameFirstRound()
     {
