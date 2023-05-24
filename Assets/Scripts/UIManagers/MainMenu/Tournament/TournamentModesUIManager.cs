@@ -80,6 +80,7 @@ public class TournamentModesUIManager : MonoBehaviour
         CurrencyManager.instance.AdjustCurrency(-TournamentInfoDataHandler.instance.allGameModesSpecs[ID].tournamentUnlockCost);
         TournamentInfoDataHandler.instance.ReturnSavedValues().unlocked[ID] = true;
         TournamentInfoDataHandler.instance.SaveTourneyData();
-        AssignPrices();
+        TournamentInfoDataHandler.instance.allGameModesSpecs[ID].unlockAnimation.UnlockIcon();
+        //AssignPrices();
     }    
 }

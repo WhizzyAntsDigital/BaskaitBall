@@ -9,4 +9,5 @@ public class TournamentModesInfo
     public int tournamentUnlockCost;
     public GameObject lockedOverlay;
     public bool tournamentChosen = false;
+    public UnlockAnimation unlockAnimation;
 }
