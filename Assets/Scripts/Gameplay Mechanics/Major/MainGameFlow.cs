@@ -30,6 +30,7 @@ public class MainGameFlow : MonoBehaviour
     }
     private void Start()
     {
+        timerText = GameManager.instance.neededGameObjects.timerText;
         startCountDown = true;
         startingBall.hasGotInput = true;
         GameManager.instance.OnGameOver += () => { GameManager.instance.isGameOver = true; startMatchTimer = false; startCountDown = false; };

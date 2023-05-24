@@ -30,6 +30,7 @@ public class AIScore : MonoBehaviour
 
     private void Start()
     {
+        AIScoreDisplay = GameManager.instance.neededGameObjects.AIScore;
         AIScoreDisplay.text = opponentScore.ToString();
         int willPlayerWin = UnityEngine.Random.Range(0, 101);
         int shouldFollowStreak = UnityEngine.Random.Range(0, 101);
