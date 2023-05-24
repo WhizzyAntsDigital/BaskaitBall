@@ -20,7 +20,6 @@ public class ADManager : MonoBehaviour
     public void AddCoinAfterSeenRewardedVideo()
     {
         CurrencyManager.instance.AdjustCurrency(500);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     public void onInterstitialAdComplete()
     {
