@@ -4435,6 +4435,7 @@ MonoBehaviour:
   - {fileID: 5922372113909423670, guid: 60b9d5f9ec08acd4695096e25ab9c63b, type: 3}
   - {fileID: 7714441415312585552, guid: 2947f24f26473e642aa4c0f90a3451ab, type: 3}
   - {fileID: 8971250930779982297, guid: a402d7525a169db4080918f202051f6c, type: 3}
+  - {fileID: 8971250930779982297, guid: a402d7525a169db4080918f202051f6c, type: 3}
   <neededGameObjects>k__BackingField: {fileID: 0}
   <ringObj>k__BackingField: {fileID: 0}
   isGameOver: 0
