@@ -435,10 +435,10 @@ TextureImporter:
       name: SpriteSheet_16
       rect:
         serializedVersion: 2
-        x: 6047
-        y: 9514
-        width: 304
-        height: 291
+        x: 6034
+        y: 9504
+        width: 317
+        height: 315
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

@@ -23,7 +23,7 @@ public class ScaleAnimation : MonoBehaviour
 
         while (timeElapsed < animationDuration)
         {
-            timeElapsed += Time.deltaTime;
+            timeElapsed += Time.unscaledDeltaTime;
             float t = Mathf.Clamp01(timeElapsed / animationDuration);
 
             // Apply smooth scale interpolation

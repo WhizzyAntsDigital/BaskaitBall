@@ -86,6 +86,6 @@ public class UserData
     public int numberOf3Pointers = 0;
     public int winningStreak = 0;
     public int losingStreak = 0;
-    public int amountOfCurrency = 1000000;
+    public int amountOfCurrency = 1000;
     public string Date_And_Time = null;
 }

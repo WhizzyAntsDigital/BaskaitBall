@@ -6,7 +6,7 @@ public class ButtonBounce : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 {
     private float scaleFactor = 1.2f;
     private float animationDuration = 0.1f;
-    private float pressedOpacity = 0f;
+    private float pressedOpacity = 0.5f;
     private float normalOpacity = 1f;
 
     private Vector3 initialScale;
@@ -48,7 +48,7 @@ public class ButtonBounce : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
         while (timeElapsed < animationDuration)
         {
-            timeElapsed += Time.deltaTime;
+            timeElapsed += Time.unscaledDeltaTime;
             float t = Mathf.Clamp01(timeElapsed / animationDuration);
 
             transform.localScale = Vector3.Lerp(startScale, targetScale, t);
