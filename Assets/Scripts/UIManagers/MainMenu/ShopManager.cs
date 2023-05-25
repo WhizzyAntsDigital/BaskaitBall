@@ -19,6 +19,10 @@ public class ShopManager : MonoBehaviour
     private Vector2 fingerDownPosition;
     private Vector2 fingerUpPosition;
 
+    public List<Vector3> scalesOfSkins;
+
+    bool transitioning = false;
+
     private void Start()
     {
         for (int i = 0; i < infoOnSkins.Count; i++)
@@ -41,6 +45,11 @@ public class ShopManager : MonoBehaviour
             {
                 infoOnSkins[i].isOwned = SkinsOwnershipDataHandler.instance.ReturnSavedValues().isOwned[i];
             }
+        }
+
+        for(int i = 0; i < infoOnSkins.Count; i++)
+        {
+            scalesOfSkins.Add(infoOnSkins[i].skinObject.transform.localScale);
         }
     }
 
@@ -106,8 +115,63 @@ public class ShopManager : MonoBehaviour
                 currentSkin = infoOnSkins.Count-1;
             }
         }
-        infoOnSkins[previousSkin].skinObject.SetActive(false);
-        infoOnSkins[currentSkin].skinObject.SetActive(true);
+        //infoOnSkins[previousSkin].skinObject.SetActive(false);
+        //infoOnSkins[currentSkin].skinObject.SetActive(true);
+        //UpdateActionButton();
+        ScrollingEffect(previousSkin);
+    }
+
+    private void ScrollingEffect(int previousSkin)
+    {
+        float transitionDuration = 0.1f;
+        float targetScaleOfPreviousObject = 0.2f;
+        Vector3 initialScaleOfPreviousObject = scalesOfSkins[previousSkin];
+        float initialScaleOfCurrentObject = 0f;
+        Vector3 targetScaleOfCurrentObject = scalesOfSkins[currentSkin];
+        StartCoroutine(ShrinkMenuItem(previousSkin, targetScaleOfPreviousObject, transitionDuration, initialScaleOfPreviousObject, currentSkin, targetScaleOfCurrentObject, initialScaleOfCurrentObject));
+    }
+
+    private IEnumerator ShrinkMenuItem(int indexOfShrinkingObject, float targetScale, float transitionDuration, Vector3 startScale, int indexOfGrowingObject, Vector3 growingTargetScale, float growingStartScale)
+    {
+        transitioning = true;
+
+        float elapsedTime = 0.0f;
+
+        while (elapsedTime < transitionDuration)
+        {
+            float t = elapsedTime / transitionDuration;
+            float scale = Mathf.Lerp(startScale.x, targetScale, t);
+            infoOnSkins[indexOfShrinkingObject].skinObject.transform.localScale = new Vector3(scale, scale, scale);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        infoOnSkins[indexOfShrinkingObject].skinObject.transform.localScale = new Vector3(targetScale, targetScale, targetScale);
+        transitioning = false;
+        infoOnSkins[indexOfShrinkingObject].skinObject.SetActive(false);
+        infoOnSkins[indexOfGrowingObject].skinObject.SetActive(true);
+        StartCoroutine(GrowMenuItem(indexOfGrowingObject, growingTargetScale, transitionDuration, growingStartScale));
+    }
+
+    private IEnumerator GrowMenuItem(int indexOfGrowingObject, Vector3 targetScale, float transitionDuration, float startScale)
+    {
+        transitioning = true;
+
+        float elapsedTime = 0.0f;
+
+        while (elapsedTime < transitionDuration)
+        {
+            float t = elapsedTime / transitionDuration;
+            float scale = Mathf.Lerp(startScale, targetScale.x, t);
+            infoOnSkins[indexOfGrowingObject].skinObject.transform.localScale = new Vector3(scale, scale, scale);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        infoOnSkins[indexOfGrowingObject].skinObject.transform.localScale = targetScale;
+        transitioning = false;
         UpdateActionButton();
     }
 

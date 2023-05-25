@@ -134,8 +134,10 @@ public class InGameUI : MonoBehaviour
                 break;
             }
         }
-
-        CurrencyManager.instance.AdjustCurrency((TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID] * 2));
+        if (matchResult == MatchResult.PlayerWon)
+        {
+            CurrencyManager.instance.AdjustCurrency((TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID] * 2));
+        }
         playersInvestingCoins = TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID];
         coinReductionRate = Mathf.Pow(10, ((TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID] * 4).ToString().Length - 2));
         playerText.text = "0";

@@ -11,12 +11,9 @@ public class MatchMakingManager : MonoBehaviour
     [field: SerializeField] private TextMeshProUGUI playerText;
     [field: SerializeField] private TextMeshProUGUI opponentText;
     [field: SerializeField] private TextMeshProUGUI currentTourneyReward;
-    [field: SerializeField] private TextMeshProUGUI roundTitle;
     [field: SerializeField] private TextMeshProUGUI timerText;
     [field: SerializeField] private int maxTimeToSearchForPlayer = 10;
     [field: SerializeField] private int timeToGoToGame = 5;
-    [field: SerializeField] private string firstRoundName = "Entry Round";
-    [field: SerializeField] private string secondRoundName = "Finals";
     [field: SerializeField] private string mainGameSceneName = "TournamentMode";
 
     private int playerSearchingTime;
@@ -108,7 +105,6 @@ public class MatchMakingManager : MonoBehaviour
     private void SetValues()
     {
         playerText.text = UserDataHandler.instance.ReturnSavedValues().userName;
-        roundTitle.text = firstRoundName;
         opponentText.text = "???";
         SetOpponentUsernameFirstRound();
     }

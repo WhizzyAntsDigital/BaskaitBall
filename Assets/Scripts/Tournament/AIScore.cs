@@ -16,7 +16,7 @@ public class AIScore : MonoBehaviour
     [field: SerializeField][field: Range(0, 101)] int percentageofHittingDirectShot;
     [field: SerializeField] TextMeshProUGUI AIScoreDisplay;
     [field: SerializeField] private int lossStreakThreshold = 2;
-    [field: SerializeField] private int winStreakThreshold = 2;
+    [field: SerializeField] private int winStreakThreshold = 4;
     public int opponentScore = 0;
     public Action OnGameStart;
 
@@ -34,6 +34,10 @@ public class AIScore : MonoBehaviour
         AIScoreDisplay.text = opponentScore.ToString();
         int willPlayerWin = UnityEngine.Random.Range(0, 101);
         int shouldFollowStreak = UnityEngine.Random.Range(0, 101);
+        if(playerWinPercentage < 1)
+        {
+            playerWinPercentage = 75;
+        }
         if(UserDataHandler.instance.ReturnSavedValues().winningStreak >= winStreakThreshold)
         {
             if (shouldFollowStreak >= 0 && shouldFollowStreak <= 75f)
@@ -50,13 +54,13 @@ public class AIScore : MonoBehaviour
         }
         if (willPlayerWin >= 0f && willPlayerWin <= playerWinPercentage)
         {
-            percentageOfHittingShot = UnityEngine.Random.Range(10,30);
+            percentageOfHittingShot = UnityEngine.Random.Range(10,40);
             percentageofHittingDirectShot = UnityEngine.Random.Range(10,30);
         }
         else
         {
-            percentageOfHittingShot = UnityEngine.Random.Range(31,60);
-            percentageofHittingDirectShot = UnityEngine.Random.Range(30, 40);
+            percentageOfHittingShot = UnityEngine.Random.Range(41,80);
+            percentageofHittingDirectShot = UnityEngine.Random.Range(31, 50);
         }
 
         OnGameStart += () => { if (!hasCoroutineStarted) { StartCoroutine(ScoreCalculator()); hasCoroutineStarted = true; } };
@@ -84,8 +88,8 @@ public class AIScore : MonoBehaviour
 
     private void AIScoringChances()
     {
-        float scoringChance = UnityEngine.Random.Range(0f, 1f);
-        float threePointerChance = UnityEngine.Random.Range(0f, 1f);
+        int scoringChance = UnityEngine.Random.Range(0, 101);
+        int threePointerChance = UnityEngine.Random.Range(0, 101);
         if(scoringChance >=0 && scoringChance <= percentageOfHittingShot && !GameManager.instance.isGameOver)
         {
             if(threePointerChance >= 0 && threePointerChance <= percentageofHittingDirectShot && !GameManager.instance.isGameOver)

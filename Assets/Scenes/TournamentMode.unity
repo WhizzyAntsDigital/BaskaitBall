@@ -4532,7 +4532,7 @@ MonoBehaviour:
   percentageofHittingDirectShot: 0
   AIScoreDisplay: {fileID: 0}
   lossStreakThreshold: 2
-  winStreakThreshold: 2
+  winStreakThreshold: 4
   opponentScore: 0
 --- !u!114 &1466604152
 MonoBehaviour:
