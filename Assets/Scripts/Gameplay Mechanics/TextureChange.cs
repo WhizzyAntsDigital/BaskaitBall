@@ -16,8 +16,6 @@ public class TextureChange : MonoBehaviour
         {
             if (savedValues.isEquipped[i])
             {
-                Debug.Log(savedValues.isEquipped.Length);
-
                 MeshFilter[] ballMeshFilters = new MeshFilter[basketBalls.Count];
                 MeshRenderer[] ballMeshRenderers = new MeshRenderer[basketBalls.Count];
 

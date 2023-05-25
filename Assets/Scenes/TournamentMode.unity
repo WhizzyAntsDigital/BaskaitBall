@@ -3390,7 +3390,7 @@ MonoBehaviour:
     - {fileID: 2100000, guid: d89f88f040f58bb47a46b535a2d9a157, type: 2}
   - mesh: {fileID: -5424313142664710738, guid: 8fa25e4fd67310740b51620e5bbf3a0d, type: 3}
     materials:
-    - {fileID: 2100000, guid: 56ac65d1f13889040ac9306fdb2e4eed, type: 2}
+    - {fileID: 2100000, guid: 23890c69044fae84eb2a2e28139a28f4, type: 2}
     - {fileID: 2100000, guid: 0d898bd956fc2244aad55f1adb7d309a, type: 2}
   basketBalls:
   - {fileID: 7903897553513181291}
