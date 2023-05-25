@@ -7,8 +7,7 @@ using UnityEngine.UI;
 public class SkinsInfo
 {
     public int skinID;
-    public Sprite skinIcon;
-    public Material skinMaterial;
+    public GameObject skinObject;
     public int skinPrice;
     public bool isOwned = false;
     public bool isEquipped = false;

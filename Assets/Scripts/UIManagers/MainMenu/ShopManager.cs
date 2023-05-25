@@ -9,7 +9,6 @@ public class ShopManager : MonoBehaviour
 {
     [field: Header("Shop Manager")]
     [field: SerializeField] private List<SkinsInfo> infoOnSkins;
-    [field: SerializeField] private Image skinIcon;
     [field: SerializeField] private Button actionButton;
     private int currentSkin = 0;
 
@@ -27,7 +26,7 @@ public class ShopManager : MonoBehaviour
             if (SkinsOwnershipDataHandler.instance.ReturnSavedValues().isEquipped[i] == true)
             {
                 infoOnSkins[i].isEquipped = true;
-                skinIcon.sprite = infoOnSkins[i].skinIcon;
+                infoOnSkins[i].skinObject.SetActive(true);
                 currentSkin = i;
                 actionButton.gameObject.SetActive(false);
             }
@@ -90,6 +89,7 @@ public class ShopManager : MonoBehaviour
 
     private void ScrollThroughSkins(bool idkman)
     {
+        int previousSkin = currentSkin;
         if (idkman == true)
         {
             currentSkin++;
@@ -106,7 +106,8 @@ public class ShopManager : MonoBehaviour
                 currentSkin = infoOnSkins.Count-1;
             }
         }
-        skinIcon.sprite = infoOnSkins[currentSkin].skinIcon;
+        infoOnSkins[previousSkin].skinObject.SetActive(false);
+        infoOnSkins[currentSkin].skinObject.SetActive(true);
         UpdateActionButton();
     }
 

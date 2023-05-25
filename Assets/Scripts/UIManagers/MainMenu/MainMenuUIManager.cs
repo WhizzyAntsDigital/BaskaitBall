@@ -89,11 +89,13 @@ public class MainMenuUIManager : MonoBehaviour
         if (!isOpen)
         {
             shopCanvas.SetActive(!isOpen);
+            mainMenuCanvas.SetActive(isOpen);
             isOpen = true;
         }
         else if (isOpen)
         {
             shopCanvas.SetActive(!isOpen);
+            mainMenuCanvas.SetActive(isOpen);
             isOpen = false;
             SkinsOwnershipDataHandler.instance.SaveSkinData();
         }

@@ -5,18 +5,44 @@ using UnityEngine;
 public class TextureChange : MonoBehaviour
 {
     [field: Header("Texture Changer")]
-    [field: SerializeField] private List<Material> materials;
+    [field: SerializeField] private List<SkinPrefabDetails> prefabs;
     [field: SerializeField] private List<GameObject> basketBalls;
     void Start()
     {
-        for(int i = 0; i < SkinsOwnershipDataHandler.instance.ReturnSavedValues().isEquipped.Length-1; i++)
+        SkinsOwnershipDataHandler skinDataHandler = SkinsOwnershipDataHandler.instance;
+        SkinsOwnershipData savedValues = skinDataHandler.ReturnSavedValues();
+
+        for (int i = 0; i < savedValues.isEquipped.Length; i++)
         {
-            if (SkinsOwnershipDataHandler.instance.ReturnSavedValues().isEquipped[i] == true)
+            if (savedValues.isEquipped[i])
             {
-                for(int j = 0; j<basketBalls.Count; j++)
+                Debug.Log(savedValues.isEquipped.Length);
+
+                MeshFilter[] ballMeshFilters = new MeshFilter[basketBalls.Count];
+                MeshRenderer[] ballMeshRenderers = new MeshRenderer[basketBalls.Count];
+
+                for (int j = 0; j < basketBalls.Count; j++)
                 {
-                    basketBalls[j].GetComponent<MeshRenderer>().material = materials[i];
+                    ballMeshFilters[j] = basketBalls[j].GetComponent<MeshFilter>();
+                    ballMeshRenderers[j] = basketBalls[j].GetComponent<MeshRenderer>();
                 }
+
+                Mesh skinMesh = prefabs[i].mesh;
+                Material[] skinMaterials = prefabs[i].materials;
+
+                for (int j = 0; j < basketBalls.Count; j++)
+                {
+                    ballMeshFilters[j].mesh = skinMesh;
+
+                    Material[] ballMaterials = new Material[skinMaterials.Length];
+                    for (int k = 0; k < skinMaterials.Length; k++)
+                    {
+                        ballMaterials[k] = new Material(skinMaterials[k]);
+                    }
+
+                    ballMeshRenderers[j].materials = ballMaterials;
+                }
+
                 break;
             }
         }

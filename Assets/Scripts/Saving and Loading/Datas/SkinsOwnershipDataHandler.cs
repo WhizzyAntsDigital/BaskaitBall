@@ -17,6 +17,7 @@ public class SkinsOwnershipDataHandler : MonoBehaviour
         }
     }
 
+
     #region Return All Data
     public SkinsOwnershipData ReturnSavedValues()
     {
@@ -39,6 +40,6 @@ public class SkinsOwnershipDataHandler : MonoBehaviour
 [System.Serializable]
 public class SkinsOwnershipData
 {
-    public bool[] isOwned = {true, false, false, false};
-    public bool[] isEquipped = { true, false, false, false };
+    public bool[] isOwned = {true, false, false, false, false, false};
+    public bool[] isEquipped = { true, false, false, false, false, false};
 }

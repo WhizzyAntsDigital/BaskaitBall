@@ -3364,11 +3364,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cfb25d52d0cbf84c83970a950040eda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  materials:
-  - {fileID: 2100000, guid: 4f41697f7b394460185b732326a7fa3f, type: 2}
-  - {fileID: 2100000, guid: 56f42751dffcb6044812347a05793b87, type: 2}
-  - {fileID: 2100000, guid: a2f02ac553a32c54f9adcab34dac214a, type: 2}
-  - {fileID: 2100000, guid: 0d13beedfed318e46843b15252ede09c, type: 2}
+  prefabs:
+  - mesh: {fileID: -5424313142664710738, guid: 1abad9f7f3647cb43bd0c1541c69d46a, type: 3}
+    materials:
+    - {fileID: 2100000, guid: 4f41697f7b394460185b732326a7fa3f, type: 2}
+    - {fileID: 2100000, guid: 4c33a7eb7bad943b18ce8cae7b29a5a4, type: 2}
+  - mesh: {fileID: 4711208715938537054, guid: 8fa25e4fd67310740b51620e5bbf3a0d, type: 3}
+    materials:
+    - {fileID: 2100000, guid: 2e6aa4c709622614f8dea77dbe323c8a, type: 2}
+    - {fileID: 2100000, guid: ea10f23673963094d96293d1f7f24c99, type: 2}
+    - {fileID: 2100000, guid: 13d34708b71e7ba458aa807ef7346b65, type: 2}
+    - {fileID: 2100000, guid: aa65c575c08441d418f114f84fda82e0, type: 2}
+    - {fileID: 2100000, guid: 64cb66541e830424d8c99de40d526975, type: 2}
+  - mesh: {fileID: 212370497460711607, guid: 8fa25e4fd67310740b51620e5bbf3a0d, type: 3}
+    materials:
+    - {fileID: 2100000, guid: 7de99a3d9535ef640876d257c36c6310, type: 2}
+    - {fileID: 2100000, guid: d348db4f759f8ce4cb166dece297cf25, type: 2}
+  - mesh: {fileID: 3447038591770236762, guid: 8fa25e4fd67310740b51620e5bbf3a0d, type: 3}
+    materials:
+    - {fileID: 2100000, guid: 790c4bff1e0c894449980d9fa8edbba8, type: 2}
+    - {fileID: 2100000, guid: 9383794cb759fcd48b9a0fbc6c6fd729, type: 2}
+  - mesh: {fileID: 70948873267775455, guid: 8fa25e4fd67310740b51620e5bbf3a0d, type: 3}
+    materials:
+    - {fileID: 2100000, guid: 98e85620d31b6444bb241ff2e2900bf4, type: 2}
+    - {fileID: 2100000, guid: d89f88f040f58bb47a46b535a2d9a157, type: 2}
+  - mesh: {fileID: -5424313142664710738, guid: 8fa25e4fd67310740b51620e5bbf3a0d, type: 3}
+    materials:
+    - {fileID: 2100000, guid: 56ac65d1f13889040ac9306fdb2e4eed, type: 2}
+    - {fileID: 2100000, guid: 0d898bd956fc2244aad55f1adb7d309a, type: 2}
   basketBalls:
   - {fileID: 7903897553513181291}
   - {fileID: 457477566}
@@ -4378,6 +4401,7 @@ GameObject:
   - component: {fileID: 1466604153}
   - component: {fileID: 1466604154}
   - component: {fileID: 1466604155}
+  - component: {fileID: 1466604156}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -4582,6 +4606,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   internetConnectionCheckInterval: 3
   shouldCheckForInternetConnection: 1
+--- !u!114 &1466604156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466604145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 785feb896fb894f45ada9c3d3e9b5b05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skinsOwnershipData:
+    isOwned: 010000000000
+    isEquipped: 010000000000
 --- !u!1 &1469822673
 GameObject:
   m_ObjectHideFlags: 0
