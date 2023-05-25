@@ -29,6 +29,12 @@ public class ScoreCalculator : MonoBehaviour
     {
         scoreValue = 0;
         scoreText.text = scoreValue.ToString();
+
+        var colliders = new ClothSphereColliderPair[3];
+        colliders[0] = new ClothSphereColliderPair(ArcadeLevel.Instance.ballsInScene[0].GetComponent<SphereCollider>());
+        colliders[1] = new ClothSphereColliderPair(ArcadeLevel.Instance.ballsInScene[1].GetComponent<SphereCollider>());
+        colliders[2] = new ClothSphereColliderPair(ArcadeLevel.Instance.ballsInScene[2].GetComponent<SphereCollider>());
+        netComponent.sphereColliders = colliders;
     }
     private void Update()
     {

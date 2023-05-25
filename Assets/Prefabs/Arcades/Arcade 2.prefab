@@ -224,16 +224,16 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 977367414452802467}
-  m_LocalRotation: {x: -0.00000005960465, y: -0.0000001192093, z: 0.70710677, w: -0.7071068}
-  m_LocalPosition: {x: 0, y: -9.258439, z: 2.934202}
-  m_LocalScale: {x: 8.443521, y: 0.42655337, z: 8.4435215}
+  m_LocalRotation: {x: 0.00000008940697, y: 6.352747e-22, z: 7.1054274e-15, w: 1}
+  m_LocalPosition: {x: 0, y: -9.258432, z: 2.934202}
+  m_LocalScale: {x: 0.42655328, y: 8.4435215, z: 8.4435215}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1914301461426193233}
   - {fileID: 4130960148553529425}
   m_Father: {fileID: 8625726283252664385}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!33 &3634819556928596359
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -488,14 +488,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1301327266694490233}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f492a627e5fdf4647a8a2dba30cbee2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   objectToMove: {fileID: 8330663755429786432}
   referenceObject: {fileID: 8625726283252664385}
-  movementSpeed: 5
+  movementSpeed: 1
 --- !u!1 &1369868914294214628
 GameObject:
   m_ObjectHideFlags: 0
@@ -2330,8 +2330,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 0, y: 0.000002026558, z: -0.088110566}
-    m_Extent: {x: 1.5195084, y: 1.5195084, z: 1.090288}
+    m_Center: {x: 0, y: 0, z: -0.0061838627}
+    m_Extent: {x: 1.5195084, y: 1.5195086, z: 1.0083612}
   m_DirtyAABB: 0
 --- !u!183 &5625223754516827297
 Cloth:
@@ -5928,6 +5928,6 @@ MonoBehaviour:
   basketParticle: {fileID: 0}
   moveBasket: {fileID: 0}
   timeToMoveBasket: 1
-  netComponent: {fileID: 0}
+  netComponent: {fileID: 5625223754516827297}
   isTraining: 0
   hasParticleEffect: 0

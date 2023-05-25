@@ -9,6 +9,8 @@ public class BasketMover : MonoBehaviour
     private float leftBoundary;
     private float rightBoundary;
     private bool movingRight = true;
+    private bool startMoving = false;
+    private bool checkScore = true;
 
     void Start()
     {
@@ -19,22 +21,34 @@ public class BasketMover : MonoBehaviour
 
     void Update()
     {
-        if (movingRight)
+        if(checkScore)
         {
-            objectToMove.Translate(referenceObject.TransformDirection(Vector3.right) * movementSpeed * Time.deltaTime);
-        }
-        else
-        {
-            objectToMove.Translate(referenceObject.TransformDirection(Vector3.left) * movementSpeed * Time.deltaTime);
+            if(ScoreCalculator.instance.scoreValue >= 20)
+            {
+                startMoving = true;
+                checkScore = false;
+            }
         }
 
-        if (objectToMove.localPosition.x >= rightBoundary)
+        if (startMoving)
         {
-            movingRight = false;
-        }
-        else if (objectToMove.localPosition.x <= leftBoundary)
-        {
-            movingRight = true;
+            if (movingRight)
+            {
+                objectToMove.Translate(referenceObject.right * movementSpeed * Time.deltaTime);
+            }
+            else
+            {
+                objectToMove.Translate(-referenceObject.right * movementSpeed * Time.deltaTime);
+            }
+
+            if (objectToMove.localPosition.x >= rightBoundary)
+            {
+                movingRight = false;
+            }
+            else if (objectToMove.localPosition.x <= leftBoundary)
+            {
+                movingRight = true;
+            }
         }
     }
 }

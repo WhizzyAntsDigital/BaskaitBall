@@ -93,23 +93,22 @@ public class BallInput : MonoBehaviour
                                 GetVelocity = false;
                                 touchEnd = touch.position;
                                 Vector3 directionOfShot = touchStart - touchEnd;
-                            if(directionOfShot.x >= -40 && directionOfShot.x <= 40)
-                            {
-                                float autoAim = UnityEngine.Random.Range(0f, 1f);
-                                {
-                                    if (autoAim >=0f && autoAim<=0.45f)
-                                    {
-                                        directionOfShot = new Vector3(0f, directionOfShot.y, directionOfShot.z);
-                                    }
-                                }
-                            }
+                            //if(directionOfShot.x >= -40 && directionOfShot.x <= 40)
+                            //{
+                            //    float autoAim = UnityEngine.Random.Range(0f, 1f);
+                            //    {
+                            //        if (autoAim >=0f && autoAim<=0.45f)
+                            //        {
+                            //            directionOfShot = new Vector3(0f, directionOfShot.y, directionOfShot.z);
+                            //        }
+                            //    }
+                            //}
                                 GetSpeed();
                                 GetAngle();
                                 GetComponent<Rigidbody>().isKinematic = false;
                                 GetComponent<Rigidbody>().useGravity = true;
-                            //GetComponent<Rigidbody>().AddForce(new Vector3((worldAngle.x * ballSpeed), (IsArcade == true ? forceForArcade : CalculateForce()), (worldAngle.z * InputValues.instance.forwardSpeed)));
-                            GetComponent<Rigidbody>().AddForce(new Vector3((directionOfShot.x), (IsArcade == true ? forceForArcade : CalculateForce()), (worldAngle.z * InputValues.instance.forwardSpeed)));
-                            hasGotInput = true;
+                                GetComponent<Rigidbody>().AddForce(new Vector3((directionOfShot.x), (IsArcade == true ? forceForArcade : CalculateForce()), (worldAngle.z * InputValues.instance.forwardSpeed)));
+                                hasGotInput = true;
                                 touchWithinLimit = false;
                                 if (IsArcade)
                                 {

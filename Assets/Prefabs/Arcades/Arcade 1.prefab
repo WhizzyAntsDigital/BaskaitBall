@@ -1772,7 +1772,7 @@ MonoBehaviour:
   basketParticle: {fileID: 0}
   moveBasket: {fileID: 0}
   timeToMoveBasket: 1
-  netComponent: {fileID: 0}
+  netComponent: {fileID: 201433093537151317}
   isTraining: 0
   hasParticleEffect: 0
 --- !u!1 &6837762359360862379
