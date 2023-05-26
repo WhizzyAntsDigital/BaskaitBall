@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ADManager : MonoBehaviour
 {
     public static ADManager Instance;
+    [field: SerializeField] GameObject removeADsButton;
     //Do not change these values
     private const string _androidAppID = "1a193215d";
     private void Awake()
@@ -28,6 +29,7 @@ public class ADManager : MonoBehaviour
     public void OnPurchaseOfAdBlock()
     {
         PurchaseTrackerDataHandler.instance.ReturnSavedValues().hasPurchasedAdBlock = true;
+        removeADsButton.SetActive(false);
     }
     private void OnEnable()
     {
@@ -100,6 +102,14 @@ public class ADManager : MonoBehaviour
         IronSource.Agent.validateIntegration();
         IronSource.Agent.loadRewardedVideo();
         LoadInterstitialAd();
+        if(PurchaseTrackerDataHandler.instance.ReturnSavedValues().hasPurchasedAdBlock)
+        {
+            removeADsButton.SetActive(false);
+        }
+        else
+        {
+            removeADsButton.SetActive(true);
+        }
     }
     public void ShowRewardedAd()
     {
@@ -213,5 +223,18 @@ public class ADManager : MonoBehaviour
     }
     #endregion
 
-
+    public void MaybeShowInterstitial()
+    {
+        if(!PurchaseTrackerDataHandler.instance.ReturnSavedValues().hasPurchasedAdBlock)
+        {
+            int randomnum = Random.Range(0, 2);
+            if(randomnum == 0)
+            {
+                if(IronSource.Agent.isInterstitialReady())
+                {
+                    ShowInterstitialAd();
+                }
+            }
+        }
+    }
 }

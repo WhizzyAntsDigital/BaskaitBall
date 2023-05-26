@@ -1810,6 +1810,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 623034514}
+        m_TargetAssemblyTypeName: ADManager, Assembly-CSharp
+        m_MethodName: MaybeShowInterstitial
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &186320778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3735,7 +3747,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b79b5624d944058bd39aad2b90fb275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  productId: 
+  productId: com.whizzyantsdigital.basketball.noads
   buttonType: 0
   consumePurchase: 1
   onTransactionsRestored:
@@ -8390,6 +8402,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3da106f351ac504491878b37c1fde9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  removeADsButton: {fileID: 2072714082}
 --- !u!1 &629131714
 GameObject:
   m_ObjectHideFlags: 0
@@ -11359,6 +11372,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 8300000, guid: 71831b847aa1adc4b8002ec702587b33,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 623034514}
+        m_TargetAssemblyTypeName: ADManager, Assembly-CSharp
+        m_MethodName: MaybeShowInterstitial
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -19391,6 +19416,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 8300000, guid: 71831b847aa1adc4b8002ec702587b33,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 623034514}
+        m_TargetAssemblyTypeName: ADManager, Assembly-CSharp
+        m_MethodName: MaybeShowInterstitial
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
