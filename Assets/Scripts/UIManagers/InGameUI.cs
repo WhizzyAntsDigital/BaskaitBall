@@ -51,7 +51,7 @@ public class InGameUI : MonoBehaviour
     private float coinReductionRate;
     private bool startCoinChange = false;
 
-    
+
     void Start()
     {
         touchArea.SetActive(true);
@@ -171,6 +171,10 @@ public class InGameUI : MonoBehaviour
         if (matchResult == MatchResult.PlayerWon)
         {
             UserDataHandler.instance.ReturnSavedValues().numberOfWins++;
+            if (UserDataHandler.instance.ReturnSavedValues().numberOfWins % 5 == 0 && UserDataHandler.instance.ReturnSavedValues().hasRequestedReview == true)
+            {
+                UserDataHandler.instance.ReturnSavedValues().hasRequestedReview = false;
+            }
             UserDataHandler.instance.ReturnSavedValues().winningStreak++;
             UserDataHandler.instance.ReturnSavedValues().losingStreak = 0;
             playerWonIcon.SetActive(true);

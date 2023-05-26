@@ -25,6 +25,19 @@ public class UserDataHandler : MonoBehaviour
             userData = new UserData();
         }
     }
+    private void Start()
+    {
+        if (userData.hasRequestedReview == false && userData.numberOfWins != 0 && userData.numberOfWins % 5 == 0  )
+        {
+            IARManager.instance.TryLoadAndShowReviewRequest();
+            userData.hasRequestedReview = true;
+        }
+    }
+
+    public void UpdateReviewRequested()
+    {
+        userData.hasRequestedReview = true;
+    }
 
     #region Check Application Loses Focus
 #if !UNITY_EDITOR
@@ -53,7 +66,7 @@ public class UserDataHandler : MonoBehaviour
         }
     }
 #endif
-#endregion
+    #endregion
 
     #region Return All Data
     public UserData ReturnSavedValues()
@@ -86,6 +99,7 @@ public class UserData
     public int numberOf3Pointers = 0;
     public int winningStreak = 0;
     public int losingStreak = 0;
-    public int amountOfCurrency = 1000000;
+    public int amountOfCurrency = 1000;
     public string Date_And_Time = null;
+    public bool hasRequestedReview = false;
 }
