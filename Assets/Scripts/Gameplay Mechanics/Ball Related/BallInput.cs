@@ -107,6 +107,7 @@ public class BallInput : MonoBehaviour
                                 GetAngle();
                                 GetComponent<Rigidbody>().isKinematic = false;
                                 GetComponent<Rigidbody>().useGravity = true;
+                                InputValues.instance.PlayWhoosh();
                                 GetComponent<Rigidbody>().AddForce(new Vector3((directionOfShot.x), (IsArcade == true ? forceForArcade : CalculateForce()), (worldAngle.z * InputValues.instance.forwardSpeed)));
                                 hasGotInput = true;
                                 touchWithinLimit = false;
@@ -203,6 +204,10 @@ public class BallInput : MonoBehaviour
         if (!collision.gameObject.CompareTag("ArcadeParts") && !collision.gameObject.CompareTag("Ball") && !collision.gameObject.CompareTag("Net"))
         {
             hasHitOtherObjects = true;
+        }
+        if (collision.relativeVelocity.magnitude > 7.5f) 
+        {
+            InputValues.instance.PlayBounce();
         }
     }
 }

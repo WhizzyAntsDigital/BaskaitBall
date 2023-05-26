@@ -10,6 +10,8 @@ public class ShopManager : MonoBehaviour
     [field: Header("Shop Manager")]
     [field: SerializeField] private List<SkinsInfo> infoOnSkins;
     [field: SerializeField] private Button actionButton;
+    [field: SerializeField] private AudioSource audioSource;
+    [field: SerializeField] private AudioClip clip;
     private int currentSkin = 0;
 
     [field: Header("Swipe Input")]
@@ -123,6 +125,8 @@ public class ShopManager : MonoBehaviour
 
     private void ScrollingEffect(int previousSkin)
     {
+        audioSource.clip = clip;
+        audioSource.Play();
         float transitionDuration = 0.1f;
         float targetScaleOfPreviousObject = 0.2f;
         Vector3 initialScaleOfPreviousObject = scalesOfSkins[previousSkin];

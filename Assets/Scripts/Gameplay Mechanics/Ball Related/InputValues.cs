@@ -11,9 +11,22 @@ public class InputValues : MonoBehaviour
     [field: SerializeField] public float forwardSpeed { get; private set; } = -8f;
     [field: SerializeField] public float upwardSpeedMultiplier { get; private set; } = 125;
     [field: SerializeField] public string uiElementTag { get; private set; } = "TouchLimit";
+    [field: SerializeField] AudioSource audio;
+    [field: SerializeField] List<AudioClip> whooshSounds;
+    [field: SerializeField] List<AudioClip> bounceSounds;
 
     private void Awake()
     {
         instance = this;
+    }
+    public void PlayWhoosh()
+    {
+        audio.clip = whooshSounds[Random.Range(0, whooshSounds.Count)];
+        audio.Play();
+    }
+    public void PlayBounce()
+    {
+        audio.clip = bounceSounds[Random.Range(0, whooshSounds.Count)];
+        audio.Play();
     }
 }

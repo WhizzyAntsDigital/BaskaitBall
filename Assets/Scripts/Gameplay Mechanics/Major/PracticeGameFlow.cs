@@ -18,6 +18,9 @@ public class PracticeGameFlow : MonoBehaviour
     [field: SerializeField] TMP_FontAsset redText;
     [field: SerializeField] TMP_FontAsset countDownText;
     [field: SerializeField] TMP_FontAsset practiceTimerText;
+    [field: SerializeField] private AudioSource audioSource;
+    [field: SerializeField] private AudioClip countDownSFX;
+    bool startedCountdownSFX = false;
     public bool dontActivateInput = false;
     private bool startPracticeTimer = false;
     private float practiceTimer;
@@ -42,6 +45,12 @@ public class PracticeGameFlow : MonoBehaviour
             countDown -= Time.deltaTime;
             if (countDown >= 1)
             {
+                if (!startedCountdownSFX)
+                {
+                    audioSource.clip = countDownSFX;
+                    audioSource.Play();
+                    startedCountdownSFX = true;
+                }
                 timerText.font = countDownText; 
                 timerText.text = (Mathf.RoundToInt(countDown)).ToString();
             }
@@ -56,6 +65,7 @@ public class PracticeGameFlow : MonoBehaviour
             {
                 startCountDown = false;
                 startPracticeTimer = true;
+                startedCountdownSFX = false;
             }
         }
         #endregion

@@ -15,6 +15,7 @@ public class ScoreCalculator : MonoBehaviour
     [field: SerializeField] Cloth netComponent;
     [field: SerializeField] private bool isTraining = false;
     [field: SerializeField] private bool hasParticleEffect = false;
+    [field: SerializeField] ScreenShake screenShake;
 
     public int scoreValue { get; private set; } = 0;
     private float timer = 0f;
@@ -29,6 +30,7 @@ public class ScoreCalculator : MonoBehaviour
     {
         scoreValue = 0;
         scoreText.text = scoreValue.ToString();
+        screenShake = GetComponent<ScreenShake>();  
 
         if (GameManager.instance.isMainGame)
         {
@@ -75,6 +77,7 @@ public class ScoreCalculator : MonoBehaviour
             }
             else
             {
+                screenShake.Shake();
                 scoreValue += 3;
                 UserDataHandler.instance.ReturnSavedValues().numberOfBaskets++;
                 UserDataHandler.instance.ReturnSavedValues().numberOf3Pointers++;

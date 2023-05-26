@@ -31,6 +31,9 @@ public class InGameUI : MonoBehaviour
     [field: SerializeField] private Color winColour;
     [field: SerializeField] private Color loseColour;
     [field: SerializeField] private MainGameFlow mainGameFlow;
+    [field: SerializeField] private AudioSource audioSource;
+    [field: SerializeField] private AudioClip winSound;
+    [field: SerializeField] private AudioClip loseSound;
     [field: HideInInspector] public MatchResult matchResult;
 
     [field: SerializeField] private TextMeshProUGUI highScore;
@@ -246,11 +249,15 @@ public class InGameUI : MonoBehaviour
         if (ScoreCalculator.instance.scoreValue > AIScore.instance.opponentScore)
         {
             matchResult = MatchResult.PlayerWon;
+            audioSource.clip = winSound;
+            audioSource.Play();
             GameManager.instance.OnGameOver?.Invoke();
         }
         else if (ScoreCalculator.instance.scoreValue < AIScore.instance.opponentScore)
         {
             matchResult = MatchResult.PlayerLost;
+            audioSource.clip = loseSound;
+            audioSource.Play();
             GameManager.instance.OnGameOver?.Invoke();
         }
         else if ((ScoreCalculator.instance.scoreValue == AIScore.instance.opponentScore))

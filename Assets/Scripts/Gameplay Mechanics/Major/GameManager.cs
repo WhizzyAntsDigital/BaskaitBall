@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     [field: SerializeField] private int targetFPS = 60;
     [field: SerializeField] private InGameUI inGameUI;
     [field: SerializeField] private List<GameObject> arcadePrefabs;
+    [field: SerializeField] private AudioSource SFXAudioSource;
+    [field: SerializeField] private AudioSource musicAudioSource;
     [field: SerializeField] public NeededGameObjects neededGameObjects { get; private set; }
 
     [field: Header("For BallInput Script")]
@@ -28,6 +30,23 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
+        if(SettingsDataHandler.instance.ReturnSavedValues().musicMuted)
+        {
+            musicAudioSource.volume = 0;
+        }
+        else
+        {
+            musicAudioSource.volume = 1;
+        }
+        if (SettingsDataHandler.instance.ReturnSavedValues().soundMuted)
+        {
+            SFXAudioSource.volume = 0;
+        }
+        else
+        {
+            SFXAudioSource.volume = 1;
+        }
+
         Application.targetFrameRate = targetFPS;
         if (isMainGame)
         {

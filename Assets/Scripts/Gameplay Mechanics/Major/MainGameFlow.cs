@@ -15,11 +15,14 @@ public class MainGameFlow : MonoBehaviour
     public TextMeshProUGUI timerText;
     [field: SerializeField] private BallInput startingBall;
     [field: SerializeField] private InGameUI inGameUI;
+    [field: SerializeField] private AudioSource audioSource;
+    [field: SerializeField] private AudioClip countDownSFX;
     private float countDown = 3f;
     private bool startCountDown = false;
     private bool startMatchTimer = false;
     bool changedStartingBallValue = false;
     bool tieStarted = false;
+    bool startedCountdownSFX = false;
 
     [field: Header("For Internet Connectivity")]
     [field: SerializeField] private GameObject noInternetPopup;
@@ -31,6 +34,7 @@ public class MainGameFlow : MonoBehaviour
     private void Start()
     {
         timerText = GameManager.instance.neededGameObjects.timerText;
+        
         startCountDown = true;
         startingBall.hasGotInput = true;
         GameManager.instance.OnGameOver += () => { GameManager.instance.isGameOver = true; startMatchTimer = false; startCountDown = false; };
@@ -52,6 +56,12 @@ public class MainGameFlow : MonoBehaviour
             countDown -= Time.deltaTime;
             if (countDown >= 1)
             {
+                if(!startedCountdownSFX)
+                {
+                    audioSource.clip = countDownSFX;
+                    audioSource.Play();
+                    startedCountdownSFX = true;
+                }
                 timerText.text = (Mathf.RoundToInt(countDown)).ToString();
             }
             if (countDown < 1 && countDown >= 0)
@@ -66,6 +76,7 @@ public class MainGameFlow : MonoBehaviour
             }
             else if (countDown <= 0)
             {
+                startedCountdownSFX = false;
                 startCountDown = false;
                 startMatchTimer = true;
                 if (tieStarted)

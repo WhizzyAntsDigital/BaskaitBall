@@ -1671,6 +1671,7 @@ GameObject:
   - component: {fileID: 6837762359237681093}
   - component: {fileID: 6837762359237681094}
   - component: {fileID: 6837762359237681099}
+  - component: {fileID: 8070963130339205408}
   m_Layer: 0
   m_Name: Score
   m_TagString: ArcadeParts
@@ -1775,6 +1776,22 @@ MonoBehaviour:
   netComponent: {fileID: 201433093537151317}
   isTraining: 0
   hasParticleEffect: 0
+  screenShake: {fileID: 8070963130339205408}
+--- !u!114 &8070963130339205408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6837762359237681088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e77456cd2d2360943a45757b73a67cb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraTransform: {fileID: 0}
+  shakeDuration: 0.2
+  shakeMagnitude: 0.7
 --- !u!1 &6837762359360862379
 GameObject:
   m_ObjectHideFlags: 0

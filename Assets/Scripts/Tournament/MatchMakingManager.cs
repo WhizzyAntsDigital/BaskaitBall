@@ -15,6 +15,9 @@ public class MatchMakingManager : MonoBehaviour
     [field: SerializeField] private int maxTimeToSearchForPlayer = 10;
     [field: SerializeField] private int timeToGoToGame = 5;
     [field: SerializeField] private string mainGameSceneName = "TournamentMode";
+    [field: SerializeField] AudioSource audioSource;
+    [field: SerializeField] AudioClip coinAudioClip;
+    [field: SerializeField] AudioClip playerFound;
 
     private int playerSearchingTime;
     private float timer;
@@ -28,12 +31,24 @@ public class MatchMakingManager : MonoBehaviour
 
     private float coinReductionRate;
     private bool startCoinChange = false;
+    private bool startedAudio = false;
 
     [field: Header("Internet Connection Checking")]
     [field: SerializeField] private GameObject noInternetPopup;
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();  
+        if(SettingsDataHandler.instance.ReturnSavedValues().soundMuted)
+        {
+            audioSource.volume = 0;
+        }
+        else
+        {
+            audioSource.volume = 1;
+        }
+
+
         playerSearchingTime = Random.Range(3, maxTimeToSearchForPlayer);
         SetValues();
         timerText.text = "Searching...";
@@ -90,9 +105,19 @@ public class MatchMakingManager : MonoBehaviour
                 playerText.text = Mathf.RoundToInt(tempPlayersInvestingCoins).ToString();
                 opponentText.text = Mathf.RoundToInt(tempPlayersInvestingCoins).ToString();
                 currentTourneyReward.text = Mathf.RoundToInt(tempTournamentReward).ToString();
+                if (!startedAudio)
+                {
+                    audioSource.clip = coinAudioClip;
+                    audioSource.loop = true;
+                    audioSource.Play();
+                    startedAudio = true;
+                }
             }
             else if (tempPlayersInvestingCoins < 0 && tempTournamentReward > tournamentReward)
             {
+                audioSource.Stop();
+                audioSource.loop = false;
+                startedAudio = false;
                 playerText.text = "0";
                 opponentText.text = "0";
                 currentTourneyReward.text = tournamentReward.ToString();
@@ -132,6 +157,8 @@ public class MatchMakingManager : MonoBehaviour
     private async void SetOpponentUsernameFirstRound()
     {
         await Task.Delay(playerSearchingTime * 1000);
+        audioSource.clip = playerFound;
+        audioSource.Play();
         opponentText.text = AINamesGenerator.Utils.GetRandomName();
         timerText.text = "Starting...";
         GoToCoinAnimation();
