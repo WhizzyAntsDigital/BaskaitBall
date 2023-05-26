@@ -29,7 +29,7 @@ public class UserDataHandler : MonoBehaviour
     {
         if (userData.hasRequestedReview == false && userData.numberOfWins != 0 && userData.numberOfWins % 5 == 0  )
         {
-            IARManager.instance.TryLoadAndShowReviewRequest();
+            iOSReviewRequest.Request();
             userData.hasRequestedReview = true;
         }
     }
