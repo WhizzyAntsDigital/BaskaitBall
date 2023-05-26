@@ -29,18 +29,21 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         Application.targetFrameRate = targetFPS;
-        int selectedTournamentID = 0;
-        for (int i = 0; i <= 3; i++)
+        if (isMainGame)
         {
-            if (TournamentInfoDataHandler.instance.ReturnSavedValues().selected[i] == true)
+            int selectedTournamentID = 0;
+            for (int i = 0; i <= 3; i++)
             {
-                selectedTournamentID = i;
-                break;
+                if (TournamentInfoDataHandler.instance.ReturnSavedValues().selected[i] == true)
+                {
+                    selectedTournamentID = i;
+                    break;
+                }
             }
+            GameObject temp = Instantiate(arcadePrefabs[selectedTournamentID], Vector3.zero, Quaternion.identity);
+            neededGameObjects = temp.GetComponent<NeededGameObjects>();
+            ringObj = neededGameObjects.ringObj;
         }
-        GameObject temp = Instantiate(arcadePrefabs[selectedTournamentID], Vector3.zero, Quaternion.identity);
-        neededGameObjects = temp.GetComponent<NeededGameObjects>();
-        ringObj = neededGameObjects.ringObj;
     }
 
 }
