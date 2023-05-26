@@ -12,6 +12,8 @@ public class MainMenuUIManager : MonoBehaviour
     [field: SerializeField] private GameObject shopCanvas;
     [field: SerializeField] private GameObject tournamentModesCanvas;
     [field: SerializeField] private GameObject usernamePromptCanvas;
+    [field: SerializeField] private AudioSource audioSource;
+    private bool isAudioMuted = false;
 
     [field: Header("Script References")]
     [field: SerializeField] private ProfileStatsManager profileStatsManager;
@@ -134,6 +136,20 @@ public class MainMenuUIManager : MonoBehaviour
     public void OpenLink(string urlLink)
     {
             Application.OpenURL(urlLink);
+    }
+
+    public void EnableAudio()
+    {
+        if(isAudioMuted)
+        {
+            audioSource.Play();
+            isAudioMuted = false;
+        }
+        else
+        {
+            audioSource.Stop();
+            isAudioMuted = true;
+        }
     }
     private void OnInternetConnectionChange(bool connected)
     {

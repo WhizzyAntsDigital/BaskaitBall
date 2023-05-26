@@ -1141,6 +1141,11 @@
         "Versace-Cat",
         "Lady Q",
         "Killer Grenade",
-        "Bambi Benz"
+        "Bambi Benz",
+        "DevVishnu",
+        "DesignAbith",
+        "HRVaishnav",
+        "RIPFrancis",
+        "ShivaTheBoss"
     ]
 }

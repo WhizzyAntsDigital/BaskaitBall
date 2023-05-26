@@ -24,7 +24,7 @@ public class ADManager : MonoBehaviour
     }
     public void onInterstitialAdComplete()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     public void OnPurchaseOfAdBlock()
     {

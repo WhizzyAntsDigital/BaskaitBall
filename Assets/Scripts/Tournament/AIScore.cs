@@ -11,7 +11,7 @@ public class AIScore : MonoBehaviour
 
     [field: Header("AI Score Calculations")]
     [field: SerializeField] float scoreCalculationInterval = 1f;
-    [field: SerializeField][field: Range(0, 101)] int playerWinPercentage;
+    [field: Range(0, 101)] int playerWinPercentage = 50;
     [field: SerializeField][field: Range(0, 101)] int percentageOfHittingShot;
     [field: SerializeField][field: Range(0, 101)] int percentageofHittingDirectShot;
     [field: SerializeField] TextMeshProUGUI AIScoreDisplay;
@@ -36,7 +36,7 @@ public class AIScore : MonoBehaviour
         int shouldFollowStreak = UnityEngine.Random.Range(0, 101);
         if(playerWinPercentage < 1)
         {
-            playerWinPercentage = 75;
+            playerWinPercentage = 50;
         }
         if(UserDataHandler.instance.ReturnSavedValues().winningStreak >= winStreakThreshold)
         {
@@ -54,13 +54,13 @@ public class AIScore : MonoBehaviour
         }
         if (willPlayerWin >= 0f && willPlayerWin <= playerWinPercentage)
         {
-            percentageOfHittingShot = UnityEngine.Random.Range(10,40);
-            percentageofHittingDirectShot = UnityEngine.Random.Range(10,30);
+            percentageOfHittingShot = UnityEngine.Random.Range(20,50);
+            percentageofHittingDirectShot = UnityEngine.Random.Range(20,50);
         }
         else
         {
-            percentageOfHittingShot = UnityEngine.Random.Range(41,80);
-            percentageofHittingDirectShot = UnityEngine.Random.Range(31, 50);
+            percentageOfHittingShot = UnityEngine.Random.Range(51,90);
+            percentageofHittingDirectShot = UnityEngine.Random.Range(51, 75);
         }
 
         OnGameStart += () => { if (!hasCoroutineStarted) { StartCoroutine(ScoreCalculator()); hasCoroutineStarted = true; } };
