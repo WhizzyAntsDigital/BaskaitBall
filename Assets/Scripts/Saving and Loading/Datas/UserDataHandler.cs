@@ -102,4 +102,5 @@ public class UserData
     public int amountOfCurrency = 1000;
     public string Date_And_Time = null;
     public bool hasRequestedReview = false;
+    public bool hasComeFromMainGame = false;
 }

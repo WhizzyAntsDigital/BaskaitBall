@@ -14,6 +14,8 @@ public class SettingsManager : MonoBehaviour
     [field: SerializeField] private GameObject soundMuteIcon;
     [field: SerializeField] private GameObject musicUnmuteIcon;
     [field: SerializeField] private GameObject musicMuteIcon;
+    [field: SerializeField] private GameObject vibrateEnableIcon;
+    [field: SerializeField] private GameObject vibrateDisableIcon;
     [field: SerializeField] private GameObject restorePurchasesPanel;
     [field: SerializeField] private GameObject spotLight;
     [field: SerializeField] private MainMenuUIManager mainMenuUIManager;
@@ -32,6 +34,9 @@ public class SettingsManager : MonoBehaviour
 
         musicUnmuteIcon.SetActive(!SettingsDataHandler.instance.ReturnSavedValues().musicMuted);
         musicMuteIcon.SetActive(SettingsDataHandler.instance.ReturnSavedValues().musicMuted);
+
+        vibrateEnableIcon.SetActive(!SettingsDataHandler.instance.ReturnSavedValues().vibrationDisabled);
+        vibrateDisableIcon.SetActive(SettingsDataHandler.instance.ReturnSavedValues().vibrationDisabled);
 
         UpdateAudioSources();
     }
@@ -61,7 +66,7 @@ public class SettingsManager : MonoBehaviour
         }
     }
 
-    public void OnButtonClicked(bool isMusic = false)
+    public void OnAudioButtonClicked(bool isMusic = false)
     {
         if(isMusic)
         {
@@ -75,6 +80,17 @@ public class SettingsManager : MonoBehaviour
             SettingsDataHandler.instance.SaveSettingsData();
             UpdateIcons();
         }
+    }
+
+    public void OnVibrationButtonClick()
+    {
+        SettingsDataHandler.instance.ReturnSavedValues().vibrationDisabled = !SettingsDataHandler.instance.ReturnSavedValues().vibrationDisabled;
+        if(!SettingsDataHandler.instance.ReturnSavedValues().vibrationDisabled)
+        {
+            Handheld.Vibrate();
+        }
+        SettingsDataHandler.instance.SaveSettingsData();
+        UpdateIcons();
     }
     public void OnRestoreClicked()
     {

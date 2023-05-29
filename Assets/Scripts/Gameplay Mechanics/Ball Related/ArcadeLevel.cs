@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public class ArcadeLevel : MonoBehaviour
 {
     public static ArcadeLevel Instance;
@@ -10,7 +9,6 @@ public class ArcadeLevel : MonoBehaviour
     public int ballID { get; private set; } = 0;
     private bool hitTrigger = false;
     private GameObject ballObj;
-
     private void Awake()
     {
         Instance = this;
@@ -21,19 +19,19 @@ public class ArcadeLevel : MonoBehaviour
     }
     private void Update()
     {
-        if(hitTrigger)
+        if (hitTrigger)
         {
-                float step = speedOfMovingToSpawn * Time.deltaTime;
+            float step = speedOfMovingToSpawn * Time.deltaTime;
             ballObj.transform.position = Vector3.MoveTowards(ballObj.transform.position, spawnPoint.transform.position, step);
-            if(ballObj.transform.position.x == spawnPoint.transform.position.x)
+            if (ballObj.transform.position.x == spawnPoint.transform.position.x)
             {
                 hitTrigger = false;
                 ballObj.GetComponent<Rigidbody>().isKinematic = true;
-                if(!GameManager.instance.isMainGame && practiceGameFlow.dontActivateInput)
+                if (!GameManager.instance.isMainGame && practiceGameFlow.dontActivateInput)
                 {
                     ballObj.GetComponent<BallInput>().hasGotInput = true;
                 }
-                else if(!GameManager.instance.isMainGame && !practiceGameFlow.dontActivateInput)
+                else if (!GameManager.instance.isMainGame && !practiceGameFlow.dontActivateInput)
                 {
                     ballObj.GetComponent<BallInput>().hasGotInput = false;
                 }
@@ -45,7 +43,6 @@ public class ArcadeLevel : MonoBehaviour
             }
         }
     }
-
     public void MoveBallToCentre()
     {
         ballID++;

@@ -41,7 +41,8 @@ public class SettingsDataHandler : MonoBehaviour
 [System.Serializable]
 public class SettingsData
 {
-    public bool soundMuted;
-    public bool musicMuted;
+    public bool soundMuted = false;
+    public bool musicMuted = false;
+    public bool vibrationDisabled = false;
 }
 

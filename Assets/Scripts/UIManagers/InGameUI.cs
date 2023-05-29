@@ -195,6 +195,12 @@ public class InGameUI : MonoBehaviour
         UserDataHandler.instance.SaveUserData();
         SceneToLoad = "MainMenu";
 
+        if(Random.Range(0,3) != 0)
+        {
+            UserDataHandler.instance.ReturnSavedValues().hasComeFromMainGame = true;
+            UserDataHandler.instance.SaveUserData();
+        }
+
         AnimateCoins();
     }
     private async void SceneChange(string sceneName)
@@ -216,6 +222,11 @@ public class InGameUI : MonoBehaviour
         touchArea.SetActive(false);
         gameOverScene.SetActive(true);
         finalScore.text = ScoreCalculator.instance.scoreValue.ToString();
+        if (Random.Range(0, 3) != 0)
+        {
+            UserDataHandler.instance.ReturnSavedValues().hasComeFromMainGame = true;
+            UserDataHandler.instance.SaveUserData();
+        }
     }
 
     public void ReturnToMainMenu()

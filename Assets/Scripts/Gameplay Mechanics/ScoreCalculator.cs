@@ -79,7 +79,10 @@ public class ScoreCalculator : MonoBehaviour
             {
                 screenShake.Shake();
 #if !UNITY_EDITOR
-                Handheld.Vibrate();
+                if (!SettingsDataHandler.instance.ReturnSavedValues().vibrationDisabled)
+                {
+                    Handheld.Vibrate();
+                }
 #endif
                 scoreValue += 3;
                 UserDataHandler.instance.ReturnSavedValues().numberOfBaskets++;

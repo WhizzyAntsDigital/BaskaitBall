@@ -39,10 +39,17 @@ public class MainMenuUIManager : MonoBehaviour
         shopCanvas.SetActive(false);
         tournamentModesCanvas.SetActive(false);
 
-        if(!InternetConnectivityChecker.Instance.CheckForInternetConnectionUponCommand())
+        if (!InternetConnectivityChecker.Instance.CheckForInternetConnectionUponCommand())
         {
             tournamentButton.interactable = false;
             noADsButton.interactable = false;
+        }
+
+        if (UserDataHandler.instance.ReturnSavedValues().hasComeFromMainGame)
+        {
+            ADManager.Instance.ShowInterstitialAd();
+            UserDataHandler.instance.ReturnSavedValues().hasComeFromMainGame = false;
+            UserDataHandler.instance.SaveUserData();
         }
     }
     private void OnEnable()
