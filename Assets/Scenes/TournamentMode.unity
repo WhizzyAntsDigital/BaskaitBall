@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.13985308, g: 0.021084476, b: 0.030144162, a: 1}
+  m_IndirectSpecularColor: {r: 0.13988474, g: 0.02108999, b: 0.030150503, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4478,6 +4478,7 @@ GameObject:
   - component: {fileID: 1466604158}
   - component: {fileID: 1466604159}
   - component: {fileID: 1466604160}
+  - component: {fileID: 1466604161}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -4614,7 +4615,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreCalculationInterval: 1
-  playerWinPercentage: 60
   percentageOfHittingShot: 0
   percentageofHittingDirectShot: 0
   AIScoreDisplay: {fileID: 0}
@@ -4645,6 +4645,7 @@ MonoBehaviour:
     losingStreak: 0
     amountOfCurrency: 5100
     Date_And_Time: 
+    hasRequestedReview: 0
   mainGameModeSceneName: TournamentMode
 --- !u!114 &1466604153
 MonoBehaviour:
@@ -4939,6 +4940,19 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e42c0a8400c6cb64cb4f2f61e0739c4d, type: 3}
   - {fileID: 8300000, guid: 3396f8b59670e0146b87562632aba69a, type: 3}
   musicSource: {fileID: 1466604158}
+--- !u!114 &1466604161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466604145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3da106f351ac504491878b37c1fde9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  removeADsButton: {fileID: 0}
 --- !u!1 &1469822673
 GameObject:
   m_ObjectHideFlags: 0

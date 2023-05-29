@@ -112,12 +112,22 @@ public class PracticeGameFlow : MonoBehaviour
             }
             if (randomChance == 0)
             {
-                startingTarget = ScoreCalculator.instance.scoreValue + (Mathf.RoundToInt(ScoreCalculator.instance.scoreValue * UnityEngine.Random.Range(0.1f, 0.3f)));
+                int newScore = ScoreCalculator.instance.scoreValue + (Mathf.RoundToInt(ScoreCalculator.instance.scoreValue * UnityEngine.Random.Range(0.1f, 0.3f)));
+                if (newScore > 130 && checkTimer < 50)
+                {
+                    newScore = UnityEngine.Random.Range(0, 91);
+                }
+                startingTarget = newScore;
                 practiceTimer = practiceStartingTime - (timeChangeValue * incrementCount);
             }
             else
             {
-                startingTarget = ScoreCalculator.instance.scoreValue + (Mathf.RoundToInt(ScoreCalculator.instance.scoreValue * UnityEngine.Random.Range(0.2f, 0.45f)));
+                int newScore = ScoreCalculator.instance.scoreValue + (Mathf.RoundToInt(ScoreCalculator.instance.scoreValue * UnityEngine.Random.Range(0.2f, 0.45f)));
+                if(newScore > 130 && checkTimer < 50)
+                {
+                    newScore = UnityEngine.Random.Range(0, 131);
+                }
+                startingTarget = newScore;
                 practiceTimer = practiceStartingTime + (timeChangeValue * incrementCount);
             }
             incrementCount++;

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.38513574, g: 0.5361411, b: 0.6335095, a: 1}
+  m_IndirectSpecularColor: {r: 0.38531902, g: 0.53635156, b: 0.6337034, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4088,6 +4088,7 @@ MonoBehaviour:
     losingStreak: 0
     amountOfCurrency: 5100
     Date_And_Time: 
+    hasRequestedReview: 0
   mainGameModeSceneName: TournamentMode
 --- !u!82 &1466604153
 AudioSource:
@@ -4336,7 +4337,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1472134173
 MonoBehaviour:
   m_ObjectHideFlags: 0
