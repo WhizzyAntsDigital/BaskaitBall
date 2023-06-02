@@ -118,7 +118,10 @@ public class ADManager : MonoBehaviour
         {
             removeADsButton.SetActive(true);
         }
+
+        
     }
+
     public void ShowRewardedAd()
     {
         if (IronSource.Agent.isRewardedVideoAvailable())

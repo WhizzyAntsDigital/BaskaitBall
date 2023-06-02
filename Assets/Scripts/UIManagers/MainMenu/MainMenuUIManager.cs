@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenuUIManager : MonoBehaviour
 {
@@ -43,6 +44,14 @@ public class MainMenuUIManager : MonoBehaviour
         {
             tournamentButton.interactable = false;
             noADsButton.interactable = false;
+        }
+
+        if (UserDataHandler.instance.ReturnSavedValues().cameFromGame)
+        {
+            ADManager.Instance.ShowInterstitialAd();
+            UserDataHandler.instance.ReturnSavedValues().cameFromGame = false;
+            UserDataHandler.instance.SaveUserData();
+            Debug.Log("Showed");
         }
     }
     private void OnEnable()
