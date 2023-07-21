@@ -103,4 +103,5 @@ public class UserData
     public string Date_And_Time = null;
     public bool hasRequestedReview = false;
     public bool hasComeFromMainGame = false;
+    public int playerRankPoints = 0;
 }
