@@ -18774,6 +18774,111 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1729506283}
   m_CullTransparentMesh: 1
+--- !u!1 &1763355471
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1763355473}
+  - component: {fileID: 1763355472}
+  m_Layer: 0
+  m_Name: RanksManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1763355472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1763355471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ade8fd8cab6acad4eb2b84936462cba5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ranksInGame:
+  - rankName: Unranked
+    rankPositionInHierarchy: 0
+    minRankPointsNeeded: 0
+    rankSprite: {fileID: 0}
+  - rankName: Silver 1
+    rankPositionInHierarchy: 1
+    minRankPointsNeeded: 50
+    rankSprite: {fileID: 0}
+  - rankName: Silver 2
+    rankPositionInHierarchy: 2
+    minRankPointsNeeded: 100
+    rankSprite: {fileID: 0}
+  - rankName: Silver 3
+    rankPositionInHierarchy: 3
+    minRankPointsNeeded: 150
+    rankSprite: {fileID: 0}
+  - rankName: Gold 1
+    rankPositionInHierarchy: 4
+    minRankPointsNeeded: 250
+    rankSprite: {fileID: 0}
+  - rankName: Gold 2
+    rankPositionInHierarchy: 5
+    minRankPointsNeeded: 300
+    rankSprite: {fileID: 0}
+  - rankName: Gold 3
+    rankPositionInHierarchy: 6
+    minRankPointsNeeded: 350
+    rankSprite: {fileID: 0}
+  - rankName: Platinum 1
+    rankPositionInHierarchy: 7
+    minRankPointsNeeded: 450
+    rankSprite: {fileID: 0}
+  - rankName: Platinum 2
+    rankPositionInHierarchy: 8
+    minRankPointsNeeded: 500
+    rankSprite: {fileID: 0}
+  - rankName: Platinum 3
+    rankPositionInHierarchy: 9
+    minRankPointsNeeded: 550
+    rankSprite: {fileID: 0}
+  - rankName: Diamond 1
+    rankPositionInHierarchy: 10
+    minRankPointsNeeded: 650
+    rankSprite: {fileID: 0}
+  - rankName: Diamond 2
+    rankPositionInHierarchy: 11
+    minRankPointsNeeded: 700
+    rankSprite: {fileID: 0}
+  - rankName: Diamond 3
+    rankPositionInHierarchy: 12
+    minRankPointsNeeded: 750
+    rankSprite: {fileID: 0}
+  - rankName: Dominators
+    rankPositionInHierarchy: 13
+    minRankPointsNeeded: 900
+    rankSprite: {fileID: 0}
+  - rankName: Champions
+    rankPositionInHierarchy: 14
+    minRankPointsNeeded: 1000
+    rankSprite: {fileID: 0}
+--- !u!4 &1763355473
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1763355471}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1779134769
 GameObject:
   m_ObjectHideFlags: 0
@@ -21350,3 +21455,4 @@ SceneRoots:
   - {fileID: 1456795820}
   - {fileID: 2056898730}
   - {fileID: 196551826}
+  - {fileID: 1763355473}
