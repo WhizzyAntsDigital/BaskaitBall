@@ -23,14 +23,14 @@ public class CurrencyManager : MonoBehaviour
     {
         for(int i = 0; i < coinsText.Count; i++)
         {
-            coinsText[i].text = UserDataHandler.instance.ReturnSavedValues().amountOfCurrency.ToString();
+            coinsText[i].text = CurrencyDataHandler.instance.ReturnSavedValues().amountOfCoins.ToString();
         }
     }
     
     public void AdjustCurrency(int amount)
     {
-        UserDataHandler.instance.ReturnSavedValues().amountOfCurrency += amount;
-        UserDataHandler.instance.SaveUserData();
+        CurrencyDataHandler.instance.ReturnSavedValues().amountOfCoins += amount;
+        CurrencyDataHandler.instance.SaveCurrencyData();
         if(SceneManager.GetActiveScene().name == "MainMenu")
         {
             UpdateCoinsAmount();

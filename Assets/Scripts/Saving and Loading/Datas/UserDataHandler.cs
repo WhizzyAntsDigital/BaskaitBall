@@ -27,16 +27,18 @@ public class UserDataHandler : MonoBehaviour
     }
     private void Start()
     {
-        if (userData.hasRequestedReview == false && userData.numberOfWins != 0 && userData.numberOfWins % 5 == 0  )
+        if (MiscellaneousDataHandler.instance.ReturnSavedValues().hasRequestedReview == false && userData.numberOfWins != 0 && userData.numberOfWins % 5 == 0  )
         {
             IARManager.instance.TryLoadAndShowReviewRequest();
-            userData.hasRequestedReview = true;
+            MiscellaneousDataHandler.instance.ReturnSavedValues().hasRequestedReview = true;
+            MiscellaneousDataHandler.instance.SaveMiscData();
         }
     }
 
     public void UpdateReviewRequested()
     {
-        userData.hasRequestedReview = true;
+        MiscellaneousDataHandler.instance.ReturnSavedValues().hasRequestedReview = true;
+        MiscellaneousDataHandler.instance.SaveMiscData();
     }
 
     #region Check Application Loses Focus
@@ -91,18 +93,12 @@ public class UserDataHandler : MonoBehaviour
 public class UserData
 {
     public string userName = null;
-    public bool hasClaimedDailyRewardToday = false;
     public int practiceHighScore = 0;
     public int numberOfWins = 0;
     public int numberOfLosses = 0;
     public int numberOfBaskets = 0;
     public int numberOf3Pointers = 0;
+    public int playerRankPoints = 0;
     public int winningStreak = 0;
     public int losingStreak = 0;
-    public int amountOfCurrency = 1000;
-    public string Date_And_Time = null;
-    public bool hasRequestedReview = false;
-    public bool hasComeFromMainGame = false;
-    public int playerRankPoints = 0;
-    public bool hasPlayedTutorial = false;
 }

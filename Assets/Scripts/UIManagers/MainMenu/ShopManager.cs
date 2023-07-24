@@ -200,7 +200,7 @@ public class ShopManager : MonoBehaviour
         else if(infoOnSkins[currentSkin].isOwned == false)
         {
             actionButton.gameObject.SetActive(true);
-            if (infoOnSkins[currentSkin].skinPrice <= UserDataHandler.instance.ReturnSavedValues().amountOfCurrency)
+            if (infoOnSkins[currentSkin].skinPrice <= CurrencyDataHandler.instance.ReturnSavedValues().amountOfCoins)
             {
                 actionButton.interactable = true;
             }

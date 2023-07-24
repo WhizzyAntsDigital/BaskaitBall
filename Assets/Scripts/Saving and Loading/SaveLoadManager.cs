@@ -36,6 +36,16 @@ public static class SaveLoadManager
              objectType = typeof(SettingsData),
             fileName = "vSuETk3TIqN1G9S.whizzyants",
         },
+        new PersistanceEntity()
+        {
+             objectType = typeof(CurrencyData),
+            fileName = "cVsRki43Mmvff4.whizzyants",
+        },
+        new PersistanceEntity()
+        {
+             objectType = typeof(MiscellaneousData),
+            fileName = "Ddo0d9Mvsl2vo.whizzyants",
+        },
     };
     public static void SaveData<T>(T data)
     {

@@ -171,9 +171,9 @@ public class InGameUI : MonoBehaviour
         if (matchResult == MatchResult.PlayerWon)
         {
             UserDataHandler.instance.ReturnSavedValues().numberOfWins++;
-            if (UserDataHandler.instance.ReturnSavedValues().numberOfWins % 5 == 0 && UserDataHandler.instance.ReturnSavedValues().hasRequestedReview == true)
+            if (UserDataHandler.instance.ReturnSavedValues().numberOfWins % 5 == 0 && MiscellaneousDataHandler.instance.ReturnSavedValues().hasRequestedReview == true)
             {
-                UserDataHandler.instance.ReturnSavedValues().hasRequestedReview = false;
+                MiscellaneousDataHandler.instance.ReturnSavedValues().hasRequestedReview = false;
             }
             UserDataHandler.instance.ReturnSavedValues().winningStreak++;
             UserDataHandler.instance.ReturnSavedValues().losingStreak = 0;
@@ -193,12 +193,13 @@ public class InGameUI : MonoBehaviour
             opponentLostIcon.SetActive(false);
         }
         UserDataHandler.instance.SaveUserData();
+        MiscellaneousDataHandler.instance.SaveMiscData();
         SceneToLoad = "MainMenu";
 
         if(Random.Range(0,3) != 0)
         {
-            UserDataHandler.instance.ReturnSavedValues().hasComeFromMainGame = true;
-            UserDataHandler.instance.SaveUserData();
+            MiscellaneousDataHandler.instance.ReturnSavedValues().hasComeFromMainGame = true;
+            MiscellaneousDataHandler.instance.SaveMiscData();
         }
 
         AnimateCoins();
@@ -224,8 +225,8 @@ public class InGameUI : MonoBehaviour
         finalScore.text = ScoreCalculator.instance.scoreValue.ToString();
         if (Random.Range(0, 3) != 0)
         {
-            UserDataHandler.instance.ReturnSavedValues().hasComeFromMainGame = true;
-            UserDataHandler.instance.SaveUserData();
+            MiscellaneousDataHandler.instance.ReturnSavedValues().hasComeFromMainGame = true;
+            MiscellaneousDataHandler.instance.SaveMiscData();
         }
     }
 

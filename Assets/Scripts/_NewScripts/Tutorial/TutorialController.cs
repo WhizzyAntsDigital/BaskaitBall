@@ -142,13 +142,15 @@ public class TutorialController : MonoBehaviour
 
     public void RestartTutorial()
     {
-        UserDataHandler.instance.ReturnSavedValues().hasPlayedTutorial = true;
+        MiscellaneousDataHandler.instance.ReturnSavedValues().hasPlayedTutorial = true;
+        MiscellaneousDataHandler.instance.SaveMiscData();
         SceneManager.LoadScene(tutorialSceneName);
     }
 
     public void GoToMainMenu()
     {
-        UserDataHandler.instance.ReturnSavedValues().hasPlayedTutorial = true;
+        MiscellaneousDataHandler.instance.ReturnSavedValues().hasPlayedTutorial = true;
+        MiscellaneousDataHandler.instance.SaveMiscData();
         SceneManager.LoadScene(mainMenuSceneName);
     }
 

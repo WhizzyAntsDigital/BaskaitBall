@@ -42,7 +42,7 @@ public class TournamentModesUIManager : MonoBehaviour
             {
                 TournamentInfoDataHandler.instance.allGameModesSpecs[i].lockedOverlay.SetActive(false);
                 tourneyPriceTexts[i].text = TournamentInfoDataHandler.instance.ReturnSavedValues().prices[i].ToString();
-                if (UserDataHandler.instance.ReturnSavedValues().amountOfCurrency < TournamentInfoDataHandler.instance.ReturnSavedValues().prices[i])
+                if (CurrencyDataHandler.instance.ReturnSavedValues().amountOfCoins < TournamentInfoDataHandler.instance.ReturnSavedValues().prices[i])
                 {
                     tourneyButtons[i].interactable = false;
                 }
@@ -56,7 +56,7 @@ public class TournamentModesUIManager : MonoBehaviour
                 TournamentInfoDataHandler.instance.allGameModesSpecs[i].lockedOverlay.SetActive(true);
                 tourneyButtons[i].interactable = false;
                 tourneyPriceTexts[i].text = TournamentInfoDataHandler.instance.allGameModesSpecs[i].tournamentUnlockCost.ToString();
-                if(UserDataHandler.instance.ReturnSavedValues().amountOfCurrency >= TournamentInfoDataHandler.instance.allGameModesSpecs[i].tournamentUnlockCost)
+                if(CurrencyDataHandler.instance.ReturnSavedValues().amountOfCoins >= TournamentInfoDataHandler.instance.allGameModesSpecs[i].tournamentUnlockCost)
                 {
                     tourneyUnlockButtons[i].interactable = true;
                 }

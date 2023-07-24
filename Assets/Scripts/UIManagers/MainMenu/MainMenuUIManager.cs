@@ -45,11 +45,11 @@ public class MainMenuUIManager : MonoBehaviour
             noADsButton.interactable = false;
         }
 
-        if (UserDataHandler.instance.ReturnSavedValues().hasComeFromMainGame)
+        if (MiscellaneousDataHandler.instance.ReturnSavedValues().hasComeFromMainGame)
         {
             ADManager.Instance.ShowInterstitialAd();
-            UserDataHandler.instance.ReturnSavedValues().hasComeFromMainGame = false;
-            UserDataHandler.instance.SaveUserData();
+            MiscellaneousDataHandler.instance.ReturnSavedValues().hasComeFromMainGame = false;
+            MiscellaneousDataHandler.instance.SaveMiscData();
         }
     }
     private void OnEnable()

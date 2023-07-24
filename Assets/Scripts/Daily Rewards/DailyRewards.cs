@@ -36,9 +36,9 @@ public class DailyRewards : MonoBehaviour
 
     public void CheckIfDailyRewardClaimed()
     {
-        if (!string.IsNullOrEmpty(UserDataHandler.instance.ReturnSavedValues().Date_And_Time))
+        if (!string.IsNullOrEmpty(MiscellaneousDataHandler.instance.ReturnSavedValues().Date_And_Time))
         {
-            DateTime lastClaim = DateTime.Parse(UserDataHandler.instance.ReturnSavedValues().Date_And_Time);
+            DateTime lastClaim = DateTime.Parse(MiscellaneousDataHandler.instance.ReturnSavedValues().Date_And_Time);
             if (lastClaim.Date != GetInternetTime.Instance.GetCurrentDateTime().Date)
             {
                 dailyRewardPanel.SetActive(true);
@@ -57,9 +57,9 @@ public class DailyRewards : MonoBehaviour
     public void OnClaiming()
     {
         CurrencyManager.instance.AdjustCurrency(dailyRewardAmount);
-        UserDataHandler.instance.ReturnSavedValues().Date_And_Time = null;
-        UserDataHandler.instance.ReturnSavedValues().Date_And_Time = GetInternetTime.Instance.GetCurrentDateTime().ToString();
-        UserDataHandler.instance.SaveUserData();
+        MiscellaneousDataHandler.instance.ReturnSavedValues().Date_And_Time = null;
+        MiscellaneousDataHandler.instance.ReturnSavedValues().Date_And_Time = GetInternetTime.Instance.GetCurrentDateTime().ToString();
+        MiscellaneousDataHandler.instance.SaveMiscData();
         CheckIfDailyRewardClaimed();
     }
 }
