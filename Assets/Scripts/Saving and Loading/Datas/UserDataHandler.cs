@@ -104,4 +104,5 @@ public class UserData
     public bool hasRequestedReview = false;
     public bool hasComeFromMainGame = false;
     public int playerRankPoints = 0;
+    public bool hasPlayedTutorial = false;
 }
