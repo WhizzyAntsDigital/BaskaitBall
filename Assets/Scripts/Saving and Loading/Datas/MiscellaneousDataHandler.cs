@@ -41,7 +41,7 @@ public class MiscellaneousDataHandler : MonoBehaviour
 public class MiscellaneousData
 {
     public bool hasPlayedTutorial = false;
-    public string Date_And_Time = null;
+    public string Date_And_Time_DailyReward = null;
     public bool hasRequestedReview = false;
     public bool hasComeFromMainGame = false;
     public bool hasClaimedDailyRewardToday = false;

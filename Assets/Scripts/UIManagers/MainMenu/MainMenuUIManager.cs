@@ -12,6 +12,7 @@ public class MainMenuUIManager : MonoBehaviour
     [field: SerializeField] private GameObject shopCanvas;
     [field: SerializeField] private GameObject tournamentModesCanvas;
     [field: SerializeField] private GameObject usernamePromptCanvas;
+    [field: SerializeField] private GameObject missionsCanvas;
     [field: SerializeField] private AudioSource audioSource;
     private bool isAudioMuted = false;
 
@@ -38,6 +39,7 @@ public class MainMenuUIManager : MonoBehaviour
         profileCanvas.SetActive(false);
         shopCanvas.SetActive(false);
         tournamentModesCanvas.SetActive(false);
+        missionsCanvas.SetActive(false);
 
         if (!InternetConnectivityChecker.Instance.CheckForInternetConnectionUponCommand())
         {
@@ -74,6 +76,20 @@ public class MainMenuUIManager : MonoBehaviour
         else if(isOpen)
         {
             settingsCanvas.SetActive(!isOpen);
+            isOpen = false;
+        }
+    }
+
+    public void DailyMissionsUIControl()
+    {
+        if (!isOpen)
+        {
+            missionsCanvas.SetActive(!isOpen);
+            isOpen = true;
+        }
+        else if (isOpen)
+        {
+            missionsCanvas.SetActive(!isOpen);
             isOpen = false;
         }
     }
