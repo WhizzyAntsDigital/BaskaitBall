@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum Quest { PlayMatches, GetShots, WinMatches, LoseMatches, Get3Pointers, WatchRewardedAD };
@@ -16,19 +17,21 @@ public class DailyMissionsManager : MonoBehaviour
 
     private void Start()
     {
-        //if(MissionsDataHandler.instance.CheckIfItsNextDay())
-        //{
+        if (MissionsDataHandler.instance.CheckIfItsNextDay())
+        {
             ResetValues();
             GetNewMissions();
             FillInText();
-        //}
-        //else
-        //{
-        //    FillInText();
-        //}
+        }
+        else
+        {
+            FillInText();
+            UpdateProgress();
+            CheckAndReward();
+        }
     }
 
-    private void GetNewMissions()
+    private void GetNewMissions() //Generates New Daily Missions
     {
         todaysMissions = new List<MissionsSpecs>();
 
@@ -47,7 +50,7 @@ public class DailyMissionsManager : MonoBehaviour
         SaveTargetsForTheDay();
     }
 
-    private int GetMissionBasedOnTier(QuestReward reward)
+    private int GetMissionBasedOnTier(QuestReward reward) //Returns Mission Based on Tier Chosen
     {
         int i = Random.Range(0, dailyMissionsList.Count);
         while (dailyMissionsList[i].questRewardType != reward)
@@ -57,7 +60,7 @@ public class DailyMissionsManager : MonoBehaviour
         return i;
     }
 
-    private void SaveTargetsForTheDay()
+    private void SaveTargetsForTheDay() //Saves the current day's missions' targets
     {
         for(int i = 0; i < todaysMissions.Count; i++) 
         {
@@ -86,7 +89,7 @@ public class DailyMissionsManager : MonoBehaviour
         }
     }
 
-    private void FillInText()
+    private void FillInText() //Populates the Text Mesh Pros for display
     {
         for(int i = 0; i < missionDescriptions.Count; i++)
         {
@@ -95,13 +98,68 @@ public class DailyMissionsManager : MonoBehaviour
         }
     }
 
-    private void ResetValues()
+    private void ResetValues() //Resets all Values
     {
         MissionsDataHandler.instance.ResetAllData();
         for(int i = 0; i < dailyMissionsList.Count; i++)
         {
             dailyMissionsList[i].playerProgress = 0;
             dailyMissionsList[i].todaysValue = 0;
+        }
+    }
+
+    private void UpdateProgress() //Updates Player's Progress
+    {
+        for(int i = 0; i < dailyMissionsList.Count; i ++)
+        {
+            switch (dailyMissionsList[i].questType)
+            {
+                case Quest.PlayMatches:
+                    dailyMissionsList[i].playerProgress = MissionsDataHandler.instance.ReturnSavedValues().currentNumberOfMatches;
+                    break;
+                case Quest.GetShots:
+                    dailyMissionsList[i].playerProgress = MissionsDataHandler.instance.ReturnSavedValues().currentNumberOfShots;
+                    break;
+                case Quest.WinMatches:
+                    dailyMissionsList[i].playerProgress = MissionsDataHandler.instance.ReturnSavedValues().currentNumberOfWins;
+                    break;
+                case Quest.LoseMatches:
+                    dailyMissionsList[i].playerProgress = MissionsDataHandler.instance.ReturnSavedValues().currentNumberOfLosses;
+                    break;
+                case Quest.Get3Pointers:
+                    dailyMissionsList[i].playerProgress = MissionsDataHandler.instance.ReturnSavedValues().currentNumberOf3Pointers;
+                    break;
+                case Quest.WatchRewardedAD:
+                    dailyMissionsList[i].playerProgress = MissionsDataHandler.instance.ReturnSavedValues().currentNumberOfADs;
+                    break;
+            }
+        }
+    }
+
+    private void CheckAndReward() //Compares Player's Progress with the target and rewards them accordingly.
+    {
+        //Mission 1
+        if(!MissionsDataHandler.instance.ReturnSavedValues().completedMission1 && (todaysMissions[0].playerProgress >= todaysMissions[0].todaysValue))
+        {
+            //RewardPlayer
+            MissionsDataHandler.instance.ReturnSavedValues().completedMission1 = true;
+            missionProgress[0].text = todaysMissions[0].todaysValue + "/" + todaysMissions[0].todaysValue;
+        }
+
+        //Mission 2
+        if (!MissionsDataHandler.instance.ReturnSavedValues().completedMission2 && (todaysMissions[1].playerProgress >= todaysMissions[1].todaysValue))
+        {
+            //RewardPlayer
+            MissionsDataHandler.instance.ReturnSavedValues().completedMission2 = true;
+            missionProgress[1].text = todaysMissions[1].todaysValue + "/" + todaysMissions[1].todaysValue;
+        }
+
+        //Mission 3
+        if (!MissionsDataHandler.instance.ReturnSavedValues().completedMission3 && (todaysMissions[2].playerProgress >= todaysMissions[2].todaysValue))
+        {
+            //RewardPlayer
+            MissionsDataHandler.instance.ReturnSavedValues().completedMission3 = true;
+            missionProgress[2].text = todaysMissions[2].todaysValue + "/" + todaysMissions[2].todaysValue;
         }
     }
 }
