@@ -267,6 +267,8 @@ public class InGameUI : MonoBehaviour
             matchResult = MatchResult.PlayerWon;
             audioSource.clip = winSound;
             audioSource.Play();
+            MissionTracker.instance.AdjustValues(Quest.WinMatches);
+            MissionTracker.instance.AdjustValues(Quest.PlayMatches);
             GameManager.instance.OnGameOver?.Invoke();
         }
         else if (ScoreCalculator.instance.scoreValue < AIScore.instance.opponentScore)
@@ -274,6 +276,8 @@ public class InGameUI : MonoBehaviour
             matchResult = MatchResult.PlayerLost;
             audioSource.clip = loseSound;
             audioSource.Play();
+            MissionTracker.instance.AdjustValues(Quest.LoseMatches);
+            MissionTracker.instance.AdjustValues(Quest.PlayMatches);
             GameManager.instance.OnGameOver?.Invoke();
         }
         else if ((ScoreCalculator.instance.scoreValue == AIScore.instance.opponentScore))

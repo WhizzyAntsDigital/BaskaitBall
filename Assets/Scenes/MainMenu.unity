@@ -10672,9 +10672,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinsText:
-  - {fileID: 0}
+  - {fileID: 792805892}
   - {fileID: 239327291}
-  - {fileID: 0}
+  - {fileID: 1344268687}
   tournamentModesUIManager: {fileID: 196551829}
   shopManager: {fileID: 196551831}
 --- !u!114 &623034512
@@ -13711,7 +13711,7 @@ GameObject:
   - component: {fileID: 792805893}
   - component: {fileID: 792805892}
   m_Layer: 5
-  m_Name: Gems Amount
+  m_Name: Coins Amount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16883,6 +16883,7 @@ GameObject:
   - component: {fileID: 1034285063}
   - component: {fileID: 1034285062}
   - component: {fileID: 1034285064}
+  - component: {fileID: 1034285065}
   m_Layer: 0
   m_Name: DailyMissionsManager
   m_TagString: Untagged
@@ -16903,56 +16904,44 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dailyMissionsList:
-  - questID: 0
-    questType: 0
+  - questType: 0
     questRewardType: 2
     questDescription: Play Matches
-    isActiveForToday: 0
     minValue: 2
     maxValue: 5
     todaysValue: 0
     playerProgress: 0
-  - questID: 1
-    questType: 1
+  - questType: 1
     questRewardType: 0
     questDescription: Score Baskets
-    isActiveForToday: 0
     minValue: 10
     maxValue: 30
     todaysValue: 0
     playerProgress: 0
-  - questID: 2
-    questType: 2
+  - questType: 2
     questRewardType: 1
     questDescription: Win Matches
-    isActiveForToday: 0
     minValue: 2
     maxValue: 5
     todaysValue: 0
     playerProgress: 0
-  - questID: 3
-    questType: 3
+  - questType: 3
     questRewardType: 1
     questDescription: Lose Matches
-    isActiveForToday: 0
     minValue: 2
     maxValue: 5
     todaysValue: 0
     playerProgress: 0
-  - questID: 4
-    questType: 4
+  - questType: 4
     questRewardType: 0
     questDescription: Get 3 Pointers
-    isActiveForToday: 0
     minValue: 5
     maxValue: 10
     todaysValue: 0
     playerProgress: 0
-  - questID: 5
-    questType: 5
+  - questType: 5
     questRewardType: 2
     questDescription: Watch Rewarded ADs
-    isActiveForToday: 0
     minValue: 1
     maxValue: 3
     todaysValue: 0
@@ -16966,6 +16955,7 @@ MonoBehaviour:
   - {fileID: 889365517}
   - {fileID: 258222199}
   - {fileID: 720157469}
+  timerText: {fileID: 992976366}
 --- !u!4 &1034285063
 Transform:
   m_ObjectHideFlags: 0
@@ -17010,6 +17000,19 @@ MonoBehaviour:
     currentTargetForLosses: 0
     currentTargetForADs: 0
     DateAndTimeLastOpened: 
+    todaysMissions: 000000000000000000000000
+--- !u!114 &1034285065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034285061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1cb19bad289c4e42b3d8bae62222de9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1036076820
 GameObject:
   m_ObjectHideFlags: 0

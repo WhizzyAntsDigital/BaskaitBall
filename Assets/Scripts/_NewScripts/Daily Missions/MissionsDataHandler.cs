@@ -24,7 +24,7 @@ public class MissionsDataHandler : MonoBehaviour
         if (!string.IsNullOrEmpty(missionsData.DateAndTimeLastOpened))
         {
             DateTime lastOpened = DateTime.Parse(missionsData.DateAndTimeLastOpened);
-            if (lastOpened.Date > GetInternetTime.Instance.GetCurrentDateTime().Date)
+            if (lastOpened.Date < GetInternetTime.Instance.GetCurrentDateTime().Date)
             {
                 missionsData.DateAndTimeLastOpened = GetInternetTime.Instance.GetCurrentDateTime().ToString();
                 SaveMissionsData();
@@ -66,6 +66,7 @@ public class MissionsDataHandler : MonoBehaviour
         missionsData.currentTargetForWins = 0;
         missionsData.currentTargetForLosses = 0;
         missionsData.currentTargetForADs = 0;
+        SaveMissionsData();
 }
     #endregion
 
@@ -111,4 +112,6 @@ public class MissionsData
     public int currentTargetForADs = 0;
 
     public string DateAndTimeLastOpened = null;
+
+    public int[] todaysMissions = new int[3];
 }

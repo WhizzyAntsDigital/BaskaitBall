@@ -74,6 +74,10 @@ public class ScoreCalculator : MonoBehaviour
                 {
                     startTimer = true;
                 }
+                else
+                {
+                    MissionTracker.instance.AdjustValues(Quest.GetShots);
+                }
             }
             else
             {
@@ -91,6 +95,11 @@ public class ScoreCalculator : MonoBehaviour
                 if (isTraining)
                 {
                     startTimer = true;
+                }
+                else
+                {
+                    MissionTracker.instance.AdjustValues(Quest.GetShots);
+                    MissionTracker.instance.AdjustValues(Quest.Get3Pointers);
                 }
             }
             if (hasParticleEffect)

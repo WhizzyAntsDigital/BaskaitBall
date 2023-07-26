@@ -20,6 +20,7 @@ public class ADManager : MonoBehaviour
 
     public void AddCoinAfterSeenRewardedVideo()
     {
+        MissionTracker.instance.AdjustValues(Quest.WatchRewardedAD);
         CurrencyManager.instance.AdjustCurrency(500);
     }
     public void onInterstitialAdComplete()
