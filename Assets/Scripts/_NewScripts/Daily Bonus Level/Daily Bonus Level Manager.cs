@@ -73,7 +73,7 @@ public class DailyBonusLevelManager : MonoBehaviour
                 playButton.interactable = true;
                 normalPlayText.SetActive(true);
                 normalPlayText.GetComponentInChildren<TextMeshProUGUI>().text = "No AD Available";
-                adPlayText.SetActive(true);
+                adPlayText.SetActive(false);
             }
         }
         else
