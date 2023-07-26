@@ -22,6 +22,7 @@ public class DailyMissionsManager : MonoBehaviour
     {
         if (MissionsDataHandler.instance.CheckIfItsNextDay())
         {
+            //Generates New Missions when the game is opened for the first time or when a new day starts
             ResetValues();
             GetNewMissions();
             FillInText();
@@ -250,5 +251,11 @@ public class DailyMissionsManager : MonoBehaviour
         DateTime nextDay = currentTime.AddDays(1).Date;
         TimeSpan timeSpan = nextDay - currentTime;
         timerText.text = timeSpan.Hours + ":" + timeSpan.Minutes + ":" + timeSpan.Seconds;
+        if(timeSpan.Hours >= 23 && timeSpan.Minutes >= 59 && MissionsDataHandler.instance.CheckIfItsNextDay())
+        {
+            ResetValues();
+            GetNewMissions();
+            FillInText();
+        }
     }
 }
