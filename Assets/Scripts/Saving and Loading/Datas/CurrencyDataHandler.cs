@@ -41,5 +41,5 @@ public class CurrencyDataHandler : MonoBehaviour
 public class CurrencyData
 {
     public int amountOfCoins = 1000;
-    public int amountOfGems = 1000;
+    public int amountOfGems = 10;
 }

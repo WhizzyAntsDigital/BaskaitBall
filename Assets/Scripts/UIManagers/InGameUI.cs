@@ -38,6 +38,9 @@ public class InGameUI : MonoBehaviour
 
     [field: SerializeField] private TextMeshProUGUI highScore;
 
+    [field: Header("Bonus Level Stuff")]
+    [field: SerializeField] TextMeshProUGUI amountOfGemsEarned;
+
     private float timer;
     private bool startTimer = false;
     private string SceneToLoad;
@@ -139,7 +142,7 @@ public class InGameUI : MonoBehaviour
         }
         if (matchResult == MatchResult.PlayerWon)
         {
-            CurrencyManager.instance.AdjustCurrency((TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID] * 2));
+            CurrencyManager.instance.AdjustCoins((TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID] * 2));
         }
         playersInvestingCoins = TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID];
         coinReductionRate = Mathf.Pow(10, ((TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID] * 4).ToString().Length - 2));
@@ -223,6 +226,11 @@ public class InGameUI : MonoBehaviour
         touchArea.SetActive(false);
         gameOverScene.SetActive(true);
         finalScore.text = ScoreCalculator.instance.scoreValue.ToString();
+
+        int amountOfGemsToAdd = (ScoreCalculator.instance.scoreValue / 100);
+        CurrencyManager.instance.AdjustGems(amountOfGemsToAdd);
+        amountOfGemsEarned.text = amountOfGemsToAdd.ToString();
+
         if (Random.Range(0, 3) != 0)
         {
             MiscellaneousDataHandler.instance.ReturnSavedValues().hasComeFromMainGame = true;

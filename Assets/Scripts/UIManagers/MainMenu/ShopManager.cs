@@ -217,7 +217,7 @@ public class ShopManager : MonoBehaviour
         infoOnSkins[currentSkin].isOwned = true;
         SkinsOwnershipDataHandler.instance.ReturnSavedValues().isOwned[currentSkin] = true;
         SkinsOwnershipDataHandler.instance.SaveSkinData();
-        CurrencyManager.instance.AdjustCurrency(-infoOnSkins[currentSkin].skinPrice);
+        CurrencyManager.instance.AdjustCoins(-infoOnSkins[currentSkin].skinPrice);
         UpdateActionButton();
     }
 }

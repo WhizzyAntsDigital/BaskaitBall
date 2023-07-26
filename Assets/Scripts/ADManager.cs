@@ -2,35 +2,21 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
+public enum TypeOfRewardedAD
+{
+    AddCoins,
+    BonusLevel
+}
 public class ADManager : MonoBehaviour
 {
     public static ADManager Instance;
     [field: SerializeField] GameObject removeADsButton;
     //Do not change these values
     private const string _androidAppID = "1a193215d";
+    private TypeOfRewardedAD typeOfAd;
     private void Awake()
     {
         Instance = this;
-    }
-    void OnApplicationPause(bool isPaused)
-    {
-        IronSource.Agent.onApplicationPause(isPaused);
-    }
-
-    public void AddCoinAfterSeenRewardedVideo()
-    {
-        MissionTracker.instance.AdjustValues(Quest.WatchRewardedAD);
-        CurrencyManager.instance.AdjustCurrency(500);
-    }
-    public void onInterstitialAdComplete()
-    {
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-    public void OnPurchaseOfAdBlock()
-    {
-        PurchaseTrackerDataHandler.instance.ReturnSavedValues().hasPurchasedAdBlock = true;
-        removeADsButton.SetActive(false);
     }
     private void OnEnable()
     {
@@ -112,11 +98,38 @@ public class ADManager : MonoBehaviour
             removeADsButton.SetActive(true);
         }
     }
-    public void ShowRewardedAd()
+    void OnApplicationPause(bool isPaused)
+    {
+        IronSource.Agent.onApplicationPause(isPaused);
+    }
+
+    public void OnRewardedADComplete()
+    {
+        if (typeOfAd == TypeOfRewardedAD.AddCoins)
+        {
+            MissionTracker.instance.AdjustValues(Quest.WatchRewardedAD);
+            CurrencyManager.instance.AdjustCoins(500);
+        }
+        else if (typeOfAd == TypeOfRewardedAD.BonusLevel)
+        {
+            DailyBonusLevelManager.instance.LoadBonusLevel();
+        }
+    }
+    public void onInterstitialAdComplete()
+    {
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    public void OnPurchaseOfAdBlock()
+    {
+        PurchaseTrackerDataHandler.instance.ReturnSavedValues().hasPurchasedAdBlock = true;
+        removeADsButton.SetActive(false);
+    }
+    public void ShowRewardedAd(TypeOfRewardedAD type)
     {
         if (IronSource.Agent.isRewardedVideoAvailable())
         {
             IronSource.Agent.showRewardedVideo();
+            typeOfAd = type;
         }
         else
         {
@@ -174,7 +187,7 @@ public class ADManager : MonoBehaviour
     // When using server-to-server callbacks, you may ignore this event and wait for the ironSource server callback.
     void RewardedVideoOnAdRewardedEvent(IronSourcePlacement placement, IronSourceAdInfo adInfo)
     {
-            AddCoinAfterSeenRewardedVideo();
+            OnRewardedADComplete();
 
     }
     // The rewarded video ad was failed to show.

@@ -10,6 +10,7 @@ public class CurrencyManager : MonoBehaviour
     public static CurrencyManager instance;
     [field: Header("Currency Manager")]
     [field: SerializeField] private List<TextMeshProUGUI> coinsText;
+    [field: SerializeField] private List<TextMeshProUGUI> gemsText;
 
     [field: Header("Only For Main Menu")]
     [field: SerializeField] private TournamentModesUIManager tournamentModesUIManager;
@@ -19,21 +20,35 @@ public class CurrencyManager : MonoBehaviour
     {
         instance = this;
     }
-    public void UpdateCoinsAmount()
+    public void UpdateCurrencysAmount()
     {
         for(int i = 0; i < coinsText.Count; i++)
         {
             coinsText[i].text = CurrencyDataHandler.instance.ReturnSavedValues().amountOfCoins.ToString();
         }
+        for(int j = 0; j< gemsText.Count; j++)
+        {
+            gemsText[j].text = CurrencyDataHandler.instance.ReturnSavedValues().amountOfGems.ToString();
+        }
     }
     
-    public void AdjustCurrency(int amount)
+    public void AdjustCoins(int amount)
     {
         CurrencyDataHandler.instance.ReturnSavedValues().amountOfCoins += amount;
         CurrencyDataHandler.instance.SaveCurrencyData();
-        if(SceneManager.GetActiveScene().name == "MainMenu")
+        UpdateOnMainMenu();
+    }
+    public void AdjustGems(int amount)
+    {
+        CurrencyDataHandler.instance.ReturnSavedValues().amountOfGems += amount;
+        CurrencyDataHandler.instance.SaveCurrencyData();
+        UpdateOnMainMenu();
+    }
+    private void UpdateOnMainMenu()
+    {
+        if (SceneManager.GetActiveScene().name == "MainMenu")
         {
-            UpdateCoinsAmount();
+            UpdateCurrencysAmount();
             tournamentModesUIManager.AssignPrices();
             shopManager.UpdateActionButton();
         }

@@ -13,6 +13,7 @@ public class MainMenuUIManager : MonoBehaviour
     [field: SerializeField] private GameObject tournamentModesCanvas;
     [field: SerializeField] private GameObject usernamePromptCanvas;
     [field: SerializeField] private GameObject missionsCanvas;
+    [field: SerializeField] private GameObject bonusLevelCanvas;
     [field: SerializeField] private AudioSource audioSource;
     private bool isAudioMuted = false;
 
@@ -33,7 +34,7 @@ public class MainMenuUIManager : MonoBehaviour
         profileStatsManager = GetComponent<ProfileStatsManager>();
         tournamentModesUIManager = GetComponent<TournamentModesUIManager>();
         settingsManager = GetComponent<SettingsManager>();
-        CurrencyManager.instance.UpdateCoinsAmount();
+        CurrencyManager.instance.UpdateCurrencysAmount();
         mainMenuCanvas.SetActive(true);
         settingsCanvas.SetActive(false);
         profileCanvas.SetActive(false);
@@ -90,6 +91,20 @@ public class MainMenuUIManager : MonoBehaviour
         else if (isOpen)
         {
             missionsCanvas.SetActive(!isOpen);
+            isOpen = false;
+        }
+    }
+
+    public void BonusLevelUIControl()
+    {
+        if (!isOpen)
+        {
+            bonusLevelCanvas.SetActive(!isOpen);
+            isOpen = true;
+        }
+        else if (isOpen)
+        {
+            bonusLevelCanvas.SetActive(!isOpen);
             isOpen = false;
         }
     }

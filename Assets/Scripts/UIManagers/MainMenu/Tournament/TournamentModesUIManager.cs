@@ -31,7 +31,7 @@ public class TournamentModesUIManager : MonoBehaviour
     public void SelectTournamentMode(int ID)
     {
         TournamentInfoDataHandler.instance.ReturnSavedValues().selected[ID] = true;
-        CurrencyManager.instance.AdjustCurrency(-TournamentInfoDataHandler.instance.ReturnSavedValues().prices[ID]);
+        CurrencyManager.instance.AdjustCoins(-TournamentInfoDataHandler.instance.ReturnSavedValues().prices[ID]);
         TournamentInfoDataHandler.instance.SaveTourneyData();
     }
     public void AssignPrices()
@@ -77,7 +77,7 @@ public class TournamentModesUIManager : MonoBehaviour
     }
     public void OnUnlockTournament(int ID)
     {
-        CurrencyManager.instance.AdjustCurrency(-TournamentInfoDataHandler.instance.allGameModesSpecs[ID].tournamentUnlockCost);
+        CurrencyManager.instance.AdjustCoins(-TournamentInfoDataHandler.instance.allGameModesSpecs[ID].tournamentUnlockCost);
         TournamentInfoDataHandler.instance.ReturnSavedValues().unlocked[ID] = true;
         TournamentInfoDataHandler.instance.SaveTourneyData();
         TournamentInfoDataHandler.instance.allGameModesSpecs[ID].unlockAnimation.UnlockIcon();

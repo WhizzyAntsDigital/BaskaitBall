@@ -56,7 +56,7 @@ public class DailyRewards : MonoBehaviour
 
     public void OnClaiming()
     {
-        CurrencyManager.instance.AdjustCurrency(dailyRewardAmount);
+        CurrencyManager.instance.AdjustCoins(dailyRewardAmount);
         MiscellaneousDataHandler.instance.ReturnSavedValues().Date_And_Time_DailyReward = null;
         MiscellaneousDataHandler.instance.ReturnSavedValues().Date_And_Time_DailyReward = GetInternetTime.Instance.GetCurrentDateTime().ToString();
         MiscellaneousDataHandler.instance.SaveMiscData();
