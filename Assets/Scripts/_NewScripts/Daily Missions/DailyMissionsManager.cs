@@ -18,6 +18,14 @@ public class DailyMissionsManager : MonoBehaviour
     [field: SerializeField] private List<TextMeshProUGUI> missionProgress;
     [field: SerializeField] private TextMeshProUGUI timerText;
 
+    [field: Header("Daily Missions Reward")]
+    [field: SerializeField] private int rewardForMission1;
+    [field: SerializeField] private TextMeshProUGUI reward1;
+    [field: SerializeField] private int rewardForMission2;
+    [field: SerializeField] private TextMeshProUGUI reward2;
+    [field: SerializeField] private int rewardForMission3;
+    [field: SerializeField] private TextMeshProUGUI reward3;
+
     private void Start()
     {
         if (MissionsDataHandler.instance.CheckIfItsNextDay())
@@ -174,6 +182,9 @@ public class DailyMissionsManager : MonoBehaviour
         {
             missionProgress[2].text = todaysMissions[2].todaysValue + "/" + todaysMissions[2].todaysValue;
         }
+        reward1.text = rewardForMission1.ToString();
+        reward2.text = rewardForMission2.ToString();
+        reward3.text = rewardForMission3.ToString();
     }
 
     private void ResetValues() //Resets all Values
@@ -219,8 +230,9 @@ public class DailyMissionsManager : MonoBehaviour
         //Mission 1
         if(!MissionsDataHandler.instance.ReturnSavedValues().completedMission1 && (todaysMissions[0].playerProgress >= todaysMissions[0].todaysValue))
         {
-            print("Rewarded For 1");
             //RewardPlayer
+            CurrencyManager.instance.AdjustGems(rewardForMission1);
+
             MissionsDataHandler.instance.ReturnSavedValues().completedMission1 = true;
             missionProgress[0].text = todaysMissions[0].todaysValue + "/" + todaysMissions[0].todaysValue;
         }
@@ -228,8 +240,9 @@ public class DailyMissionsManager : MonoBehaviour
         //Mission 2
         if (!MissionsDataHandler.instance.ReturnSavedValues().completedMission2 && (todaysMissions[1].playerProgress >= todaysMissions[1].todaysValue))
         {
-            print("Rewarded For 2");
             //RewardPlayer
+            CurrencyManager.instance.AdjustGems(rewardForMission2);
+
             MissionsDataHandler.instance.ReturnSavedValues().completedMission2 = true;
             missionProgress[1].text = todaysMissions[1].todaysValue + "/" + todaysMissions[1].todaysValue;
         }
@@ -237,8 +250,9 @@ public class DailyMissionsManager : MonoBehaviour
         //Mission 3
         if (!MissionsDataHandler.instance.ReturnSavedValues().completedMission3 && (todaysMissions[2].playerProgress >= todaysMissions[2].todaysValue))
         {
-            print("Rewarded For 3");
             //RewardPlayer
+            CurrencyManager.instance.AdjustGems(rewardForMission3);
+
             MissionsDataHandler.instance.ReturnSavedValues().completedMission3 = true;
             missionProgress[2].text = todaysMissions[2].todaysValue + "/" + todaysMissions[2].todaysValue;
         }

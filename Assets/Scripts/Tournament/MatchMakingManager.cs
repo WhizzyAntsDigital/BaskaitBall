@@ -38,15 +38,8 @@ public class MatchMakingManager : MonoBehaviour
 
     private void Start()
     {
-        audioSource = GetComponent<AudioSource>();  
-        if(SettingsDataHandler.instance.ReturnSavedValues().soundMuted)
-        {
-            audioSource.volume = 0;
-        }
-        else
-        {
-            audioSource.volume = 1;
-        }
+        audioSource = GetComponent<AudioSource>();
+        audioSource.volume = SettingsDataHandler.instance.ReturnSavedValues().soundAmount;
 
 
         playerSearchingTime = Random.Range(3, maxTimeToSearchForPlayer);

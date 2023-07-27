@@ -9,77 +9,63 @@ public class SettingsManager : MonoBehaviour
     [field: SerializeField] private GameObject settingsPanel;
     [field: SerializeField] private AudioSource musicAudioSource;
     [field: SerializeField] private AudioSource SoundAudioSource;
+    [field: SerializeField] private Slider musicSlider;
+    [field: SerializeField] private Slider soundSlider;
+
     [field: SerializeField] private Button settingsExitButton;
-    [field: SerializeField] private GameObject soundUnmuteIcon;
-    [field: SerializeField] private GameObject soundMuteIcon;
-    [field: SerializeField] private GameObject musicUnmuteIcon;
-    [field: SerializeField] private GameObject musicMuteIcon;
-    [field: SerializeField] private GameObject vibrateEnableIcon;
-    [field: SerializeField] private GameObject vibrateDisableIcon;
     [field: SerializeField] private GameObject restorePurchasesPanel;
     [field: SerializeField] private GameObject spotLight;
     [field: SerializeField] private MainMenuUIManager mainMenuUIManager;
+
+    [field: Header("Vibration Icons")]
+    [field: SerializeField] private GameObject onActive;
+    [field: SerializeField] private GameObject onInactive;
+    [field: SerializeField] private GameObject offActive;
+    [field: SerializeField] private GameObject offInactive;
+    [field: SerializeField] private Button onButton;
+    [field: SerializeField] private Button offButton;
 
 
     private void Start()
     {
         mainMenuUIManager = GetComponent<MainMenuUIManager>();
         restorePurchasesPanel.SetActive(false);
-        UpdateAudioSources();
+        OnStartValues();
     }
     public void UpdateIcons()
     {
-        soundUnmuteIcon.SetActive(!SettingsDataHandler.instance.ReturnSavedValues().soundMuted);
-        soundMuteIcon.SetActive(SettingsDataHandler.instance.ReturnSavedValues().soundMuted);
+        onActive.SetActive(!SettingsDataHandler.instance.ReturnSavedValues().vibrationDisabled);
+        onInactive.SetActive(SettingsDataHandler.instance.ReturnSavedValues().vibrationDisabled);
 
-        musicUnmuteIcon.SetActive(!SettingsDataHandler.instance.ReturnSavedValues().musicMuted);
-        musicMuteIcon.SetActive(SettingsDataHandler.instance.ReturnSavedValues().musicMuted);
+        offActive.SetActive(SettingsDataHandler.instance.ReturnSavedValues().vibrationDisabled);
+        offInactive.SetActive(!SettingsDataHandler.instance.ReturnSavedValues().vibrationDisabled);
 
-        vibrateEnableIcon.SetActive(!SettingsDataHandler.instance.ReturnSavedValues().vibrationDisabled);
-        vibrateDisableIcon.SetActive(SettingsDataHandler.instance.ReturnSavedValues().vibrationDisabled);
+        onButton.interactable = SettingsDataHandler.instance.ReturnSavedValues().vibrationDisabled;
+        offButton.interactable = !SettingsDataHandler.instance.ReturnSavedValues().vibrationDisabled;
 
-        UpdateAudioSources();
     }
-    
-    private void UpdateAudioSources()
+    public void UpdateAudioSources(int index)
     {
-        if(SettingsDataHandler.instance.ReturnSavedValues().musicMuted)
-        {
-            musicAudioSource.volume = 0f;
-            spotLight.GetComponent<LightFlicker>().enabled = true;
-            spotLight.GetComponent<LightSync>().enabled = false;
+        if(index == 0) 
+        { 
+        SettingsDataHandler.instance.ReturnSavedValues().musicAmount = musicSlider.value;
+        musicAudioSource.volume = musicSlider.value;
         }
         else
         {
-            musicAudioSource.volume = 1f;
-            spotLight.GetComponent<LightSync>().enabled = true;
-            spotLight.GetComponent<LightFlicker>().enabled = false;
+        SettingsDataHandler.instance.ReturnSavedValues().soundAmount = soundSlider.value;
+        SoundAudioSource.volume = soundSlider.value;
         }
-
-        if (SettingsDataHandler.instance.ReturnSavedValues().soundMuted)
-        {
-            SoundAudioSource.volume = 0f;
-        }
-        else
-        {
-            SoundAudioSource.volume = 1f;
-        }
+        SettingsDataHandler.instance.SaveSettingsData();
+        UpdateIcons();
     }
 
-    public void OnAudioButtonClicked(bool isMusic = false)
+    private void OnStartValues()
     {
-        if(isMusic)
-        {
-            SettingsDataHandler.instance.ReturnSavedValues().musicMuted = !SettingsDataHandler.instance.ReturnSavedValues().musicMuted;
-            SettingsDataHandler.instance.SaveSettingsData();
-            UpdateIcons();
-        }
-        else
-        {
-            SettingsDataHandler.instance.ReturnSavedValues().soundMuted = !SettingsDataHandler.instance.ReturnSavedValues().soundMuted;
-            SettingsDataHandler.instance.SaveSettingsData();
-            UpdateIcons();
-        }
+        musicSlider.value = SettingsDataHandler.instance.ReturnSavedValues().musicAmount;
+        soundSlider.value = SettingsDataHandler.instance.ReturnSavedValues().soundAmount;
+        musicAudioSource.volume = SettingsDataHandler.instance.ReturnSavedValues().musicAmount;
+        SoundAudioSource.volume = SettingsDataHandler.instance.ReturnSavedValues().soundAmount;
     }
 
     public void OnVibrationButtonClick()

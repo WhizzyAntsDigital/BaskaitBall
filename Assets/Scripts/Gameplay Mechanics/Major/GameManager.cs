@@ -30,22 +30,8 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-        if(SettingsDataHandler.instance.ReturnSavedValues().musicMuted)
-        {
-            musicAudioSource.volume = 0;
-        }
-        else
-        {
-            musicAudioSource.volume = 1;
-        }
-        if (SettingsDataHandler.instance.ReturnSavedValues().soundMuted)
-        {
-            SFXAudioSource.volume = 0;
-        }
-        else
-        {
-            SFXAudioSource.volume = 1;
-        }
+        SFXAudioSource.volume = SettingsDataHandler.instance.ReturnSavedValues().soundAmount;
+        musicAudioSource.volume = SettingsDataHandler.instance.ReturnSavedValues().musicAmount;
 
         Application.targetFrameRate = targetFPS;
         if (isMainGame)
