@@ -17,12 +17,11 @@ public class GPManager : MonoBehaviour
         //Initialize PlayGamesPlatform
         PlayGamesPlatform.Activate();
     }
-    private async void OnSignInResult(SignInStatus signInStatus)
+    private void OnSignInResult(SignInStatus signInStatus)
     {
         if (signInStatus == SignInStatus.Success)
         {
             print("Authenticated. Hello, " + Social.localUser.userName + " (" + Social.localUser.id + ")");
-            await SignInWithGooglePlayGamesAsync(token);
         }
         else
         {
@@ -41,6 +40,7 @@ public class GPManager : MonoBehaviour
                 {
                     Debug.Log("Authorization code: " + code);
                     token = code;
+                    await SignInWithGooglePlayGamesAsync(token);
                     // This token serves as an example to be used for SignInWithGooglePlayGames
                 });
             }
