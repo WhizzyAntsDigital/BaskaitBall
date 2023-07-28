@@ -26,20 +26,13 @@ public class LeaderboardManager : MonoBehaviour
     int RangeLimit { get; set; } = 2;
     List<string> FriendIds { get; set; }
     public List<PlayerInfo> players;
-
-    //async void Awake()
-    //{
-    //    Instance = this;
-    //    await UnityServices.InitializeAsync();
-    //}
     private void Start()
     {
         leaderboardButton.interactable = false;
-            Debug.Log("It started");
         if (SceneManager.GetActiveScene().name == "MainMenu")
         {
             Debug.Log("It Is Inside IF");
-            AuthenticatorManager.Instance.OnLoggedInCompleted += () => { Instance = this; Debug.Log("Instance Created"); UnityServices.InitializeAsync(); leaderboardButton.interactable = true; CurrencyDataHandler.instance.AddValuesInStarting(); };
+            AuthenticatorManager.Instance.OnLoggedInCompleted += () => { Instance = this; UnityServices.InitializeAsync(); leaderboardButton.interactable = true; CurrencyDataHandler.instance.AddValuesInStarting(); };
         }
         else
         {
@@ -53,12 +46,12 @@ public class LeaderboardManager : MonoBehaviour
         foreach (var player in players)
         {
             var playerThing = Instantiate(leaderboardPlayerInfoPrefab);
-            Debug.Log(playerThing.name);
+            //Debug.Log(playerThing.name);
             playerThing.transform.SetParent(targetForInstantiating.transform, false);
             playerThing.GetComponent<AssignLBValues>().AssignValues(player.playerName, (int)player.score);
         }
         GetPlayerScore();
-        print("Username: " + Social.localUser.userName);
+        //print("Username: " + Social.localUser.userName);
     }
     public async void AddScore(int score)
     {

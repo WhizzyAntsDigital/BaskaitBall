@@ -21,7 +21,6 @@ public class CurrencyDataHandler : MonoBehaviour
     {
         if (currencyData.hasAddedInitialDataToLeaderBoard == false)
         {
-            Debug.Log("Added Starting Values" + " Instance Value: " + LeaderboardManager.Instance == null);
             LeaderboardManager.Instance.AddScore(currencyData.lifeTimeEarnings);
             currencyData.hasAddedInitialDataToLeaderBoard = true;
             SaveCurrencyData();
