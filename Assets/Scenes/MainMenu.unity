@@ -1102,8 +1102,9 @@ GameObject:
   - component: {fileID: 38980334}
   - component: {fileID: 38980333}
   - component: {fileID: 38980332}
+  - component: {fileID: 38980336}
   m_Layer: 0
-  m_Name: AuthenticatorManager
+  m_Name: Leaderboard & Auth Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1162,6 +1163,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &38980336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 38980331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d786c37372928374988362f6df6d1cd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leaderboardPlayerInfoPrefab: {fileID: 843460747483897484, guid: fabd7012945b24d46ba923823357834a,
+    type: 3}
+  targetForInstantiating: {fileID: 104850693}
+  playerRangeToGetValues: 0
+  leaderboardButton: {fileID: 1363230862}
+  players: []
 --- !u!1 &56393823
 GameObject:
   m_ObjectHideFlags: 0
@@ -1660,7 +1679,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HorizontalFit: 0
+  m_HorizontalFit: 2
   m_VerticalFit: 2
 --- !u!1 &122681663
 GameObject:
@@ -2666,7 +2685,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 196551824}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1875267edaca0dc409131b8c76df2e38, type: 3}
   m_Name: 
@@ -4465,56 +4484,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &332903960
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 332903962}
-  - component: {fileID: 332903961}
-  m_Layer: 0
-  m_Name: LeaderboardManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &332903961
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 332903960}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d786c37372928374988362f6df6d1cd7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leaderboardPlayerInfoPrefab: {fileID: 843460747483897484, guid: fabd7012945b24d46ba923823357834a,
-    type: 3}
-  targetForInstantiating: {fileID: 104850693}
-  playerRangeToGetValues: 0
-  scrollRect: {fileID: 759239084}
-  players: []
---- !u!4 &332903962
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 332903960}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &335460794
 GameObject:
   m_ObjectHideFlags: 0
@@ -5644,7 +5613,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 332903961}
+      - m_Target: {fileID: 38980336}
         m_TargetAssemblyTypeName: LeaderboardManager, Assembly-CSharp
         m_MethodName: PopulateLeaderboard
         m_Mode: 1
@@ -34374,4 +34343,3 @@ SceneRoots:
   - {fileID: 1463418426}
   - {fileID: 38980335}
   - {fileID: 1968317463}
-  - {fileID: 332903962}

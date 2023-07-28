@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Unity.Services.Core;
 using Unity.Services.Leaderboards;
 using Unity.Services.Leaderboards.Models;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LeaderboardManager : MonoBehaviour
@@ -14,7 +17,7 @@ public class LeaderboardManager : MonoBehaviour
     [field: SerializeField] private GameObject leaderboardPlayerInfoPrefab;
     [field: SerializeField] private GameObject targetForInstantiating;
     [field: SerializeField] private int playerRangeToGetValues;
-    [field: SerializeField] private ScrollRect scrollRect;
+    [field: SerializeField] private Button leaderboardButton;
 
     const string LeaderboardId = "bb_monthly";
     string VersionId { get; set; }
@@ -24,22 +27,33 @@ public class LeaderboardManager : MonoBehaviour
     List<string> FriendIds { get; set; }
     public List<PlayerInfo> players;
 
-    async void Awake()
-    {
-        Instance = this;
-        await UnityServices.InitializeAsync();
-
-    }
-
+    //async void Awake()
+    //{
+    //    Instance = this;
+    //    await UnityServices.InitializeAsync();
+    //}
     private void Start()
     {
-        AuthenticatorManager.Instance.OnLoggedInCompleted += () => { GetPlayerRange(); };
+        leaderboardButton.interactable = false;
+            Debug.Log("It started");
+        if (SceneManager.GetActiveScene().name == "MainMenu")
+        {
+            Debug.Log("It Is Inside IF");
+            AuthenticatorManager.Instance.OnLoggedInCompleted += () => { Instance = this; Debug.Log("Instance Created"); UnityServices.InitializeAsync(); leaderboardButton.interactable = true; CurrencyDataHandler.instance.AddValuesInStarting(); };
+        }
+        else
+        {
+            Instance = this;
+        }
     }
-    public void PopulateLeaderboard()
+        public async void PopulateLeaderboard()
     {
+        GetPlayerRange();
+        await Task.Delay(1000);
         foreach (var player in players)
         {
             var playerThing = Instantiate(leaderboardPlayerInfoPrefab);
+            Debug.Log(playerThing.name);
             playerThing.transform.SetParent(targetForInstantiating.transform, false);
             playerThing.GetComponent<AssignLBValues>().AssignValues(player.playerName, (int)player.score);
         }

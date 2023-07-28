@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CurrencyDataHandler : MonoBehaviour
 {
@@ -16,16 +17,11 @@ public class CurrencyDataHandler : MonoBehaviour
             currencyData = new CurrencyData();
         }
     }
-
-    private void Start()
-    {
-        AuthenticatorManager.Instance.OnLoggedInCompleted += AddValuesInStarting;
-    }
-
-    private void AddValuesInStarting()
+    public void AddValuesInStarting()
     {
         if (currencyData.hasAddedInitialDataToLeaderBoard == false)
         {
+            Debug.Log("Added Starting Values" + " Instance Value: " + LeaderboardManager.Instance == null);
             LeaderboardManager.Instance.AddScore(currencyData.lifeTimeEarnings);
             currencyData.hasAddedInitialDataToLeaderBoard = true;
             SaveCurrencyData();

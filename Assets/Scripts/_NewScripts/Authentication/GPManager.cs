@@ -65,6 +65,7 @@ public class GPManager : MonoBehaviour
         {
             await AuthenticationService.Instance.SignInWithGooglePlayGamesAsync(authCode);
             Debug.Log("SignIn is successful.");
+            OnGoogleLoginComplete?.Invoke();
         }
         catch (AuthenticationException ex)
         {
