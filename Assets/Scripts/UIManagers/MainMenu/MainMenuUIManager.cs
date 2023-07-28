@@ -14,6 +14,7 @@ public class MainMenuUIManager : MonoBehaviour
     [field: SerializeField] private GameObject usernamePromptCanvas;
     [field: SerializeField] private GameObject missionsCanvas;
     [field: SerializeField] private GameObject bonusLevelCanvas;
+    [field: SerializeField] private GameObject leaderboardCanvas;
     [field: SerializeField] private AudioSource audioSource;
     private bool isAudioMuted = false;
 
@@ -41,6 +42,7 @@ public class MainMenuUIManager : MonoBehaviour
         shopCanvas.SetActive(false);
         tournamentModesCanvas.SetActive(false);
         missionsCanvas.SetActive(false);
+        leaderboardCanvas.SetActive(false);
 
         if (!InternetConnectivityChecker.Instance.CheckForInternetConnectionUponCommand())
         {
@@ -91,6 +93,20 @@ public class MainMenuUIManager : MonoBehaviour
         else if (isOpen)
         {
             missionsCanvas.SetActive(!isOpen);
+            isOpen = false;
+        }
+    }
+
+    public void LeaderboardUIControl()
+    {
+        if (!isOpen)
+        {
+            leaderboardCanvas.SetActive(!isOpen);
+            isOpen = true;
+        }
+        else if (isOpen)
+        {
+            leaderboardCanvas.SetActive(!isOpen);
             isOpen = false;
         }
     }

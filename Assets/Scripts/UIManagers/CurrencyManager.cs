@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Services.Leaderboards.Models;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
@@ -36,6 +37,12 @@ public class CurrencyManager : MonoBehaviour
     {
         CurrencyDataHandler.instance.ReturnSavedValues().amountOfCoins += amount;
         CurrencyDataHandler.instance.SaveCurrencyData();
+        if(amount > 0)
+        {
+            CurrencyDataHandler.instance.ReturnSavedValues().lifeTimeEarnings += amount;
+            LeaderboardManager.Instance.AddScore(CurrencyDataHandler.instance.ReturnSavedValues().lifeTimeEarnings);
+            CurrencyDataHandler.instance.SaveCurrencyData();
+        }
         UpdateOnMainMenu();
     }
     public void AdjustGems(int amount)

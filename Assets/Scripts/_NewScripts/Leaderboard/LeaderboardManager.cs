@@ -1,19 +1,21 @@
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using IronSourceJSON;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Leaderboards;
 using Unity.Services.Leaderboards.Models;
-using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LeaderboardManager : MonoBehaviour
 {
     public static LeaderboardManager Instance { get; private set; }
+
+    [field: Header("Leaderboard Manager")]
+    [field: SerializeField] private GameObject leaderboardPlayerInfoPrefab;
+    [field: SerializeField] private GameObject targetForInstantiating;
+    [field: SerializeField] private int playerRangeToGetValues;
+    [field: SerializeField] private ScrollRect scrollRect;
+
     const string LeaderboardId = "bb_monthly";
     string VersionId { get; set; }
     int Offset { get; set; }
@@ -28,17 +30,26 @@ public class LeaderboardManager : MonoBehaviour
         await UnityServices.InitializeAsync();
 
     }
-    private void Update()
+
+    private void Start()
     {
-        if(Input.GetKeyDown(KeyCode.G)) 
-        { 
-            GetPlayerRange();
+        AuthenticatorManager.Instance.OnLoggedInCompleted += () => { GetPlayerRange(); };
+    }
+    public void PopulateLeaderboard()
+    {
+        foreach (var player in players)
+        {
+            var playerThing = Instantiate(leaderboardPlayerInfoPrefab);
+            playerThing.transform.SetParent(targetForInstantiating.transform, false);
+            playerThing.GetComponent<AssignLBValues>().AssignValues(player.playerName, (int)player.score);
         }
+        GetPlayerScore();
+        print("Username: " + Social.localUser.userName);
     }
     public async void AddScore(int score)
     {
         var scoreResponse = await LeaderboardsService.Instance.AddPlayerScoreAsync(LeaderboardId, score);
-        Debug.Log(JsonConvert.SerializeObject(scoreResponse));
+        Debug.Log("Score Added: " + JsonConvert.SerializeObject(scoreResponse));
     }
 
     public async void GetScores()
@@ -70,8 +81,6 @@ public class LeaderboardManager : MonoBehaviour
             await LeaderboardsService.Instance.GetPlayerRangeAsync(LeaderboardId, new GetPlayerRangeOptions{RangeLimit = RangeLimit});
         Debug.Log(JsonConvert.SerializeObject(scoresResponse));
         List<LeaderboardEntry> entry = JsonUtility.FromJson<List<LeaderboardEntry>>(JsonConvert.SerializeObject(scoresResponse));
-        Debug.Log(entry.Count);
-        Debug.Log(scoresResponse.Results[0].PlayerName);
         foreach (LeaderboardEntry lEntry in scoresResponse.Results)
         {
             players.Add(new PlayerInfo(lEntry.PlayerId, lEntry.PlayerName, lEntry.Rank, lEntry.Score));

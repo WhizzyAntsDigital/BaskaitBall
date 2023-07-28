@@ -17,6 +17,20 @@ public class CurrencyDataHandler : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        AuthenticatorManager.Instance.OnLoggedInCompleted += AddValuesInStarting;
+    }
+
+    private void AddValuesInStarting()
+    {
+        if (currencyData.hasAddedInitialDataToLeaderBoard == false)
+        {
+            LeaderboardManager.Instance.AddScore(currencyData.lifeTimeEarnings);
+            currencyData.hasAddedInitialDataToLeaderBoard = true;
+            SaveCurrencyData();
+        }
+    }
 
     #region Return All Data
     public CurrencyData ReturnSavedValues()
@@ -42,4 +56,6 @@ public class CurrencyData
 {
     public int amountOfCoins = 1000;
     public int amountOfGems = 10;
+    public int lifeTimeEarnings = 1000;
+    public bool hasAddedInitialDataToLeaderBoard = false;
 }

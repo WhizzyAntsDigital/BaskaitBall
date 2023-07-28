@@ -1,6 +1,7 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.PackageManager.Requests;
+using System.Text.RegularExpressions;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -15,6 +16,21 @@ public class GetImage : MonoBehaviour
 
     public void StartImageDownload(string url, Image imageTarget)
     {
+        if("https://api.waifu.pics/sfw/waifu" == url)
+        {
+            string pattern = "\"url\":\"(.*?)\"";
+            Match match = Regex.Match(url, pattern);
+            if (match.Success)
+            {
+                string link = match.Groups[1].Value;
+                url = link;
+                print(link + " Original: " + url);
+            }
+            else
+            {
+                Debug.Log("No link found in the input string.");
+            }
+        }
         StartCoroutine(DownloadImage(url, imageTarget));
     }
 
@@ -22,21 +38,35 @@ public class GetImage : MonoBehaviour
     {
         using (UnityWebRequest www = UnityWebRequestTexture.GetTexture(URL))
         {
-            // Wait for the API response
             yield return www.SendWebRequest();
 
-            // Check for errors
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogError("Error while fetching image: " + www.error);
             }
             else
             {
-                // Convert the API response to a Texture2D
-                Texture2D texture = DownloadHandlerTexture.GetContent(www);
+                print(www.downloadHandler.text);
+                if ("https://api.waifu.pics/sfw/waifu" == URL || "https://api.waifu.pics/nsfw/waifu" == URL)
+                {
+                    string pattern = "\"url\":\"(.*?)\"";
+                    Match match = Regex.Match(www.downloadHandler.text, pattern);
+                    if (match.Success)
+                    {
+                        string link = match.Groups[1].Value;
+                        StartCoroutine(DownloadImage(link, imageTarget));
+                    }
+                    else
+                    {
+                        Debug.Log("No link found in the input string.");
+                    }
+                }
+                else
+                {
+                    Texture2D texture = DownloadHandlerTexture.GetContent(www);
 
-                // Assign the texture to the RawImage UI element
-                imageTarget.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f)); ;
+                    imageTarget.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+                }
             }
         }
     }
