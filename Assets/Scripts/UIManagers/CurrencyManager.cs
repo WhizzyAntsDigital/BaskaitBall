@@ -39,8 +39,12 @@ public class CurrencyManager : MonoBehaviour
         CurrencyDataHandler.instance.SaveCurrencyData();
         if(amount > 0)
         {
-            CurrencyDataHandler.instance.ReturnSavedValues().lifeTimeEarnings += amount;
-            LeaderboardManager.Instance.AddScore(CurrencyDataHandler.instance.ReturnSavedValues().lifeTimeEarnings);
+            CurrencyDataHandler.instance.ReturnSavedValues().monthlyLeaderboard += amount;
+            CurrencyDataHandler.instance.ReturnSavedValues().dailyLeaderboard += amount;
+            CurrencyDataHandler.instance.ReturnSavedValues().weeklyLeaderboard += amount;
+            LeaderboardManager.Instance.AddScore(CurrencyDataHandler.instance.ReturnSavedValues().dailyLeaderboard, TypeOfLeaderBoard.DailyLeaderboard);
+            LeaderboardManager.Instance.AddScore(CurrencyDataHandler.instance.ReturnSavedValues().weeklyLeaderboard, TypeOfLeaderBoard.WeeklyLeaderboard);
+            LeaderboardManager.Instance.AddScore(CurrencyDataHandler.instance.ReturnSavedValues().monthlyLeaderboard, TypeOfLeaderBoard.MonthlyLeaderboard);
             CurrencyDataHandler.instance.SaveCurrencyData();
         }
         UpdateOnMainMenu();

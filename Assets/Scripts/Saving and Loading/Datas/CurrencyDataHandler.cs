@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Services.Authentication;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -21,7 +22,10 @@ public class CurrencyDataHandler : MonoBehaviour
     {
         if (currencyData.hasAddedInitialDataToLeaderBoard == false)
         {
-            LeaderboardManager.Instance.AddScore(currencyData.lifeTimeEarnings);
+            LeaderboardManager.Instance.AddScore(currencyData.dailyLeaderboard, TypeOfLeaderBoard.DailyLeaderboard);
+            LeaderboardManager.Instance.AddScore(currencyData.weeklyLeaderboard, TypeOfLeaderBoard.WeeklyLeaderboard);
+            LeaderboardManager.Instance.AddScore(currencyData.monthlyLeaderboard, TypeOfLeaderBoard.MonthlyLeaderboard);
+            AuthenticationService.Instance.UpdatePlayerNameAsync(Social.localUser.userName);
             currencyData.hasAddedInitialDataToLeaderBoard = true;
             SaveCurrencyData();
         }
@@ -51,6 +55,8 @@ public class CurrencyData
 {
     public int amountOfCoins = 1000;
     public int amountOfGems = 10;
-    public int lifeTimeEarnings = 1000;
+    public int dailyLeaderboard = 1000;
+    public int weeklyLeaderboard = 1000;
+    public int monthlyLeaderboard = 1000;
     public bool hasAddedInitialDataToLeaderBoard = false;
 }

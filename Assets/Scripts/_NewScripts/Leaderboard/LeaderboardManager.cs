@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Unity.Services.Core;
@@ -9,6 +9,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+public enum TypeOfLeaderBoard
+{
+    DailyLeaderboard,
+    WeeklyLeaderboard,
+    MonthlyLeaderboard
+}
 public class LeaderboardManager : MonoBehaviour
 {
     public static LeaderboardManager Instance { get; private set; }
@@ -19,51 +25,85 @@ public class LeaderboardManager : MonoBehaviour
     [field: SerializeField] private int playerRangeToGetValues;
     [field: SerializeField] private Button leaderboardButton;
 
-    const string LeaderboardId = "bb_monthly";
+    [field: Header("Leaderboard Names")]
+    [field: SerializeField] private string dailyLB = "bb_daily";
+    [field: SerializeField] private GameObject dailyLBHolder;
+    [field: SerializeField] private string weeklyLB = "bb_weekly";
+    [field: SerializeField] private GameObject weeklyLBHolder;
+    [field: SerializeField] private string monthlyLB = "bb_monthly";
+    [field: SerializeField] private GameObject monthlyLBHolder;
+
+    string LeaderboardId = "bb_monthly";
     string VersionId { get; set; }
     int Offset { get; set; }
     int Limit { get; set; }
     int RangeLimit { get; set; } = 2;
     List<string> FriendIds { get; set; }
     public List<PlayerInfo> players;
+    LeaderboardEntry playerValues;
+
     private void Start()
     {
         leaderboardButton.interactable = false;
         if (SceneManager.GetActiveScene().name == "MainMenu")
         {
-            Debug.Log("It Is Inside IF");
             AuthenticatorManager.Instance.OnLoggedInCompleted += () => { Instance = this; UnityServices.InitializeAsync(); leaderboardButton.interactable = true; CurrencyDataHandler.instance.AddValuesInStarting(); };
         }
         else
         {
             Instance = this;
         }
+
+        CheckAndResetValues();
     }
-        public async void PopulateLeaderboard()
+    public async void PopulateLeaderboard(TypeOfLeaderBoard typeOfLeaderboard)
     {
+        players = new List<PlayerInfo>();
+
+        switch (typeOfLeaderboard)
+        {
+            case TypeOfLeaderBoard.DailyLeaderboard: LeaderboardId = dailyLB; targetForInstantiating = dailyLBHolder; break;
+            case TypeOfLeaderBoard.WeeklyLeaderboard: LeaderboardId = weeklyLB; targetForInstantiating = weeklyLBHolder; break;
+            case TypeOfLeaderBoard.MonthlyLeaderboard: LeaderboardId = monthlyLB; targetForInstantiating = monthlyLBHolder; break;
+            default: HelperClass.DebugError("Type Of Leaderboard Not Specified In Populating!"); break;
+        }
+
+        //Deleting Existing Entries If Any :)
+        if (targetForInstantiating.gameObject.transform.childCount > 0)
+        {
+            foreach (Transform child in targetForInstantiating.gameObject.transform)
+            {
+                Destroy(child.gameObject);
+            }
+        }
         GetPlayerRange();
         await Task.Delay(1000);
         foreach (var player in players)
         {
             var playerThing = Instantiate(leaderboardPlayerInfoPrefab);
-            //Debug.Log(playerThing.name);
             playerThing.transform.SetParent(targetForInstantiating.transform, false);
             playerThing.GetComponent<AssignLBValues>().AssignValues(player.playerName, (int)player.score);
         }
-        GetPlayerScore();
-        //print("Username: " + Social.localUser.userName);
     }
-    public async void AddScore(int score)
+    public async void AddScore(int score, TypeOfLeaderBoard typeOfLeaderBoard)
     {
+        switch (typeOfLeaderBoard)
+        {
+            case TypeOfLeaderBoard.DailyLeaderboard: LeaderboardId = dailyLB; break;
+            case TypeOfLeaderBoard.WeeklyLeaderboard: LeaderboardId = weeklyLB; break;
+            case TypeOfLeaderBoard.MonthlyLeaderboard: LeaderboardId = monthlyLB; break;
+            default: HelperClass.DebugError("Type Of Leaderboard Not Specified In Adding!"); break;
+        }
+
         var scoreResponse = await LeaderboardsService.Instance.AddPlayerScoreAsync(LeaderboardId, score);
-        Debug.Log("Score Added: " + JsonConvert.SerializeObject(scoreResponse));
+        HelperClass.DebugMessage("Score Added: " + JsonConvert.SerializeObject(scoreResponse));
     }
 
     public async void GetScores()
     {
         var scoresResponse =
             await LeaderboardsService.Instance.GetScoresAsync(LeaderboardId);
-        Debug.Log(JsonConvert.SerializeObject(scoresResponse));
+        HelperClass.DebugMessage(JsonConvert.SerializeObject(scoresResponse));
     }
 
     public async void GetPaginatedScores()
@@ -71,22 +111,23 @@ public class LeaderboardManager : MonoBehaviour
         Offset = 10;
         Limit = 10;
         var scoresResponse =
-            await LeaderboardsService.Instance.GetScoresAsync(LeaderboardId, new GetScoresOptions{Offset = Offset, Limit = Limit});
-        Debug.Log(JsonConvert.SerializeObject(scoresResponse));
+        await LeaderboardsService.Instance.GetScoresAsync(LeaderboardId, new GetScoresOptions { Offset = Offset, Limit = Limit });
+        HelperClass.DebugMessage(JsonConvert.SerializeObject(scoresResponse));
     }
 
-    public async void GetPlayerScore()
+    public async Task<LeaderboardEntry> GetPlayerScore()
     {
         var scoreResponse =
-            await LeaderboardsService.Instance.GetPlayerScoreAsync(LeaderboardId);
-        Debug.Log(JsonConvert.SerializeObject(scoreResponse));
+        await LeaderboardsService.Instance.GetPlayerScoreAsync(LeaderboardId);
+        HelperClass.DebugMessage(JsonConvert.SerializeObject(scoreResponse));
+        return JsonUtility.FromJson<LeaderboardEntry>(JsonConvert.SerializeObject(scoreResponse));
     }
 
     public async void GetPlayerRange()
     {
         LeaderboardScores scoresResponse =
-            await LeaderboardsService.Instance.GetPlayerRangeAsync(LeaderboardId, new GetPlayerRangeOptions{RangeLimit = RangeLimit});
-        Debug.Log(JsonConvert.SerializeObject(scoresResponse));
+            await LeaderboardsService.Instance.GetPlayerRangeAsync(LeaderboardId, new GetPlayerRangeOptions { RangeLimit = RangeLimit });
+        HelperClass.DebugMessage(JsonConvert.SerializeObject(scoresResponse));
         List<LeaderboardEntry> entry = JsonUtility.FromJson<List<LeaderboardEntry>>(JsonConvert.SerializeObject(scoresResponse));
         foreach (LeaderboardEntry lEntry in scoresResponse.Results)
         {
@@ -98,7 +139,7 @@ public class LeaderboardManager : MonoBehaviour
     {
         var scoresResponse =
             await LeaderboardsService.Instance.GetScoresByPlayerIdsAsync(LeaderboardId, FriendIds);
-        Debug.Log(JsonConvert.SerializeObject(scoresResponse));
+        HelperClass.DebugMessage(JsonConvert.SerializeObject(scoresResponse));
     }
 
     // If the Leaderboard has been reset and the existing scores were archived,
@@ -112,14 +153,14 @@ public class LeaderboardManager : MonoBehaviour
 
         // As an example, get the ID of the most recently archived Leaderboard version
         VersionId = versionResponse.Results[0].Id;
-        Debug.Log(JsonConvert.SerializeObject(versionResponse));
+        HelperClass.DebugMessage(JsonConvert.SerializeObject(versionResponse));
     }
 
     public async void GetVersionScores()
     {
         var scoresResponse =
             await LeaderboardsService.Instance.GetVersionScoresAsync(LeaderboardId, VersionId);
-        Debug.Log(JsonConvert.SerializeObject(scoresResponse));
+        HelperClass.DebugMessage(JsonConvert.SerializeObject(scoresResponse));
     }
 
     public async void GetPaginatedVersionScores()
@@ -127,29 +168,37 @@ public class LeaderboardManager : MonoBehaviour
         Offset = 10;
         Limit = 10;
         var scoresResponse =
-            await LeaderboardsService.Instance.GetVersionScoresAsync(LeaderboardId, VersionId, new GetVersionScoresOptions{Offset = Offset, Limit = Limit});
-        Debug.Log(JsonConvert.SerializeObject(scoresResponse));
+            await LeaderboardsService.Instance.GetVersionScoresAsync(LeaderboardId, VersionId, new GetVersionScoresOptions { Offset = Offset, Limit = Limit });
+        HelperClass.DebugMessage(JsonConvert.SerializeObject(scoresResponse));
     }
 
     public async void GetPlayerVersionScore()
     {
         var scoreResponse =
             await LeaderboardsService.Instance.GetVersionPlayerScoreAsync(LeaderboardId, VersionId);
-        Debug.Log(JsonConvert.SerializeObject(scoreResponse));
+        HelperClass.DebugMessage(JsonConvert.SerializeObject(scoreResponse));
     }
 
-    //public PlayerInfoArray CreatePlayersFromJSON(string json)
-    //{
-    //    PlayerInfoArray playerInfoArray = new PlayerInfoArray();
-    //    playerInfoArray= playerInfoArray.CreateFromJSON(json);
+    private void CheckAndResetValues()
+    {
+        LeaderboardId = dailyLB;
+        if(GetPlayerScore().Result.Score == 0)
+        {
+            CurrencyDataHandler.instance.ReturnSavedValues().dailyLeaderboard = 0;
+        }
 
+        LeaderboardId = weeklyLB;
+        if(GetPlayerScore().Result.Score == 0)
+        {
+            CurrencyDataHandler.instance.ReturnSavedValues().dailyLeaderboard = 0;
+        }
 
-    //        Debug.Log(playerInfoArray.players.Count);
+        LeaderboardId = monthlyLB;
+        if (GetPlayerScore().Result.Score == 0)
+        {
+            CurrencyDataHandler.instance.ReturnSavedValues().monthlyLeaderboard = 0;
+        }
 
-
-    //    // Use JsonUtility to deserialize the JSON string
-    //    return playerInfoArray;
-    //}
-
-
+        CurrencyDataHandler.instance.SaveCurrencyData();
+    }
 }
