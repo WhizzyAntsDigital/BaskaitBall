@@ -9,10 +9,6 @@ using UnityEngine.EventSystems;
 public class AnonymousSignIn : MonoBehaviour
 {
     public Action OnAnonymouslyLoggedIn;
-    public void Init()
-    {
-        UnityServices.InitializeAsync();
-    }
     public async void SignInAnonymouslyAsync()
     {
         try

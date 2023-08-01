@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Unity.Services.Core;
@@ -41,20 +41,38 @@ public class LeaderboardManager : MonoBehaviour
     List<string> FriendIds { get; set; }
     public List<PlayerInfo> players;
     LeaderboardEntry playerValues;
-
     private void Start()
     {
-        leaderboardButton.interactable = false;
         if (SceneManager.GetActiveScene().name == "MainMenu")
         {
-            AuthenticatorManager.Instance.OnLoggedInCompleted += () => { Instance = this; UnityServices.InitializeAsync(); leaderboardButton.interactable = true; CurrencyDataHandler.instance.AddValuesInStarting(); };
+            leaderboardButton.interactable = false;
+        
+            AuthenticatorManager.Instance.OnLoggedInCompleted += () => { Instance = this; UnityServices.InitializeAsync(); leaderboardButton.interactable = true; CurrencyDataHandler.instance.AddValuesInStarting(); CheckAndResetValues(); };
         }
         else
         {
             Instance = this;
         }
-
-        CheckAndResetValues();
+        //CheckAndResetValues();
+        //CheckIfGameGotUninstalled();
+    }
+    private async void FirstStartingStuff()
+    {
+        await Task.Delay(1000);
+        CurrencyDataHandler.instance.AddValuesInStarting();
+        CheckAndResetValues(); 
+        CheckIfGameGotUninstalled();
+        await Task.Delay(1000);
+        PopulateLeaderboard(TypeOfLeaderBoard.DailyLeaderboard);
+        PopulateLeaderboard(TypeOfLeaderBoard.WeeklyLeaderboard);
+        PopulateLeaderboard(TypeOfLeaderBoard.MonthlyLeaderboard);
+        await Task.Delay(2000);
+        leaderboardButton.interactable = true;
+    }
+    public void PopLB(string typeOfLB)
+    {
+        TypeOfLeaderBoard lbType = (TypeOfLeaderBoard)Enum.Parse(typeof(TypeOfLeaderBoard), typeOfLB);
+        PopulateLeaderboard(lbType);
     }
     public async void PopulateLeaderboard(TypeOfLeaderBoard typeOfLeaderboard)
     {
@@ -82,7 +100,17 @@ public class LeaderboardManager : MonoBehaviour
         {
             var playerThing = Instantiate(leaderboardPlayerInfoPrefab);
             playerThing.transform.SetParent(targetForInstantiating.transform, false);
-            playerThing.GetComponent<AssignLBValues>().AssignValues(player.playerName, (int)player.score);
+            Sprite pfp;
+            if(player.playerId == Social.localUser.id)
+            {
+                pfp = Sprite.Create(Social.localUser.image, new Rect(0, 0, Social.localUser.image.width, Social.localUser.image.height), Vector2.zero);
+                HelperClass.DebugMessage(pfp == null);
+            }
+            else
+            {
+                pfp = null;
+            }
+            playerThing.GetComponent<AssignLBValues>().AssignValues(player.playerName, (int)player.score, player.rank+=1, pfp);
         }
     }
     public async void AddScore(int score, TypeOfLeaderBoard typeOfLeaderBoard)
@@ -126,7 +154,7 @@ public class LeaderboardManager : MonoBehaviour
     public async void GetPlayerRange()
     {
         LeaderboardScores scoresResponse =
-            await LeaderboardsService.Instance.GetPlayerRangeAsync(LeaderboardId, new GetPlayerRangeOptions { RangeLimit = RangeLimit });
+            await LeaderboardsService.Instance.GetPlayerRangeAsync(LeaderboardId, new GetPlayerRangeOptions { RangeLimit = 100 });
         HelperClass.DebugMessage(JsonConvert.SerializeObject(scoresResponse));
         List<LeaderboardEntry> entry = JsonUtility.FromJson<List<LeaderboardEntry>>(JsonConvert.SerializeObject(scoresResponse));
         foreach (LeaderboardEntry lEntry in scoresResponse.Results)
@@ -182,21 +210,47 @@ public class LeaderboardManager : MonoBehaviour
     private void CheckAndResetValues()
     {
         LeaderboardId = dailyLB;
-        if(GetPlayerScore().Result.Score == 0)
+        if (GetPlayerScore().Result.Score == 0)
         {
             CurrencyDataHandler.instance.ReturnSavedValues().dailyLeaderboard = 0;
+            AddScore(0, TypeOfLeaderBoard.DailyLeaderboard);
         }
 
         LeaderboardId = weeklyLB;
-        if(GetPlayerScore().Result.Score == 0)
+        if (GetPlayerScore().Result.Score == 0)
         {
-            CurrencyDataHandler.instance.ReturnSavedValues().dailyLeaderboard = 0;
+            CurrencyDataHandler.instance.ReturnSavedValues().weeklyLeaderboard = 0;
+            AddScore(0, TypeOfLeaderBoard.WeeklyLeaderboard);
         }
 
         LeaderboardId = monthlyLB;
         if (GetPlayerScore().Result.Score == 0)
         {
             CurrencyDataHandler.instance.ReturnSavedValues().monthlyLeaderboard = 0;
+            AddScore(0, TypeOfLeaderBoard.MonthlyLeaderboard);
+        }
+
+        CurrencyDataHandler.instance.SaveCurrencyData();
+    }
+
+    private void CheckIfGameGotUninstalled()
+    {
+        LeaderboardId = dailyLB;
+        if(CurrencyDataHandler.instance.ReturnSavedValues().dailyLeaderboard == 0 && GetPlayerScore().Result.Score != 0)
+        {
+            CurrencyDataHandler.instance.ReturnSavedValues().dailyLeaderboard = (int)GetPlayerScore().Result.Score;
+        }
+
+        LeaderboardId = weeklyLB;
+        if (CurrencyDataHandler.instance.ReturnSavedValues().weeklyLeaderboard == 0 && GetPlayerScore().Result.Score != 0)
+        {
+            CurrencyDataHandler.instance.ReturnSavedValues().weeklyLeaderboard = (int)GetPlayerScore().Result.Score;
+        }
+
+        LeaderboardId = monthlyLB;
+        if (CurrencyDataHandler.instance.ReturnSavedValues().monthlyLeaderboard == 0 && GetPlayerScore().Result.Score != 0)
+        {
+            CurrencyDataHandler.instance.ReturnSavedValues().monthlyLeaderboard = (int)GetPlayerScore().Result.Score;
         }
 
         CurrencyDataHandler.instance.SaveCurrencyData();

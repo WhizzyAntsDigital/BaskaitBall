@@ -13,7 +13,6 @@ public class GPManager : MonoBehaviour
     public Action OnGoogleLoginComplete;
     public void Init()
     {
-        UnityServices.InitializeAsync();
         //Initialize PlayGamesPlatform
         PlayGamesPlatform.Activate();
     }

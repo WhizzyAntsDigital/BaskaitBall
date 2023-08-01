@@ -1,22 +1,27 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class GetImage : MonoBehaviour
 {
     public static GetImage Instance;
+    [field: Header("API Links for random Images")]
+    [field: SerializeField] private List<string> apiLinks;
     private void Awake()
     {
         Instance = this;
     }
 
-    public void StartImageDownload(string url, Image imageTarget)
+    public void StartImageDownload(Image imageTarget)
     {
-        if("https://api.waifu.pics/sfw/waifu" == url)
+        string url = apiLinks[Random.Range(0, apiLinks.Count)];
+        if("https://api.waifu.pics/sfw/waifu" == url || "https://api.thecatapi.com/v1/images/search" == url)
         {
             string pattern = "\"url\":\"(.*?)\"";
             Match match = Regex.Match(url, pattern);
@@ -28,7 +33,7 @@ public class GetImage : MonoBehaviour
             }
             else
             {
-                Debug.Log("No link found in the input string.");
+                HelperClass.DebugWarning("No link found in the input string.");
             }
         }
         StartCoroutine(DownloadImage(url, imageTarget));
@@ -42,11 +47,10 @@ public class GetImage : MonoBehaviour
 
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
-                Debug.LogError("Error while fetching image: " + www.error);
+                HelperClass.DebugError("Error while fetching image: " + www.error);
             }
             else
             {
-                print(www.downloadHandler.text);
                 if ("https://api.waifu.pics/sfw/waifu" == URL || "https://api.waifu.pics/nsfw/waifu" == URL)
                 {
                     string pattern = "\"url\":\"(.*?)\"";
@@ -58,7 +62,7 @@ public class GetImage : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("No link found in the input string.");
+                        HelperClass.DebugWarning("No link found in the input string.");
                     }
                 }
                 else

@@ -29,7 +29,7 @@ public class UserDataHandler : MonoBehaviour
     {
         if (MiscellaneousDataHandler.instance.ReturnSavedValues().hasRequestedReview == false && userData.numberOfWins != 0 && userData.numberOfWins % 5 == 0  )
         {
-            IARManager.instance.TryLoadAndShowReviewRequest();
+            //IARManager.instance.TryLoadAndShowReviewRequest();
             MiscellaneousDataHandler.instance.ReturnSavedValues().hasRequestedReview = true;
             MiscellaneousDataHandler.instance.SaveMiscData();
         }
