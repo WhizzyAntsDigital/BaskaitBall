@@ -47,7 +47,7 @@ public class GetImage : MonoBehaviour
 
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
-                HelperClass.DebugError("Error while fetching image: " + www.error);
+                HelperClass.DebugError("Error while fetching image: " + www.error + " with URL: " + URL);
             }
             else
             {
@@ -68,8 +68,10 @@ public class GetImage : MonoBehaviour
                 else
                 {
                     Texture2D texture = DownloadHandlerTexture.GetContent(www);
-
-                    imageTarget.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+                    if(texture != null) 
+                    { 
+                        imageTarget.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+                    }
                 }
             }
         }

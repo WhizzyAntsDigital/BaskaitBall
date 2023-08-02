@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -32,6 +33,7 @@ public class LeaderboardManager : MonoBehaviour
     [field: SerializeField] private GameObject weeklyLBHolder;
     [field: SerializeField] private string monthlyLB = "bb_monthly";
     [field: SerializeField] private GameObject monthlyLBHolder;
+    [field: SerializeField] private RawImage img;
 
     string LeaderboardId = "bb_monthly";
     string VersionId { get; set; }
@@ -39,10 +41,11 @@ public class LeaderboardManager : MonoBehaviour
     int Limit { get; set; }
     int RangeLimit { get; set; } = 2;
     List<string> FriendIds { get; set; }
-    public List<PlayerInfo> players;
+    //public List<PlayerInfo> players;
     LeaderboardEntry playerValues;
     private void Start()
     {
+        
         UnityServices.InitializeAsync();
         if (SceneManager.GetActiveScene().name == "MainMenu")
         {
@@ -55,41 +58,30 @@ public class LeaderboardManager : MonoBehaviour
             Instance = this;
         }
     }
-    public void AddScoreUwu()
-    {
-        AddScore(293924, TypeOfLeaderBoard.DailyLeaderboard);
-        AddScore(293924, TypeOfLeaderBoard.WeeklyLeaderboard);
-        AddScore(293924, TypeOfLeaderBoard.MonthlyLeaderboard);
-    }
     private async void FirstStartingStuff()
     {
-        await Task.Delay(1000);
+        await Task.Delay(300);
         CurrencyDataHandler.instance.AddValuesInStarting();
-        await Task.Delay(1000);
-        PopulateLeaderboard(TypeOfLeaderBoard.DailyLeaderboard);
-        PopulateLeaderboard(TypeOfLeaderBoard.WeeklyLeaderboard);
-        PopulateLeaderboard(TypeOfLeaderBoard.MonthlyLeaderboard);
-        await Task.Delay(2000);
+        await Task.Delay(300);
+        await PopulateLeaderboard(TypeOfLeaderBoard.DailyLeaderboard);
+        await PopulateLeaderboard(TypeOfLeaderBoard.WeeklyLeaderboard);
+        await PopulateLeaderboard(TypeOfLeaderBoard.MonthlyLeaderboard);
+        await Task.Delay(300);
         leaderboardButton.interactable = true;
     }
-    public void PopLB(string typeOfLB)
-    {
-        TypeOfLeaderBoard lbType = (TypeOfLeaderBoard)Enum.Parse(typeof(TypeOfLeaderBoard), typeOfLB);
-        PopulateLeaderboard(lbType);
-    }
-    public async void PopulateLeaderboard(TypeOfLeaderBoard typeOfLeaderboard)
+
+    public async Task PopulateLeaderboard(TypeOfLeaderBoard typeOfLeaderboard)
     {
 
-        players = new List<PlayerInfo>();
+        List<PlayerInfo> players = new List<PlayerInfo>();
 
         switch (typeOfLeaderboard)
         {
-            case TypeOfLeaderBoard.DailyLeaderboard: LeaderboardId = dailyLB; targetForInstantiating = dailyLBHolder; break;
+            case TypeOfLeaderBoard.DailyLeaderboard: LeaderboardId = dailyLB; targetForInstantiating = dailyLBHolder;  break;
             case TypeOfLeaderBoard.WeeklyLeaderboard: LeaderboardId = weeklyLB; targetForInstantiating = weeklyLBHolder; break;
             case TypeOfLeaderBoard.MonthlyLeaderboard: LeaderboardId = monthlyLB; targetForInstantiating = monthlyLBHolder; break;
             default: HelperClass.DebugError("Type Of Leaderboard Not Specified In Populating!"); break;
         }
-
         //Deleting Existing Entries If Any :)
         if (targetForInstantiating.gameObject.transform.childCount > 0)
         {
@@ -98,23 +90,18 @@ public class LeaderboardManager : MonoBehaviour
                 Destroy(child.gameObject);
             }
         }
-        GetPlayerRange();
+        await GetPlayerRange(players);
         await Task.Delay(1000);
         foreach (var player in players)
         {
             var playerThing = Instantiate(leaderboardPlayerInfoPrefab);
             playerThing.transform.SetParent(targetForInstantiating.transform, false);
-            Sprite pfp;
+            bool isPlayer = false;
             if (player.playerId == Social.localUser.id)
             {
-                pfp = Sprite.Create(Social.localUser.image, new Rect(0, 0, Social.localUser.image.width, Social.localUser.image.height), Vector2.zero);
-                HelperClass.DebugMessage(pfp == null);
+                isPlayer = true;
             }
-            else
-            {
-                pfp = null;
-            }
-            playerThing.GetComponent<AssignLBValues>().AssignValues(player.playerName, (int)player.score, player.rank += 1, pfp);
+            playerThing.GetComponent<AssignLBValues>().AssignValues(player.playerName, (int)player.score, player.rank += 1, null, isPlayer);
         }
     }
     public async void AddScore(int score, TypeOfLeaderBoard typeOfLeaderBoard)
@@ -155,7 +142,7 @@ public class LeaderboardManager : MonoBehaviour
         return (int)entryLol.Score;
     }
 
-    public async void GetPlayerRange()
+    public async Task<List<PlayerInfo>> GetPlayerRange(List<PlayerInfo> players)
     {
         LeaderboardScores scoresResponse =
             await LeaderboardsService.Instance.GetPlayerRangeAsync(LeaderboardId, new GetPlayerRangeOptions { RangeLimit = 100 });
@@ -165,6 +152,7 @@ public class LeaderboardManager : MonoBehaviour
             {
                 players.Add(new PlayerInfo(lEntry.PlayerId, lEntry.PlayerName, lEntry.Rank, lEntry.Score));
             }
+            return players;
     }
 
     public async void GetScoresByPlayerIds()
