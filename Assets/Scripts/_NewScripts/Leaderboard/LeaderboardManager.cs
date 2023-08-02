@@ -43,25 +43,28 @@ public class LeaderboardManager : MonoBehaviour
     LeaderboardEntry playerValues;
     private void Start()
     {
+        UnityServices.InitializeAsync();
         if (SceneManager.GetActiveScene().name == "MainMenu")
         {
             leaderboardButton.interactable = false;
-        
-            AuthenticatorManager.Instance.OnLoggedInCompleted += () => { Instance = this; UnityServices.InitializeAsync(); leaderboardButton.interactable = true; CurrencyDataHandler.instance.AddValuesInStarting(); CheckAndResetValues(); };
+
+            AuthenticatorManager.Instance.OnLoggedInCompleted += () => { Instance = this; FirstStartingStuff(); };
         }
         else
         {
             Instance = this;
         }
-        //CheckAndResetValues();
-        //CheckIfGameGotUninstalled();
+    }
+    public void AddScoreUwu()
+    {
+        AddScore(293924, TypeOfLeaderBoard.DailyLeaderboard);
+        AddScore(293924, TypeOfLeaderBoard.WeeklyLeaderboard);
+        AddScore(293924, TypeOfLeaderBoard.MonthlyLeaderboard);
     }
     private async void FirstStartingStuff()
     {
         await Task.Delay(1000);
         CurrencyDataHandler.instance.AddValuesInStarting();
-        CheckAndResetValues(); 
-        CheckIfGameGotUninstalled();
         await Task.Delay(1000);
         PopulateLeaderboard(TypeOfLeaderBoard.DailyLeaderboard);
         PopulateLeaderboard(TypeOfLeaderBoard.WeeklyLeaderboard);
@@ -76,6 +79,7 @@ public class LeaderboardManager : MonoBehaviour
     }
     public async void PopulateLeaderboard(TypeOfLeaderBoard typeOfLeaderboard)
     {
+
         players = new List<PlayerInfo>();
 
         switch (typeOfLeaderboard)
@@ -101,7 +105,7 @@ public class LeaderboardManager : MonoBehaviour
             var playerThing = Instantiate(leaderboardPlayerInfoPrefab);
             playerThing.transform.SetParent(targetForInstantiating.transform, false);
             Sprite pfp;
-            if(player.playerId == Social.localUser.id)
+            if (player.playerId == Social.localUser.id)
             {
                 pfp = Sprite.Create(Social.localUser.image, new Rect(0, 0, Social.localUser.image.width, Social.localUser.image.height), Vector2.zero);
                 HelperClass.DebugMessage(pfp == null);
@@ -110,7 +114,7 @@ public class LeaderboardManager : MonoBehaviour
             {
                 pfp = null;
             }
-            playerThing.GetComponent<AssignLBValues>().AssignValues(player.playerName, (int)player.score, player.rank+=1, pfp);
+            playerThing.GetComponent<AssignLBValues>().AssignValues(player.playerName, (int)player.score, player.rank += 1, pfp);
         }
     }
     public async void AddScore(int score, TypeOfLeaderBoard typeOfLeaderBoard)
@@ -143,12 +147,12 @@ public class LeaderboardManager : MonoBehaviour
         HelperClass.DebugMessage(JsonConvert.SerializeObject(scoresResponse));
     }
 
-    public async Task<LeaderboardEntry> GetPlayerScore()
+    public async Task<int> GetPlayerScore(string lbID)
     {
-        var scoreResponse =
-        await LeaderboardsService.Instance.GetPlayerScoreAsync(LeaderboardId);
+        var scoreResponse = await LeaderboardsService.Instance.GetPlayerScoreAsync(lbID);
         HelperClass.DebugMessage(JsonConvert.SerializeObject(scoreResponse));
-        return JsonUtility.FromJson<LeaderboardEntry>(JsonConvert.SerializeObject(scoreResponse));
+        LeaderboardEntry entryLol = (JsonUtility.FromJson<LeaderboardEntry>(JsonConvert.SerializeObject(scoreResponse)));
+        return (int)entryLol.Score;
     }
 
     public async void GetPlayerRange()
@@ -156,11 +160,11 @@ public class LeaderboardManager : MonoBehaviour
         LeaderboardScores scoresResponse =
             await LeaderboardsService.Instance.GetPlayerRangeAsync(LeaderboardId, new GetPlayerRangeOptions { RangeLimit = 100 });
         HelperClass.DebugMessage(JsonConvert.SerializeObject(scoresResponse));
-        List<LeaderboardEntry> entry = JsonUtility.FromJson<List<LeaderboardEntry>>(JsonConvert.SerializeObject(scoresResponse));
-        foreach (LeaderboardEntry lEntry in scoresResponse.Results)
-        {
-            players.Add(new PlayerInfo(lEntry.PlayerId, lEntry.PlayerName, lEntry.Rank, lEntry.Score));
-        }
+        //List<LeaderboardEntry> entry = JsonUtility.FromJson<List<LeaderboardEntry>>(JsonConvert.SerializeObject(scoresResponse));
+            foreach (LeaderboardEntry lEntry in scoresResponse.Results)
+            {
+                players.Add(new PlayerInfo(lEntry.PlayerId, lEntry.PlayerName, lEntry.Rank, lEntry.Score));
+            }
     }
 
     public async void GetScoresByPlayerIds()
@@ -207,52 +211,57 @@ public class LeaderboardManager : MonoBehaviour
         HelperClass.DebugMessage(JsonConvert.SerializeObject(scoreResponse));
     }
 
-    private void CheckAndResetValues()
-    {
-        LeaderboardId = dailyLB;
-        if (GetPlayerScore().Result.Score == 0)
-        {
-            CurrencyDataHandler.instance.ReturnSavedValues().dailyLeaderboard = 0;
-            AddScore(0, TypeOfLeaderBoard.DailyLeaderboard);
-        }
+    //private async void CheckAndResetValues()
+    //{
+    //    Debug.Log("reset");
+    //    if (await GetPlayerScore(dailyLB) == 0)
+    //    {
+    //        Debug.Log("Daily " + await GetPlayerScore(dailyLB));
+    //        CurrencyDataHandler.instance.ReturnSavedValues().dailyLeaderboard = 0;
+    //        AddScore(0, TypeOfLeaderBoard.DailyLeaderboard);
+    //    Debug.Log("reset d");
+    //    }
 
-        LeaderboardId = weeklyLB;
-        if (GetPlayerScore().Result.Score == 0)
-        {
-            CurrencyDataHandler.instance.ReturnSavedValues().weeklyLeaderboard = 0;
-            AddScore(0, TypeOfLeaderBoard.WeeklyLeaderboard);
-        }
+    //    if (await GetPlayerScore(weeklyLB) == 0)
+    //    {
+    //        Debug.Log("Daily " + await GetPlayerScore(weeklyLB));
+    //        CurrencyDataHandler.instance.ReturnSavedValues().weeklyLeaderboard = 0;
+    //        AddScore(0, TypeOfLeaderBoard.WeeklyLeaderboard);
+    //    Debug.Log("reset w");
+    //    }
 
-        LeaderboardId = monthlyLB;
-        if (GetPlayerScore().Result.Score == 0)
-        {
-            CurrencyDataHandler.instance.ReturnSavedValues().monthlyLeaderboard = 0;
-            AddScore(0, TypeOfLeaderBoard.MonthlyLeaderboard);
-        }
+    //    if (await GetPlayerScore(monthlyLB) == 0)
+    //    {
+    //        Debug.Log("Daily " + await GetPlayerScore(monthlyLB));
+    //        CurrencyDataHandler.instance.ReturnSavedValues().monthlyLeaderboard = 0;
+    //        AddScore(0, TypeOfLeaderBoard.MonthlyLeaderboard);
+    //    Debug.Log("reset m");
+    //    }
 
-        CurrencyDataHandler.instance.SaveCurrencyData();
-    }
+    //    CurrencyDataHandler.instance.SaveCurrencyData();
+    //}
 
-    private void CheckIfGameGotUninstalled()
-    {
-        LeaderboardId = dailyLB;
-        if(CurrencyDataHandler.instance.ReturnSavedValues().dailyLeaderboard == 0 && GetPlayerScore().Result.Score != 0)
-        {
-            CurrencyDataHandler.instance.ReturnSavedValues().dailyLeaderboard = (int)GetPlayerScore().Result.Score;
-        }
+    //private async void CheckIfGameGotUninstalled()
+    //{
+    //    Debug.Log("Unins");
+    //    if (CurrencyDataHandler.instance.ReturnSavedValues().dailyLeaderboard != await GetPlayerScore(dailyLB))
+    //    {
+    //        CurrencyDataHandler.instance.ReturnSavedValues().dailyLeaderboard = await GetPlayerScore(dailyLB);
+    //        Debug.Log("Unins daily");
+    //    }
 
-        LeaderboardId = weeklyLB;
-        if (CurrencyDataHandler.instance.ReturnSavedValues().weeklyLeaderboard == 0 && GetPlayerScore().Result.Score != 0)
-        {
-            CurrencyDataHandler.instance.ReturnSavedValues().weeklyLeaderboard = (int)GetPlayerScore().Result.Score;
-        }
+    //    if (CurrencyDataHandler.instance.ReturnSavedValues().weeklyLeaderboard != await GetPlayerScore(weeklyLB))
+    //    {
+    //        CurrencyDataHandler.instance.ReturnSavedValues().weeklyLeaderboard = await GetPlayerScore(weeklyLB);
+    //        Debug.Log("Unins week");
+    //    }
 
-        LeaderboardId = monthlyLB;
-        if (CurrencyDataHandler.instance.ReturnSavedValues().monthlyLeaderboard == 0 && GetPlayerScore().Result.Score != 0)
-        {
-            CurrencyDataHandler.instance.ReturnSavedValues().monthlyLeaderboard = (int)GetPlayerScore().Result.Score;
-        }
+    //    if (CurrencyDataHandler.instance.ReturnSavedValues().monthlyLeaderboard != await GetPlayerScore(monthlyLB))
+    //    {
+    //        CurrencyDataHandler.instance.ReturnSavedValues().monthlyLeaderboard = await GetPlayerScore(monthlyLB);
+    //        Debug.Log("Unins month");
+    //    }
 
-        CurrencyDataHandler.instance.SaveCurrencyData();
-    }
+    //    CurrencyDataHandler.instance.SaveCurrencyData();
+    //}
 }
