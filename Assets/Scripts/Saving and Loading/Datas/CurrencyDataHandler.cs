@@ -1,13 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.Services.Authentication;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class CurrencyDataHandler : MonoBehaviour
 {
     public static CurrencyDataHandler instance;
     [SerializeField] private CurrencyData currencyData;
+    public Image img;
     private void Awake()
     {
         instance = this;
@@ -26,8 +30,63 @@ public class CurrencyDataHandler : MonoBehaviour
             LeaderboardManager.Instance.AddScore(currencyData.amountOfCoins, TypeOfLeaderBoard.WeeklyLeaderboard);
             LeaderboardManager.Instance.AddScore(currencyData.amountOfCoins, TypeOfLeaderBoard.MonthlyLeaderboard);
             AuthenticationService.Instance.UpdatePlayerNameAsync(Social.localUser.userName);
+            StartCoroutine(KeepCheckingAvatar());
             currencyData.hasAddedInitialDataToLeaderBoard = true;
         }
+        else
+        {
+            if (SceneManager.GetActiveScene().name == "MainMenu")
+            {
+                AssignImg();
+            }
+        }
+    }
+
+    private IEnumerator KeepCheckingAvatar()
+    {
+        float secondsOfTrying = 20;
+        float secondsPerAttempt = 0.2f;
+        while (secondsOfTrying > 0)
+        {
+            if (Social.localUser.image != null)
+            {
+                //imageTemp = Sprite.Create(Social.localUser.image, new Rect(0, 0, Social.localUser.image.width, Social.localUser.image.height), new Vector2(0.5f, 0.5f));
+                currencyData.image = EncodePreview(Social.localUser.image);
+                AssignImg();
+                SaveCurrencyData();
+                break;
+            }
+
+            secondsOfTrying -= secondsPerAttempt;
+            yield return new WaitForSeconds(secondsPerAttempt);
+        }
+    }
+
+    public void AssignImg()
+    {
+        if (!String.IsNullOrEmpty(currencyData.image))
+        {
+            Texture2D tex = DecodePreview(currencyData.image);
+            img.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f)); 
+        }
+    }
+
+    private string EncodePreview(Texture2D previewImage)
+    {
+        byte[] previewBytes = previewImage.EncodeToJPG();
+        string previewBase64 = Convert.ToBase64String(previewBytes);
+        return previewBase64;
+    }
+
+    public Texture2D DecodePreview(string previewBase64)
+    {
+        byte[] previewBytes = Convert.FromBase64String(previewBase64);
+
+        Texture2D previewImage = new Texture2D(0, 0);
+        if (ImageConversion.LoadImage(previewImage, previewBytes))
+            return previewImage;
+        else
+            return null;
     }
 
     #region Return All Data
@@ -49,10 +108,12 @@ public class CurrencyDataHandler : MonoBehaviour
     #endregion
 }
 
+
 [System.Serializable]
 public class CurrencyData
 {
     public int amountOfCoins = 1000;
     public int amountOfGems = 10;
     public bool hasAddedInitialDataToLeaderBoard = false;
+    public string image;
 }

@@ -90,7 +90,15 @@ public class LeaderboardManager : MonoBehaviour
                 Destroy(child.gameObject);
             }
         }
-        await GetPlayerRange(players);
+        try
+        {
+            await GetPlayerRange(players);
+        }
+        catch(Exception e) 
+        {
+            HelperClass.DebugError("Debugged Error Cuz No Values In Leaderboard: " + e.Message);
+            players = new List<PlayerInfo>();
+        }
         await Task.Delay(1000);
         foreach (var player in players)
         {
