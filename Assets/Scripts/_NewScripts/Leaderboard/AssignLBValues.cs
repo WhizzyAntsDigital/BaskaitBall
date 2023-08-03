@@ -37,9 +37,7 @@ public class AssignLBValues : MonoBehaviour
             }
             else
             {
-                string id = Social.localUser.id;
-                string name = Social.localUser.userName;
-                StartCoroutine(KeepCheckingAvatar());
+                CurrencyDataHandler.instance.AssignImg(profilePicture);
             }
         }
         else
@@ -57,22 +55,6 @@ public class AssignLBValues : MonoBehaviour
                 badgeHolder.sprite = bronzeBadge; break;
             default: 
                 badgeHolder.gameObject.SetActive(false); positionText.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(positionText.gameObject.GetComponent<RectTransform>().sizeDelta.x * 1.5f, positionText.gameObject.GetComponent<RectTransform>().sizeDelta.y * 1.5f); break;
-        }
-    }
-    private IEnumerator KeepCheckingAvatar()
-    {
-        float secondsOfTrying = 20;
-        float secondsPerAttempt = 0.2f;
-        while (secondsOfTrying > 0)
-        {
-            if (Social.localUser.image != null)
-            {
-                profilePicture.sprite = Sprite.Create(Social.localUser.image, new Rect(0, 0, Social.localUser.image.width, Social.localUser.image.height), new Vector2(0.5f, 0.5f));
-                break;
-            }
-
-            secondsOfTrying -= secondsPerAttempt;
-            yield return new WaitForSeconds(secondsPerAttempt);
         }
     }
 }

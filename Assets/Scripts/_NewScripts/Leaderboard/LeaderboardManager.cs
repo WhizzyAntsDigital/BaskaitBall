@@ -35,14 +35,18 @@ public class LeaderboardManager : MonoBehaviour
     [field: SerializeField] private GameObject monthlyLBHolder;
     [field: SerializeField] private RawImage img;
 
+    [field: Header("Leaderboard Names")]
+    [field: SerializeField] private GameObject dailyPlayerValues;
+    [field: SerializeField] private GameObject weeklyPlayerValues;
+    [field: SerializeField] private GameObject monthlyPlayerValues;
+    private GameObject playerValuesObject;
+
     string LeaderboardId = "bb_monthly";
     string VersionId { get; set; }
     int Offset { get; set; }
     int Limit { get; set; }
     int RangeLimit { get; set; } = 2;
     List<string> FriendIds { get; set; }
-    //public List<PlayerInfo> players;
-    LeaderboardEntry playerValues;
     private void Start()
     {
         
@@ -77,9 +81,9 @@ public class LeaderboardManager : MonoBehaviour
 
         switch (typeOfLeaderboard)
         {
-            case TypeOfLeaderBoard.DailyLeaderboard: LeaderboardId = dailyLB; targetForInstantiating = dailyLBHolder;  break;
-            case TypeOfLeaderBoard.WeeklyLeaderboard: LeaderboardId = weeklyLB; targetForInstantiating = weeklyLBHolder; break;
-            case TypeOfLeaderBoard.MonthlyLeaderboard: LeaderboardId = monthlyLB; targetForInstantiating = monthlyLBHolder; break;
+            case TypeOfLeaderBoard.DailyLeaderboard: LeaderboardId = dailyLB; targetForInstantiating = dailyLBHolder; playerValuesObject = dailyPlayerValues; break;
+            case TypeOfLeaderBoard.WeeklyLeaderboard: LeaderboardId = weeklyLB; targetForInstantiating = weeklyLBHolder; playerValuesObject = weeklyPlayerValues; break;
+            case TypeOfLeaderBoard.MonthlyLeaderboard: LeaderboardId = monthlyLB; targetForInstantiating = monthlyLBHolder; playerValuesObject = monthlyPlayerValues ; break;
             default: HelperClass.DebugError("Type Of Leaderboard Not Specified In Populating!"); break;
         }
         //Deleting Existing Entries If Any :)
@@ -100,17 +104,19 @@ public class LeaderboardManager : MonoBehaviour
             players = new List<PlayerInfo>();
         }
         await Task.Delay(1000);
+        LeaderboardEntry playerScoreThing = await GetPlayerScore();
         foreach (var player in players)
         {
             var playerThing = Instantiate(leaderboardPlayerInfoPrefab);
             playerThing.transform.SetParent(targetForInstantiating.transform, false);
             bool isPlayer = false;
-            if (player.playerId == Social.localUser.id)
+            if (player.playerId == playerScoreThing.PlayerId.ToString())
             {
                 isPlayer = true;
             }
-            playerThing.GetComponent<AssignLBValues>().AssignValues(player.playerName, (int)player.score, player.rank += 1, null, isPlayer);
+            playerThing.GetComponent<AssignLBValues>().AssignValues(player.playerName, (int)player.score, (player.rank+1), null, isPlayer);
         }
+        playerValuesObject.GetComponent<AssignLBValues>().AssignValues(playerScoreThing.PlayerName, (int)playerScoreThing.Score, (playerScoreThing.Rank+1), null, true);
     }
     public async void AddScore(int score, TypeOfLeaderBoard typeOfLeaderBoard)
     {
@@ -142,12 +148,10 @@ public class LeaderboardManager : MonoBehaviour
         HelperClass.DebugMessage(JsonConvert.SerializeObject(scoresResponse));
     }
 
-    public async Task<int> GetPlayerScore(string lbID)
+    public async Task<LeaderboardEntry> GetPlayerScore()
     {
-        var scoreResponse = await LeaderboardsService.Instance.GetPlayerScoreAsync(lbID);
-        HelperClass.DebugMessage(JsonConvert.SerializeObject(scoreResponse));
-        LeaderboardEntry entryLol = (JsonUtility.FromJson<LeaderboardEntry>(JsonConvert.SerializeObject(scoreResponse)));
-        return (int)entryLol.Score;
+        var scoreResponse = await LeaderboardsService.Instance.GetPlayerScoreAsync(LeaderboardId);
+        return scoreResponse;
     }
 
     public async Task<List<PlayerInfo>> GetPlayerRange(List<PlayerInfo> players)
@@ -207,6 +211,7 @@ public class LeaderboardManager : MonoBehaviour
         HelperClass.DebugMessage(JsonConvert.SerializeObject(scoreResponse));
     }
 
+    #region For Reset
     //private async void CheckAndResetValues()
     //{
     //    Debug.Log("reset");
@@ -260,4 +265,5 @@ public class LeaderboardManager : MonoBehaviour
 
     //    CurrencyDataHandler.instance.SaveCurrencyData();
     //}
+    #endregion
 }

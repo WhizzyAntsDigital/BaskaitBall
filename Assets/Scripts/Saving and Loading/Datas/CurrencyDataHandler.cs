@@ -37,7 +37,7 @@ public class CurrencyDataHandler : MonoBehaviour
         {
             if (SceneManager.GetActiveScene().name == "MainMenu")
             {
-                AssignImg();
+                AssignImg(img);
             }
         }
     }
@@ -52,7 +52,7 @@ public class CurrencyDataHandler : MonoBehaviour
             {
                 //imageTemp = Sprite.Create(Social.localUser.image, new Rect(0, 0, Social.localUser.image.width, Social.localUser.image.height), new Vector2(0.5f, 0.5f));
                 currencyData.image = EncodePreview(Social.localUser.image);
-                AssignImg();
+                AssignImg(img);
                 SaveCurrencyData();
                 break;
             }
@@ -62,12 +62,12 @@ public class CurrencyDataHandler : MonoBehaviour
         }
     }
 
-    public void AssignImg()
+    public void AssignImg(Image imagePfp)
     {
         if (!String.IsNullOrEmpty(currencyData.image))
         {
             Texture2D tex = DecodePreview(currencyData.image);
-            img.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f)); 
+            imagePfp.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f)); 
         }
     }
 
