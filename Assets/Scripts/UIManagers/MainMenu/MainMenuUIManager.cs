@@ -148,6 +148,7 @@ public class MainMenuUIManager : MonoBehaviour
             shopCanvas.SetActive(!isOpen);
             mainMenuCanvas.SetActive(isOpen);
             shopManager.AssignPrices();
+            shopManager.UpdateActionButton();
             isOpen = true;
         }
         else if (isOpen)
