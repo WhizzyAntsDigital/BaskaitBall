@@ -22,7 +22,7 @@ public class MainMenuUIManager : MonoBehaviour
     [field: SerializeField] private ProfileStatsManager profileStatsManager;
     [field: SerializeField] private TournamentModesUIManager tournamentModesUIManager;
     [field: SerializeField] private SettingsManager settingsManager;
-
+    [field: SerializeField] private ShopManager shopManager;
 
     [field: Header("For Internet Connection")]
     [field: SerializeField] private Button tournamentButton;
@@ -35,6 +35,7 @@ public class MainMenuUIManager : MonoBehaviour
         profileStatsManager = GetComponent<ProfileStatsManager>();
         tournamentModesUIManager = GetComponent<TournamentModesUIManager>();
         settingsManager = GetComponent<SettingsManager>();
+        shopManager = GetComponent<ShopManager>();
         CurrencyManager.instance.UpdateCurrencysAmount();
         mainMenuCanvas.SetActive(true);
         settingsCanvas.SetActive(false);
@@ -146,6 +147,7 @@ public class MainMenuUIManager : MonoBehaviour
         {
             shopCanvas.SetActive(!isOpen);
             mainMenuCanvas.SetActive(isOpen);
+            shopManager.AssignPrices();
             isOpen = true;
         }
         else if (isOpen)

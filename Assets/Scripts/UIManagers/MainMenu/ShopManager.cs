@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Purchasing;
 using UnityEngine.UI;
 
 public class ShopManager : MonoBehaviour
@@ -30,6 +31,8 @@ public class ShopManager : MonoBehaviour
     [field: SerializeField] private GameObject circle1;
     [field: SerializeField] private GameObject circle2;
     [field: SerializeField] private Vector2 smallerCircleScale;
+    [field: SerializeField] private List<CodelessIAPButton> iapButtons;
+    [field: SerializeField] private List<TextMeshProUGUI> iapTexts;
 
     [field: Header("Swipe Input")]
     [field: SerializeField] private GameObject shopPanel;
@@ -317,6 +320,24 @@ public class ShopManager : MonoBehaviour
                 poc = 2; 
                 break;
             }
+        }
+    }
+
+    public void OnPurchaseOfCoins(int amount)
+    {
+        CurrencyManager.instance.AdjustCoins(amount);
+    }
+    public void OnPurchaseOfGems(int amount)
+    {
+        CurrencyManager.instance.AdjustGems(amount);
+    }
+
+    public void AssignPrices()
+    {
+        for (int i = 0; i < iapTexts.Count; i++)
+        {
+            //iapTexts[i].text = CodelessIAPStoreListener.Instance.GetProduct(iapButtons[i].productId).metadata.localizedPriceString;
+            iapTexts[i].text = CodelessIAPStoreListener.Instance.StoreController.products.WithID(iapButtons[i].productId).metadata.localizedPriceString;
         }
     }
 }
