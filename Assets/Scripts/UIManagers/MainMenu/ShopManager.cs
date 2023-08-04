@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ShopManager : MonoBehaviour
@@ -14,12 +15,29 @@ public class ShopManager : MonoBehaviour
     [field: SerializeField] private AudioClip clip;
     private int currentSkin = 0;
 
+    [field: Header("Action Button Sprites")]
+    [field: SerializeField] private Sprite purchaseSkin;
+    [field: SerializeField] private Sprite equipSkin;
+    [field: SerializeField] private Sprite equippedSkin;
+    [field: SerializeField] private GameObject purchasableText;
+    [field: SerializeField] private GameObject purchasedText;
+
+    [field: Header("IAP Stuff")]
+    [field: SerializeField] private string mainPanelTag;
+    [field: SerializeField] private string bottomPanelTag;
+    [field: SerializeField] private GameObject coinsIAPPanel;
+    [field: SerializeField] private GameObject gemsIAPPanel;
+    [field: SerializeField] private GameObject circle1;
+    [field: SerializeField] private GameObject circle2;
+    [field: SerializeField] private Vector2 smallerCircleScale;
+
     [field: Header("Swipe Input")]
     [field: SerializeField] private GameObject shopPanel;
     [field: SerializeField] private float minSwipeDistance = 50f;
     [field: SerializeField] private float swipeThreshold = 1f;
     private Vector2 fingerDownPosition;
     private Vector2 fingerUpPosition;
+    int mainPOC;
 
     public List<Vector3> scalesOfSkins;
 
@@ -34,14 +52,14 @@ public class ShopManager : MonoBehaviour
                 infoOnSkins[i].isEquipped = true;
                 infoOnSkins[i].skinObject.SetActive(true);
                 currentSkin = i;
-                actionButton.gameObject.SetActive(false);
+                UpdateActionButton();
             }
             else
             {
                 infoOnSkins[i].isEquipped = false;
             }
         }
-        if(!String.IsNullOrEmpty(UserDataHandler.instance.ReturnSavedValues().userName))
+        if(MiscellaneousDataHandler.instance.ReturnSavedValues().hasPlayedTutorial)
         {
             for (int i = 0; i< infoOnSkins.Count; i++)
             {
@@ -60,22 +78,23 @@ public class ShopManager : MonoBehaviour
         if (Input.touchCount > 0 && shopPanel.activeInHierarchy)
         {
             Touch touch = Input.GetTouch(0);
-
+            
             if (touch.phase == TouchPhase.Began)
             {
                 fingerDownPosition = touch.position;
                 fingerUpPosition = touch.position;
+                CheckUITouch(touch.position, ref mainPOC);
             }
 
             if (touch.phase == TouchPhase.Ended)
             {
                 fingerUpPosition = touch.position;
-                CheckSwipe();
+                CheckSwipe(mainPOC);
             }
         }
     }
 
-    private void CheckSwipe()
+    private void CheckSwipe(int poc)
     {
         if (Vector2.Distance(fingerDownPosition, fingerUpPosition) >= minSwipeDistance)
         {
@@ -87,12 +106,22 @@ public class ShopManager : MonoBehaviour
                 if (deltaX > 0)
                 {
                     //Right
-                    ScrollThroughSkins(false);
+                    switch(poc)
+                    {
+                        case 1: ScrollThroughSkins(false); break;
+                        case 2: ScrollThroughIAP(false); break;
+                        default: HelperClass.DebugWarning("Wrong Input????"); break;
+                    }
                 }
                 else
                 {
                     //Left
-                    ScrollThroughSkins(true);
+                    switch (poc)
+                    {
+                        case 1: ScrollThroughSkins(true); break;
+                        case 2: ScrollThroughIAP(true); break;
+                        default: HelperClass.DebugWarning("Wrong Input????"); break;
+                    }
                 }
             }
         }
@@ -117,11 +146,27 @@ public class ShopManager : MonoBehaviour
                 currentSkin = infoOnSkins.Count-1;
             }
         }
-        //infoOnSkins[previousSkin].skinObject.SetActive(false);
-        //infoOnSkins[currentSkin].skinObject.SetActive(true);
-        //UpdateActionButton();
         ScrollingEffect(previousSkin);
     }
+
+    private void ScrollThroughIAP(bool idkman)
+    {
+        if(coinsIAPPanel.activeInHierarchy)
+        {
+            coinsIAPPanel.SetActive(false);
+            gemsIAPPanel.SetActive(true);
+            circle1.GetComponent<RectTransform>().localScale = smallerCircleScale;
+            circle2.GetComponent<RectTransform>().localScale = Vector2.one;
+        }
+        else
+        {
+            coinsIAPPanel.SetActive(true);
+            gemsIAPPanel.SetActive(false);
+            circle2.GetComponent<RectTransform>().localScale = smallerCircleScale;
+            circle1.GetComponent<RectTransform>().localScale = Vector2.one;
+        }
+    }
+
 
     private void ScrollingEffect(int previousSkin)
     {
@@ -183,23 +228,27 @@ public class ShopManager : MonoBehaviour
     {
         if (infoOnSkins[currentSkin].isOwned == true)
         {
-            actionButton.gameObject.SetActive(false);
-            for(int i = 0; i < infoOnSkins.Count; i++)
+            purchasedText.SetActive(true);
+            purchasableText.SetActive(false);
+            if (infoOnSkins[currentSkin].isEquipped == true)
             {
-                infoOnSkins[i].isEquipped = false;
-                SkinsOwnershipDataHandler.instance.ReturnSavedValues().isEquipped[i] = false;
-                if(i == currentSkin)
-                {
-                    infoOnSkins[i].isEquipped = true;
-                    SkinsOwnershipDataHandler.instance.ReturnSavedValues().isEquipped[i] = true;
-                }
+                actionButton.gameObject.GetComponent<Image>().sprite = equippedSkin;
+                actionButton.interactable = false;
+                purchasedText.GetComponentInChildren<TextMeshProUGUI>().text = "Equipped";
             }
-            SkinsOwnershipDataHandler.instance.SaveSkinData();
+            else
+            {
+                actionButton.gameObject.GetComponent<Image>().sprite = equipSkin;
+                actionButton.interactable = true;
+                purchasedText.GetComponentInChildren<TextMeshProUGUI>().text = "Equip";
+            }
         }
 
-        else if(infoOnSkins[currentSkin].isOwned == false)
+        if(infoOnSkins[currentSkin].isOwned == false)
         {
-            actionButton.gameObject.SetActive(true);
+            purchasableText.SetActive(true);
+            purchasedText.SetActive(false);
+            actionButton.gameObject.GetComponent<Image>().sprite = purchaseSkin;
             if (infoOnSkins[currentSkin].skinPrice <= CurrencyDataHandler.instance.ReturnSavedValues().amountOfCoins)
             {
                 actionButton.interactable = true;
@@ -212,12 +261,62 @@ public class ShopManager : MonoBehaviour
         }
     }
 
+    private void EquipSkin()
+    {
+        if (infoOnSkins[currentSkin].isOwned && !infoOnSkins[currentSkin].isEquipped)
+        {
+            actionButton.gameObject.GetComponent<Image>().sprite = equippedSkin;
+            for (int i = 0; i < infoOnSkins.Count; i++)
+            {
+                infoOnSkins[i].isEquipped = false;
+                SkinsOwnershipDataHandler.instance.ReturnSavedValues().isEquipped[i] = false;
+                if (i == currentSkin)
+                {
+                    infoOnSkins[i].isEquipped = true;
+                    SkinsOwnershipDataHandler.instance.ReturnSavedValues().isEquipped[i] = true;
+                }
+            }
+            SkinsOwnershipDataHandler.instance.SaveSkinData();
+        }
+    }
+
     public void UponPurchase()
     {
-        infoOnSkins[currentSkin].isOwned = true;
-        SkinsOwnershipDataHandler.instance.ReturnSavedValues().isOwned[currentSkin] = true;
-        SkinsOwnershipDataHandler.instance.SaveSkinData();
-        CurrencyManager.instance.AdjustCoins(-infoOnSkins[currentSkin].skinPrice);
-        UpdateActionButton();
+        if (infoOnSkins[currentSkin].isOwned == false)
+        {
+            Debug.Log("purchased");
+            infoOnSkins[currentSkin].isOwned = true;
+            SkinsOwnershipDataHandler.instance.ReturnSavedValues().isOwned[currentSkin] = true;
+            SkinsOwnershipDataHandler.instance.SaveSkinData();
+            CurrencyManager.instance.AdjustCoins(-infoOnSkins[currentSkin].skinPrice);
+        }
+        else
+        {
+            Debug.Log("equipped");
+            EquipSkin();
+        }
+            UpdateActionButton();
+    }
+    private void CheckUITouch(Vector2 position, ref int poc)
+    {
+        PointerEventData eventData = new PointerEventData(EventSystem.current);
+        eventData.position = position;
+
+        var results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+
+        foreach (RaycastResult result in results)
+        {
+            if (result.gameObject.CompareTag(mainPanelTag))
+            {
+                poc = 1;
+                break;
+            }
+            else if(result.gameObject.CompareTag(bottomPanelTag))
+            {
+                poc = 2; 
+                break;
+            }
+        }
     }
 }

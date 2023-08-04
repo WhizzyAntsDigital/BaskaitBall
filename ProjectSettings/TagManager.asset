@@ -9,6 +9,8 @@ TagManager:
   - TouchLimit
   - ArcadeParts
   - Net
+  - MainPanel
+  - BottomPanel
   layers:
   - Default
   - TransparentFX
