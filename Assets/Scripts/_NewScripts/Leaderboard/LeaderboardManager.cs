@@ -103,20 +103,28 @@ public class LeaderboardManager : MonoBehaviour
             HelperClass.DebugError("Debugged Error Cuz No Values In Leaderboard: " + e.Message);
             players = new List<PlayerInfo>();
         }
-        await Task.Delay(1000);
-        LeaderboardEntry playerScoreThing = await GetPlayerScore();
-        foreach (var player in players)
-        {
-            var playerThing = Instantiate(leaderboardPlayerInfoPrefab);
-            playerThing.transform.SetParent(targetForInstantiating.transform, false);
-            bool isPlayer = false;
-            if (player.playerId == playerScoreThing.PlayerId.ToString())
+
+        if(players.Count > 0) 
+        { 
+            await Task.Delay(1000);
+            LeaderboardEntry playerScoreThing = await GetPlayerScore();
+            foreach (var player in players)
             {
-                isPlayer = true;
+                var playerThing = Instantiate(leaderboardPlayerInfoPrefab);
+                playerThing.transform.SetParent(targetForInstantiating.transform, false);
+                bool isPlayer = false;
+                if (player.playerId == playerScoreThing.PlayerId.ToString())
+                {
+                    isPlayer = true;
+                }
+                playerThing.GetComponent<AssignLBValues>().AssignValues(player.playerName, (int)player.score, (player.rank+1), null, isPlayer);
             }
-            playerThing.GetComponent<AssignLBValues>().AssignValues(player.playerName, (int)player.score, (player.rank+1), null, isPlayer);
+            playerValuesObject.GetComponent<AssignLBValues>().AssignValues(playerScoreThing.PlayerName, (int)playerScoreThing.Score, (playerScoreThing.Rank+1), null, true);
         }
-        playerValuesObject.GetComponent<AssignLBValues>().AssignValues(playerScoreThing.PlayerName, (int)playerScoreThing.Score, (playerScoreThing.Rank+1), null, true);
+        else
+        {
+            playerValuesObject.GetComponent<AssignLBValues>().AssignValues(Social.localUser.userName, 0, 0 , null, true);
+        }
     }
     public async void AddScore(int score, TypeOfLeaderBoard typeOfLeaderBoard)
     {
