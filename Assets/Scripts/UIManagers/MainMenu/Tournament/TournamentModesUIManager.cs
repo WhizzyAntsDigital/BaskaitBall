@@ -16,6 +16,20 @@ public class TournamentModesUIManager : MonoBehaviour
     [field: Header("For Internet Connection")]
     [field: SerializeField] private GameObject tournamentModesPanel;
     [field: SerializeField] private MainMenuUIManager mainMenuUIManager;
+
+    [field: Header("Swipe Input")]
+    [field: SerializeField] private float minSwipeDistance = 50f;
+    [field: SerializeField] private float swipeThreshold = 1f;
+    [field: SerializeField] private List<GameObject> mainTourney;
+    [field: SerializeField] private List<GameObject> prevTourney;
+    [field: SerializeField] private List<GameObject> nextTourney;
+
+    private Vector2 fingerDownPosition;
+    private Vector2 fingerUpPosition;
+    private int currentTourney = 0;
+    private int prevTourneyIndex = 3;
+    private int nextTourneyIndex = 1;
+
     private void Start()
     {
         mainMenuUIManager = GetComponent<MainMenuUIManager>();  
@@ -28,6 +42,106 @@ public class TournamentModesUIManager : MonoBehaviour
     {
         InternetConnectivityChecker.Instance.IsDisconnectedFromInternet -= () => { OnInternetConnectionChange(false); };
     }
+
+    private void Update()
+    {
+        if (Input.touchCount > 0 && tournamentModesPanel.activeInHierarchy)
+        {
+            Touch touch = Input.GetTouch(0);
+
+            if (touch.phase == TouchPhase.Began)
+            {
+                fingerDownPosition = touch.position;
+                fingerUpPosition = touch.position;
+            }
+
+            if (touch.phase == TouchPhase.Ended)
+            {
+                fingerUpPosition = touch.position;
+                CheckSwipe();
+            }
+        }
+    }
+
+    private void CheckSwipe()
+    {
+        if (Vector2.Distance(fingerDownPosition, fingerUpPosition) >= minSwipeDistance)
+        {
+            float deltaX = fingerUpPosition.x - fingerDownPosition.x;
+            float deltaY = fingerUpPosition.y - fingerDownPosition.y;
+
+            if (Mathf.Abs(deltaX) > Mathf.Abs(deltaY) * swipeThreshold)
+            {
+                if (deltaX > 0)
+                {
+                    //Right
+                    ScrollThroughSkins(false);
+                }
+                else
+                {
+                    //Left
+                    ScrollThroughSkins(true);
+                }
+            }
+        }
+    }
+
+    private void ScrollThroughSkins(bool idkman)
+    {
+        int previousTourney = currentTourney;
+        int previousPrevTourney = prevTourneyIndex;
+        int previousNextTourney = nextTourneyIndex;
+        if (idkman == true)
+        {
+            currentTourney++;
+            prevTourneyIndex++;
+            nextTourneyIndex++;
+            if (currentTourney > mainTourney.Count - 1)
+            {
+                currentTourney = 0;
+            }
+            if (prevTourneyIndex > prevTourney.Count - 1)
+            {
+                prevTourneyIndex = 0;
+            }
+            if (nextTourneyIndex > nextTourney.Count - 1)
+            {
+                nextTourneyIndex = 0;
+            }
+        }
+        else if (idkman == false)
+        {
+            currentTourney--;
+            prevTourneyIndex--;
+            nextTourneyIndex--;
+            if (currentTourney < 0)
+            {
+                currentTourney = mainTourney.Count - 1;
+            }
+            if (prevTourneyIndex < 0)
+            {
+                prevTourneyIndex = prevTourney.Count - 1;
+            }
+            if (nextTourneyIndex < 0)
+            {
+                nextTourneyIndex = nextTourney.Count - 1;
+            }
+        }
+        GoToNextTourn(previousTourney, previousPrevTourney, previousNextTourney);
+    }
+
+    private void GoToNextTourn(int prevTour, int prevPrevTour, int prevNextTour)
+    {
+        mainTourney[prevTour].SetActive(false);
+        mainTourney[currentTourney].SetActive(true);
+
+        nextTourney[prevNextTour].SetActive(false);
+        nextTourney[nextTourneyIndex].SetActive(true);
+
+        prevTourney[prevPrevTour].SetActive(false);
+        prevTourney[prevTourneyIndex].SetActive(true);
+    }
+
     public void SelectTournamentMode(int ID)
     {
         TournamentInfoDataHandler.instance.ReturnSavedValues().selected[ID] = true;

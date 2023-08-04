@@ -4764,6 +4764,23 @@ MonoBehaviour:
   - {fileID: 876014193}
   tournamentModesPanel: {fileID: 535565687}
   mainMenuUIManager: {fileID: 196551825}
+  minSwipeDistance: 50
+  swipeThreshold: 1
+  mainTourney:
+  - {fileID: 427262108}
+  - {fileID: 1882993521}
+  - {fileID: 464622221}
+  - {fileID: 418239724}
+  prevTourney:
+  - {fileID: 1709917437}
+  - {fileID: 234763590}
+  - {fileID: 678979873}
+  - {fileID: 159273907}
+  nextTourney:
+  - {fileID: 1917971977}
+  - {fileID: 648917498}
+  - {fileID: 513543186}
+  - {fileID: 1660176920}
 --- !u!114 &196551830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12467,7 +12484,7 @@ GameObject:
   - component: {fileID: 513543189}
   - component: {fileID: 513543188}
   m_Layer: 5
-  m_Name: Prev_Tourney_3
+  m_Name: Next_Tourney_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19020,7 +19037,7 @@ GameObject:
   - component: {fileID: 648917501}
   - component: {fileID: 648917500}
   m_Layer: 5
-  m_Name: Prev_Tourney_2
+  m_Name: Next_Tourney_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49169,7 +49186,7 @@ GameObject:
   - component: {fileID: 1660176923}
   - component: {fileID: 1660176922}
   m_Layer: 5
-  m_Name: Prev_Tourney_4
+  m_Name: Next_Tourney_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -54988,7 +55005,7 @@ GameObject:
   - component: {fileID: 1917971980}
   - component: {fileID: 1917971979}
   m_Layer: 5
-  m_Name: Prev_Tourney_1
+  m_Name: Next_Tourney_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
