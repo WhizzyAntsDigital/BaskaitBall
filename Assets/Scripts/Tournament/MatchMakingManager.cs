@@ -8,8 +8,12 @@ using System.Linq.Expressions;
 public class MatchMakingManager : MonoBehaviour
 {
     [field: Header("Tournament Bracket Generator")]
-    [field: SerializeField] private TextMeshProUGUI playerText;
-    [field: SerializeField] private TextMeshProUGUI opponentText;
+    [field: SerializeField] private TextMeshProUGUI playerUsernameText;
+    [field: SerializeField] private TextMeshProUGUI playerCoinsText;
+    [field: SerializeField] private Image playerPFP;
+    [field: SerializeField] private TextMeshProUGUI opponentUsernameText;
+    [field: SerializeField] private TextMeshProUGUI opponentCoinsText;
+    [field: SerializeField] private Image opponentPFP;
     [field: SerializeField] private TextMeshProUGUI currentTourneyReward;
     [field: SerializeField] private TextMeshProUGUI timerText;
     [field: SerializeField] private int maxTimeToSearchForPlayer = 10;
@@ -32,6 +36,8 @@ public class MatchMakingManager : MonoBehaviour
     private float coinReductionRate;
     private bool startCoinChange = false;
     private bool startedAudio = false;
+
+    int selectedTournamentID = 0;
 
     [field: Header("Internet Connection Checking")]
     [field: SerializeField] private GameObject noInternetPopup;
@@ -95,8 +101,8 @@ public class MatchMakingManager : MonoBehaviour
 
             if (tempPlayersInvestingCoins >= 0 && tempTournamentReward <= tournamentReward)
             {
-                playerText.text = Mathf.RoundToInt(tempPlayersInvestingCoins).ToString();
-                opponentText.text = Mathf.RoundToInt(tempPlayersInvestingCoins).ToString();
+                playerCoinsText.text = Mathf.RoundToInt(tempPlayersInvestingCoins).ToString();
+                opponentCoinsText.text = Mathf.RoundToInt(tempPlayersInvestingCoins).ToString();
                 currentTourneyReward.text = Mathf.RoundToInt(tempTournamentReward).ToString();
                 if (!startedAudio)
                 {
@@ -111,8 +117,8 @@ public class MatchMakingManager : MonoBehaviour
                 audioSource.Stop();
                 audioSource.loop = false;
                 startedAudio = false;
-                playerText.text = "0";
-                opponentText.text = "0";
+                playerCoinsText.text = "0";
+                opponentCoinsText.text = "0";
                 currentTourneyReward.text = tournamentReward.ToString();
                 GoToGameScene();
                 startCoinChange = false;
@@ -122,13 +128,6 @@ public class MatchMakingManager : MonoBehaviour
 
     private void SetValues()
     {
-        playerText.text = UserDataHandler.instance.ReturnSavedValues().userName;
-        opponentText.text = "???";
-        SetOpponentUsernameFirstRound();
-    }
-    private void AnimateCoins()
-    {
-        int selectedTournamentID = 0;
         for (int i = 0; i <= 3; i++)
         {
             if (TournamentInfoDataHandler.instance.ReturnSavedValues().selected[i] == true)
@@ -137,10 +136,22 @@ public class MatchMakingManager : MonoBehaviour
                 break;
             }
         }
+        playerCoinsText.text = TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID].ToString();
+        playerUsernameText.text = Social.localUser.userName;
+        CurrencyDataHandler.instance.AssignImg(playerPFP);
+
+        opponentCoinsText.text = TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID].ToString();
+        opponentUsernameText.text = "???";
+        
+
+        SetOpponentUsernameFirstRound();
+    }
+    private void AnimateCoins()
+    {
         playersInvestingCoins = TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID];
         coinReductionRate = Mathf.Pow(10, ((TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID] * 4).ToString().Length - 2));
-        playerText.text = playersInvestingCoins.ToString();
-        opponentText.text = playersInvestingCoins.ToString();
+        playerCoinsText.text = playersInvestingCoins.ToString();
+        opponentCoinsText.text = playersInvestingCoins.ToString();
         tournamentReward = playersInvestingCoins * 2;
         tempPlayersInvestingCoins = playersInvestingCoins;
         tempTournamentReward = 0;
@@ -149,10 +160,11 @@ public class MatchMakingManager : MonoBehaviour
     }
     private async void SetOpponentUsernameFirstRound()
     {
+        GetImage.Instance.StartImageDownload(opponentPFP);
         await Task.Delay(playerSearchingTime * 1000);
         audioSource.clip = playerFound;
         audioSource.Play();
-        opponentText.text = AINamesGenerator.Utils.GetRandomName();
+        opponentUsernameText.text = AINamesGenerator.Utils.GetRandomName();
         timerText.text = "Starting...";
         GoToCoinAnimation();
     }

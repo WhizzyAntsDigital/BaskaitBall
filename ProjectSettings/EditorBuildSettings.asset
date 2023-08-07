@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/BonusLevel.unity
     guid: bca1f6793c8e1684fbf98ec99d87c900
   - enabled: 1
-    path: Assets/Scenes/TournamentLoadingScene.unity
+    path: Assets/Scenes/MatchMaking.unity
     guid: bea47a2880cb6d9479b7088f5a6ee39d
   - enabled: 1
     path: Assets/Scenes/TournamentMode.unity

@@ -48,7 +48,7 @@ public class TournamentModesUIManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.touchCount > 0 && tournamentModesPanel.activeInHierarchy)
+        if (SceneManager.GetActiveScene().name == "MainMenu" && Input.touchCount > 0 && tournamentModesPanel.activeInHierarchy)
         {
             Touch touch = Input.GetTouch(0);
 
@@ -152,7 +152,7 @@ public class TournamentModesUIManager : MonoBehaviour
             TournamentInfoDataHandler.instance.ReturnSavedValues().selected[ID] = true;
             CurrencyManager.instance.AdjustCoins(-TournamentInfoDataHandler.instance.ReturnSavedValues().prices[ID]);
             TournamentInfoDataHandler.instance.SaveTourneyData();
-            SceneManager.LoadScene("TournamentLoadingScene");
+            SceneManager.LoadScene("MatchMaking");
         }
         else
         {

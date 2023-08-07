@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Purchasing;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ShopManager : MonoBehaviour
@@ -78,7 +79,7 @@ public class ShopManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.touchCount > 0 && shopPanel.activeInHierarchy)
+        if (SceneManager.GetActiveScene().name == "MainMenu" && Input.touchCount > 0 && shopPanel.activeInHierarchy)
         {
             Touch touch = Input.GetTouch(0);
             
