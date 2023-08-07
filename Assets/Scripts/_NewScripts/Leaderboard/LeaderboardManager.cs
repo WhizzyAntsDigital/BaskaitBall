@@ -34,6 +34,7 @@ public class LeaderboardManager : MonoBehaviour
     [field: SerializeField] private string monthlyLB = "bb_monthly";
     [field: SerializeField] private GameObject monthlyLBHolder;
     [field: SerializeField] private RawImage img;
+    [field: SerializeField] private LoadingManager loadingManager;
 
     [field: Header("Leaderboard Names")]
     [field: SerializeField] private GameObject dailyPlayerValues;
@@ -72,6 +73,7 @@ public class LeaderboardManager : MonoBehaviour
         await PopulateLeaderboard(TypeOfLeaderBoard.MonthlyLeaderboard);
         await Task.Delay(300);
         leaderboardButton.interactable = true;
+        loadingManager.CheckWhatToDo();
     }
 
     public async Task PopulateLeaderboard(TypeOfLeaderBoard typeOfLeaderboard)

@@ -6,6 +6,8 @@ using UnityEngine;
 public class MainMenuUIManager : MonoBehaviour
 {
     [field: Header("Main Menu UI Manager")]
+    [field: SerializeField] private GameObject loadingScreenCanvas;
+
     [field: SerializeField] private GameObject mainMenuCanvas;
     [field: SerializeField] private GameObject settingsCanvas;
     [field: SerializeField] private GameObject profileCanvas;
@@ -37,7 +39,8 @@ public class MainMenuUIManager : MonoBehaviour
         settingsManager = GetComponent<SettingsManager>();
         shopManager = GetComponent<ShopManager>();
         CurrencyManager.instance.UpdateCurrencysAmount();
-        mainMenuCanvas.SetActive(true);
+        loadingScreenCanvas.SetActive(true); ;
+        mainMenuCanvas.SetActive(false); ;
         settingsCanvas.SetActive(false);
         profileCanvas.SetActive(false);
         shopCanvas.SetActive(false);
