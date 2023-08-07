@@ -18,7 +18,6 @@ public class InGameUI : MonoBehaviour
     [field: SerializeField] private GameObject touchArea;
     [field: SerializeField] private GameObject gameOverScene;
     [field: SerializeField] private TextMeshProUGUI finalScore;
-    [field: SerializeField] private TextMeshProUGUI timerText;
     [field: SerializeField] private TextMeshProUGUI playerCoins;
     [field: SerializeField] private TextMeshProUGUI playerUsername;
     [field: SerializeField] private Image playerPFP;
@@ -43,8 +42,6 @@ public class InGameUI : MonoBehaviour
     [field: Header("Bonus Level Stuff")]
     [field: SerializeField] TextMeshProUGUI amountOfGemsEarned;
 
-    private float timer;
-    private bool startTimer = false;
     private string SceneToLoad;
 
     private int playersInvestingCoins;
@@ -88,17 +85,6 @@ public class InGameUI : MonoBehaviour
 
     private void Update()
     {
-        if (startTimer)
-        {
-            timerText.gameObject.SetActive(true);
-            timer -= Time.deltaTime;
-            timerText.text = "Continuing in " + Mathf.RoundToInt(timer) + "...";
-            if (timer <= 0)
-            {
-                timerText.text = "Loading...";
-            }
-        }
-
         if (startCoinChange)
         {
             tempPlayersInvestingCoins += (Time.deltaTime * coinReductionRate * 2);
@@ -167,7 +153,6 @@ public class InGameUI : MonoBehaviour
         touchArea.SetActive(false);
         gameOverScene.SetActive(true);
 
-        timerText.gameObject.SetActive(false);
         if (matchResult == MatchResult.PlayerWon)
         {
             UserDataHandler.instance.ReturnSavedValues().numberOfWins++;
@@ -202,8 +187,6 @@ public class InGameUI : MonoBehaviour
     }
     private async void SceneChange(string sceneName)
     {
-        timer = timeToGoToNextScene;
-        startTimer = true;
         await Task.Delay(timeToGoToNextScene * 1000);
         SceneManager.LoadScene(sceneName);
     }
