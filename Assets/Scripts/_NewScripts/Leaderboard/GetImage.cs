@@ -18,7 +18,7 @@ public class GetImage : MonoBehaviour
         Instance = this;
     }
 
-    public void StartImageDownload(Image imageTarget)
+    public void StartImageDownload(Image imageTarget, bool forPlayer)
     {
         string url = apiLinks[Random.Range(0, apiLinks.Count)];
         if("https://api.waifu.pics/sfw/waifu" == url || "https://api.thecatapi.com/v1/images/search" == url)
@@ -36,10 +36,10 @@ public class GetImage : MonoBehaviour
                 HelperClass.DebugWarning("No link found in the input string.");
             }
         }
-        StartCoroutine(DownloadImage(url, imageTarget));
+        StartCoroutine(DownloadImage(url, imageTarget, forPlayer));
     }
 
-    private IEnumerator DownloadImage(string URL, Image imageTarget)
+    private IEnumerator DownloadImage(string URL, Image imageTarget, bool forPlayer)
     {
         using (UnityWebRequest www = UnityWebRequestTexture.GetTexture(URL))
         {
@@ -58,7 +58,7 @@ public class GetImage : MonoBehaviour
                     if (match.Success)
                     {
                         string link = match.Groups[1].Value;
-                        StartCoroutine(DownloadImage(link, imageTarget));
+                        StartCoroutine(DownloadImage(link, imageTarget, forPlayer));
                     }
                     else
                     {
@@ -69,7 +69,12 @@ public class GetImage : MonoBehaviour
                 {
                     Texture2D texture = DownloadHandlerTexture.GetContent(www);
                     if(texture != null) 
-                    { 
+                    {
+                        if (!forPlayer)
+                        {
+                            CurrencyDataHandler.instance.ReturnSavedValues().opponentPFP = CurrencyDataHandler.instance.EncodePreview(texture);
+                            CurrencyDataHandler.instance.SaveCurrencyData();
+                        }
                         imageTarget.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
                     }
                 }

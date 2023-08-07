@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 [System.Serializable]
 public enum MatchResult
@@ -16,16 +17,17 @@ public class InGameUI : MonoBehaviour
     [field: Header("In Game UI Manager")]
     [field: SerializeField] private GameObject touchArea;
     [field: SerializeField] private GameObject gameOverScene;
-    [field: SerializeField] private TextMeshProUGUI gameResult;
     [field: SerializeField] private TextMeshProUGUI finalScore;
     [field: SerializeField] private TextMeshProUGUI timerText;
-    [field: SerializeField] private TextMeshProUGUI playerText;
-    [field: SerializeField] private TextMeshProUGUI opponentText;
+    [field: SerializeField] private TextMeshProUGUI playerCoins;
+    [field: SerializeField] private TextMeshProUGUI playerUsername;
+    [field: SerializeField] private Image playerPFP;
+    [field: SerializeField] private TextMeshProUGUI opponentCoins;
+    [field: SerializeField] private TextMeshProUGUI opponentUsername;
+    [field: SerializeField] private Image opponentPFP;
     [field: SerializeField] private TextMeshProUGUI currentTourneyReward;
     [field: SerializeField] GameObject playerWonIcon;
-    [field: SerializeField] GameObject playerLostIcon;
     [field: SerializeField] GameObject opponentWonIcon;
-    [field: SerializeField] GameObject opponentLostIcon;
     [field: SerializeField] GameObject confirmExit;
     [field: SerializeField] private int timeToGoToNextScene = 3;
     [field: SerializeField] private Color winColour;
@@ -105,11 +107,11 @@ public class InGameUI : MonoBehaviour
             {
                 if (matchResult == MatchResult.PlayerWon)
                 {
-                    playerText.text = Mathf.RoundToInt(tempPlayersInvestingCoins).ToString();
+                    playerCoins.text = Mathf.RoundToInt(tempPlayersInvestingCoins).ToString();
                 }
                 else
                 {
-                    opponentText.text = Mathf.RoundToInt(tempPlayersInvestingCoins).ToString();
+                    opponentCoins.text = Mathf.RoundToInt(tempPlayersInvestingCoins).ToString();
                 }
                 currentTourneyReward.text = Mathf.RoundToInt(tempTournamentReward).ToString();
             }
@@ -117,11 +119,11 @@ public class InGameUI : MonoBehaviour
             {
                 if (matchResult == MatchResult.PlayerWon)
                 {
-                    playerText.text = tournamentReward.ToString();
+                    playerCoins.text = tournamentReward.ToString();
                 }
                 else
                 {
-                    opponentText.text = tournamentReward.ToString();
+                    opponentCoins.text = tournamentReward.ToString();
                 }
                 currentTourneyReward.text = "0";
                 SceneChange(SceneToLoad);
@@ -146,8 +148,8 @@ public class InGameUI : MonoBehaviour
         }
         playersInvestingCoins = TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID];
         coinReductionRate = Mathf.Pow(10, ((TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID] * 4).ToString().Length - 2));
-        playerText.text = "0";
-        opponentText.text = "0";
+        playerCoins.text = "0";
+        opponentCoins.text = "0";
         tournamentReward = playersInvestingCoins * 2;
         tempPlayersInvestingCoins = 0;
         tempTournamentReward = tournamentReward;
@@ -157,16 +159,11 @@ public class InGameUI : MonoBehaviour
     }
     private void GameOverUI()
     {
-        if (matchResult == MatchResult.PlayerWon)
-        {
-            gameResult.text = "YOU WIN!";
-            gameResult.color = winColour;
-        }
-        else if (matchResult == MatchResult.PlayerLost)
-        {
-            gameResult.text = "YOU LOSE...";
-            gameResult.color = loseColour;
-        }
+        playerUsername.text = Social.localUser.userName;
+        opponentUsername.text = CurrencyDataHandler.instance.ReturnSavedValues().opponentName;
+        CurrencyDataHandler.instance.AssignImg(playerPFP, true);
+        CurrencyDataHandler.instance.AssignImg(opponentPFP, false);
+        
         touchArea.SetActive(false);
         gameOverScene.SetActive(true);
 
@@ -181,8 +178,6 @@ public class InGameUI : MonoBehaviour
             UserDataHandler.instance.ReturnSavedValues().winningStreak++;
             UserDataHandler.instance.ReturnSavedValues().losingStreak = 0;
             playerWonIcon.SetActive(true);
-            playerLostIcon.SetActive(false);
-            opponentLostIcon.SetActive(true);
             opponentWonIcon.SetActive(false);
         }
         else
@@ -190,10 +185,8 @@ public class InGameUI : MonoBehaviour
             UserDataHandler.instance.ReturnSavedValues().numberOfLosses++;
             UserDataHandler.instance.ReturnSavedValues().losingStreak++;
             UserDataHandler.instance.ReturnSavedValues().winningStreak = 0;
-            playerLostIcon.SetActive(true);
             playerWonIcon.SetActive(false);
             opponentWonIcon.SetActive(true);
-            opponentLostIcon.SetActive(false);
         }
         UserDataHandler.instance.SaveUserData();
         MiscellaneousDataHandler.instance.SaveMiscData();
@@ -221,8 +214,6 @@ public class InGameUI : MonoBehaviour
     }
     private void FreeThrowUI()
     {
-        gameResult.text = "TRAINING OVER!";
-        gameResult.color = winColour;
         touchArea.SetActive(false);
         gameOverScene.SetActive(true);
         finalScore.text = ScoreCalculator.instance.scoreValue.ToString();

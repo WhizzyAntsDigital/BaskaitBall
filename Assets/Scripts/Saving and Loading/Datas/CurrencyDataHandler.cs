@@ -37,7 +37,7 @@ public class CurrencyDataHandler : MonoBehaviour
         {
             if (SceneManager.GetActiveScene().name == "MainMenu")
             {
-                AssignImg(img);
+                AssignImg(img, true);
             }
         }
     }
@@ -51,8 +51,8 @@ public class CurrencyDataHandler : MonoBehaviour
             if (Social.localUser.image != null)
             {
                 //imageTemp = Sprite.Create(Social.localUser.image, new Rect(0, 0, Social.localUser.image.width, Social.localUser.image.height), new Vector2(0.5f, 0.5f));
-                currencyData.image = EncodePreview(Social.localUser.image);
-                AssignImg(img);
+                currencyData.playerPFP = EncodePreview(Social.localUser.image);
+                AssignImg(img, true);
                 SaveCurrencyData();
                 break;
             }
@@ -62,23 +62,29 @@ public class CurrencyDataHandler : MonoBehaviour
         }
     }
 
-    public void AssignImg(Image imagePfp)
+    public void AssignImg(Image imagePfp, bool forPlayer)
     {
-        if (!String.IsNullOrEmpty(currencyData.image))
+        if (!String.IsNullOrEmpty(currencyData.playerPFP) && forPlayer)
         {
-            Texture2D tex = DecodePreview(currencyData.image);
-            imagePfp.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f)); 
+            Texture2D tex = DecodePreview(currencyData.playerPFP);
+            imagePfp.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
         }
+        else if (!String.IsNullOrEmpty(currencyData.opponentPFP) && forPlayer == false)
+        {
+            Texture2D tex = DecodePreview(currencyData.opponentPFP);
+            imagePfp.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
+        }
+
     }
 
-    private string EncodePreview(Texture2D previewImage)
+    public string EncodePreview(Texture2D previewImage)
     {
         byte[] previewBytes = previewImage.EncodeToJPG();
         string previewBase64 = Convert.ToBase64String(previewBytes);
         return previewBase64;
     }
 
-    public Texture2D DecodePreview(string previewBase64)
+    private Texture2D DecodePreview(string previewBase64)
     {
         byte[] previewBytes = Convert.FromBase64String(previewBase64);
 
@@ -115,5 +121,7 @@ public class CurrencyData
     public int amountOfCoins = 1000;
     public int amountOfGems = 10;
     public bool hasAddedInitialDataToLeaderBoard = false;
-    public string image;
+    public string playerPFP;
+    public string opponentPFP;
+    public string opponentName;
 }

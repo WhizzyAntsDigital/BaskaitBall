@@ -138,7 +138,7 @@ public class MatchMakingManager : MonoBehaviour
         }
         playerCoinsText.text = TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID].ToString();
         playerUsernameText.text = Social.localUser.userName;
-        CurrencyDataHandler.instance.AssignImg(playerPFP);
+        CurrencyDataHandler.instance.AssignImg(playerPFP, true);
 
         opponentCoinsText.text = TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID].ToString();
         opponentUsernameText.text = "???";
@@ -160,11 +160,13 @@ public class MatchMakingManager : MonoBehaviour
     }
     private async void SetOpponentUsernameFirstRound()
     {
-        GetImage.Instance.StartImageDownload(opponentPFP);
+        GetImage.Instance.StartImageDownload(opponentPFP, false);
         await Task.Delay(playerSearchingTime * 1000);
         audioSource.clip = playerFound;
         audioSource.Play();
-        opponentUsernameText.text = AINamesGenerator.Utils.GetRandomName();
+        CurrencyDataHandler.instance.ReturnSavedValues().opponentName = AINamesGenerator.Utils.GetRandomName();
+        CurrencyDataHandler.instance.SaveCurrencyData();
+        opponentUsernameText.text = CurrencyDataHandler.instance.ReturnSavedValues().opponentName;
         timerText.text = "Starting...";
         GoToCoinAnimation();
     }
