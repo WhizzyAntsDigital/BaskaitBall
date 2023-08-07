@@ -8,6 +8,8 @@ public class UnlockAnimation : MonoBehaviour
     public float shakeDuration = 0.5f;
     public float shakeIntensity = 0.1f;
     public TournamentModesUIManager tournamentModesUIManager;
+    public GameObject lockMainObj;
+    public GameObject scoreObj;
 
     private Vector3 initialLockIconPosition;
 

@@ -5,11 +5,14 @@ using System;
 using TMPro;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 
 public class TournamentModesUIManager : MonoBehaviour
 {
     [field: Header("Tournament Mode UI Handler")]
     [field: SerializeField] private List<TextMeshProUGUI> tourneyPriceTexts;
+    [field: SerializeField] private List<TextMeshProUGUI> tourneyPrePriceTexts;
+    [field: SerializeField] private List<TextMeshProUGUI> tourneyPrizeTexts;
     [field: SerializeField] private List<Button> tourneyButtons;
     [field: SerializeField] private List<Button> tourneyUnlockButtons;
 
@@ -75,23 +78,23 @@ public class TournamentModesUIManager : MonoBehaviour
                 if (deltaX > 0)
                 {
                     //Right
-                    ScrollThroughSkins(false);
+                    ScrollThroughTourneys(false);
                 }
                 else
                 {
                     //Left
-                    ScrollThroughSkins(true);
+                    ScrollThroughTourneys(true);
                 }
             }
         }
     }
 
-    private void ScrollThroughSkins(bool idkman)
+    private void ScrollThroughTourneys(bool isLeft)
     {
         int previousTourney = currentTourney;
         int previousPrevTourney = prevTourneyIndex;
         int previousNextTourney = nextTourneyIndex;
-        if (idkman == true)
+        if (isLeft == true)
         {
             currentTourney++;
             prevTourneyIndex++;
@@ -109,7 +112,7 @@ public class TournamentModesUIManager : MonoBehaviour
                 nextTourneyIndex = 0;
             }
         }
-        else if (idkman == false)
+        else if (isLeft == false)
         {
             currentTourney--;
             prevTourneyIndex--;
@@ -144,9 +147,17 @@ public class TournamentModesUIManager : MonoBehaviour
 
     public void SelectTournamentMode(int ID)
     {
-        TournamentInfoDataHandler.instance.ReturnSavedValues().selected[ID] = true;
-        CurrencyManager.instance.AdjustCoins(-TournamentInfoDataHandler.instance.ReturnSavedValues().prices[ID]);
-        TournamentInfoDataHandler.instance.SaveTourneyData();
+        if (TournamentInfoDataHandler.instance.ReturnSavedValues().unlocked[ID])
+        {
+            TournamentInfoDataHandler.instance.ReturnSavedValues().selected[ID] = true;
+            CurrencyManager.instance.AdjustCoins(-TournamentInfoDataHandler.instance.ReturnSavedValues().prices[ID]);
+            TournamentInfoDataHandler.instance.SaveTourneyData();
+            SceneManager.LoadScene("TournamentLoadingScene");
+        }
+        else
+        {
+            OnUnlockTournament(ID);
+        }
     }
     public void AssignPrices()
     {
@@ -154,8 +165,14 @@ public class TournamentModesUIManager : MonoBehaviour
         {
             if (TournamentInfoDataHandler.instance.ReturnSavedValues().unlocked[i] == true)
             {
-                TournamentInfoDataHandler.instance.allGameModesSpecs[i].lockedOverlay.SetActive(false);
+                if (i != 0) //To Skip First Free Tournament
+                {
+                    TournamentInfoDataHandler.instance.allGameModesSpecs[i].lockedOverlay.SetActive(false);
+                    TournamentInfoDataHandler.instance.allGameModesSpecs[i].unlockedOverlay.SetActive(true);
+                }
+                tourneyPrizeTexts[i].text = (TournamentInfoDataHandler.instance.ReturnSavedValues().prices[i] * 2).ToString();
                 tourneyPriceTexts[i].text = TournamentInfoDataHandler.instance.ReturnSavedValues().prices[i].ToString();
+                tourneyPrePriceTexts[i].text = "Entry Cost: ";
                 if (CurrencyDataHandler.instance.ReturnSavedValues().amountOfCoins < TournamentInfoDataHandler.instance.ReturnSavedValues().prices[i])
                 {
                     tourneyButtons[i].interactable = false;
@@ -167,9 +184,11 @@ public class TournamentModesUIManager : MonoBehaviour
             }
             else if(TournamentInfoDataHandler.instance.ReturnSavedValues().unlocked[i] == false)
             {
+                TournamentInfoDataHandler.instance.allGameModesSpecs[i].unlockedOverlay.SetActive(false);
                 TournamentInfoDataHandler.instance.allGameModesSpecs[i].lockedOverlay.SetActive(true);
                 tourneyButtons[i].interactable = false;
                 tourneyPriceTexts[i].text = TournamentInfoDataHandler.instance.allGameModesSpecs[i].tournamentUnlockCost.ToString();
+                tourneyPrePriceTexts[i].text = "Unlock Cost: ";
                 if(CurrencyDataHandler.instance.ReturnSavedValues().amountOfCoins >= TournamentInfoDataHandler.instance.allGameModesSpecs[i].tournamentUnlockCost)
                 {
                     tourneyUnlockButtons[i].interactable = true;
