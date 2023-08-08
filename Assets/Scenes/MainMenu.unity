@@ -4006,9 +4006,9 @@ RectTransform:
   - {fileID: 1057264902}
   m_Father: {fileID: 536439139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 1772.12, y: -700.99066}
   m_SizeDelta: {x: 1001, y: 1001}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &187712173
@@ -4300,6 +4300,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e60615658d1b4245904952b60d97e6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tourneyNamesTexts:
+  - {fileID: 953559296}
+  - {fileID: 248424696}
+  - {fileID: 372193996}
+  - {fileID: 1594617250}
   tourneyPriceTexts:
   - {fileID: 2073248470}
   - {fileID: 1202147807}
@@ -9748,9 +9753,9 @@ RectTransform:
   - {fileID: 1298663666}
   m_Father: {fileID: 536439139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 1074.81, y: -700.99066}
   m_SizeDelta: {x: 1001, y: 1001}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &451313926
@@ -12227,7 +12232,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &535565688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17419,28 +17424,32 @@ MonoBehaviour:
     selected: 00000000
     unlocked: 01000000
   allGameModesSpecs:
-  - tournamentID: 0
+  - tournamentName: Hoop Mania
+    tournamentID: 0
     tournamentCost: 100
     tournamentUnlockCost: 0
     lockedOverlay: {fileID: 0}
     unlockedOverlay: {fileID: 0}
     tournamentChosen: 0
     unlockAnimation: {fileID: 0}
-  - tournamentID: 1
+  - tournamentName: Dunk Duel
+    tournamentID: 1
     tournamentCost: 250
     tournamentUnlockCost: 500
     lockedOverlay: {fileID: 1563982891}
     unlockedOverlay: {fileID: 1658905486}
     tournamentChosen: 0
     unlockAnimation: {fileID: 1882993526}
-  - tournamentID: 2
+  - tournamentName: Slam Jam
+    tournamentID: 2
     tournamentCost: 500
     tournamentUnlockCost: 1500
     lockedOverlay: {fileID: 1683930670}
     unlockedOverlay: {fileID: 174477527}
     tournamentChosen: 0
     unlockAnimation: {fileID: 464622225}
-  - tournamentID: 3
+  - tournamentName: Ball Blitz
+    tournamentID: 3
     tournamentCost: 1000
     tournamentUnlockCost: 3000
     lockedOverlay: {fileID: 457144320}
@@ -22966,9 +22975,9 @@ RectTransform:
   - {fileID: 1317011999}
   m_Father: {fileID: 536439139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 377.5, y: -700.99066}
   m_SizeDelta: {x: 1001, y: 1001}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &805790080
@@ -39242,7 +39251,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1446563936
 MonoBehaviour:
   m_ObjectHideFlags: 0

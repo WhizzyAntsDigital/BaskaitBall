@@ -10,6 +10,7 @@ using UnityEngine.SceneManagement;
 public class TournamentModesUIManager : MonoBehaviour
 {
     [field: Header("Tournament Mode UI Handler")]
+    [field: SerializeField] private List<TextMeshProUGUI> tourneyNamesTexts;
     [field: SerializeField] private List<TextMeshProUGUI> tourneyPriceTexts;
     [field: SerializeField] private List<TextMeshProUGUI> tourneyPrePriceTexts;
     [field: SerializeField] private List<TextMeshProUGUI> tourneyPrizeTexts;
@@ -163,6 +164,7 @@ public class TournamentModesUIManager : MonoBehaviour
     {
         for (int i = 0; i < TournamentInfoDataHandler.instance.ReturnSavedValues().prices.Length; i++)
         {
+            tourneyNamesTexts[i].text = TournamentInfoDataHandler.instance.allGameModesSpecs[i].tournamentName;
             if (TournamentInfoDataHandler.instance.ReturnSavedValues().unlocked[i] == true)
             {
                 if (i != 0) //To Skip First Free Tournament

@@ -2551,6 +2551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6d133c15bc3f3544b319586e618e5c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tournamentName: {fileID: 682408608}
   playerUsernameText: {fileID: 2142944434}
   playerCoinsText: {fileID: 1856906106}
   playerPFP: {fileID: 1722288522}
@@ -2562,7 +2563,7 @@ MonoBehaviour:
   maxTimeToSearchForPlayer: 10
   timeToGoToGame: 5
   mainGameSceneName: TournamentMode
-  exitButton: {fileID: 0}
+  exitButton: {fileID: 923034053}
   audioSource: {fileID: 1432271644}
   coinAudioClip: {fileID: 8300000, guid: 5280a3953e9342746a26c8eb491d5cd5, type: 3}
   playerFound: {fileID: 8300000, guid: ad350f4307bc1494e81e7cd4428169fe, type: 3}

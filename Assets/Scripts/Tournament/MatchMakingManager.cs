@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 public class MatchMakingManager : MonoBehaviour
 {
     [field: Header("Tournament Bracket Generator")]
+    [field: SerializeField] private TextMeshProUGUI tournamentName;
     [field: SerializeField] private TextMeshProUGUI playerUsernameText;
     [field: SerializeField] private TextMeshProUGUI playerCoinsText;
     [field: SerializeField] private Image playerPFP;
@@ -45,6 +46,17 @@ public class MatchMakingManager : MonoBehaviour
 
     private void Start()
     {
+        for (int i = 0; i <= 3; i++)
+        {
+            if (TournamentInfoDataHandler.instance.ReturnSavedValues().selected[i] == true)
+            {
+                selectedTournamentID = i;
+                break;
+            }
+        }
+
+        tournamentName.text = TournamentInfoDataHandler.instance.ReturnSavedValues().tournamentNames[selectedTournamentID];
+
         audioSource = GetComponent<AudioSource>();
         audioSource.volume = SettingsDataHandler.instance.ReturnSavedValues().soundAmount;
         exitButton.interactable = true;
@@ -131,14 +143,7 @@ public class MatchMakingManager : MonoBehaviour
     private void SetValues()
     {
         exitButton.interactable = false;
-        for (int i = 0; i <= 3; i++)
-        {
-            if (TournamentInfoDataHandler.instance.ReturnSavedValues().selected[i] == true)
-            {
-                selectedTournamentID = i;
-                break;
-            }
-        }
+        
         playerCoinsText.text = TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID].ToString();
         playerUsernameText.text = Social.localUser.userName;
         CurrencyDataHandler.instance.AssignImg(playerPFP, true);

@@ -15,6 +15,7 @@ public enum MatchResult
 public class InGameUI : MonoBehaviour
 {
     [field: Header("In Game UI Manager")]
+    [field: SerializeField] private TextMeshProUGUI tournamentName;
     [field: SerializeField] private GameObject touchArea;
     [field: SerializeField] private GameObject gameOverScene;
     [field: SerializeField] private TextMeshProUGUI finalScore;
@@ -53,9 +54,20 @@ public class InGameUI : MonoBehaviour
     private float coinReductionRate;
     private bool startCoinChange = false;
 
+    int selectedTournamentID = 0;
+
 
     void Start()
     {
+        for (int i = 0; i <= 3; i++)
+        {
+            if (TournamentInfoDataHandler.instance.ReturnSavedValues().selected[i] == true)
+            {
+                selectedTournamentID = i;
+                break;
+            }
+        }
+
         touchArea.SetActive(true);
         gameOverScene.SetActive(false);
         confirmExit.SetActive(false);
@@ -119,15 +131,6 @@ public class InGameUI : MonoBehaviour
     }
     private void AnimateCoins()
     {
-        int selectedTournamentID = 0;
-        for (int i = 0; i <= 3; i++)
-        {
-            if (TournamentInfoDataHandler.instance.ReturnSavedValues().selected[i] == true)
-            {
-                selectedTournamentID = i;
-                break;
-            }
-        }
         if (matchResult == MatchResult.PlayerWon)
         {
             CurrencyManager.instance.AdjustCoins((TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID] * 2));
@@ -145,6 +148,7 @@ public class InGameUI : MonoBehaviour
     }
     private void GameOverUI()
     {
+        tournamentName.text = TournamentInfoDataHandler.instance.ReturnSavedValues().tournamentNames[selectedTournamentID];
         playerUsername.text = Social.localUser.userName;
         opponentUsername.text = CurrencyDataHandler.instance.ReturnSavedValues().opponentName;
         CurrencyDataHandler.instance.AssignImg(playerPFP, true);

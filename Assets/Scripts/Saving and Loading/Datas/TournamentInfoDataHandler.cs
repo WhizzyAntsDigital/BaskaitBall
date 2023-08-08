@@ -30,6 +30,7 @@ public class TournamentInfoDataHandler : MonoBehaviour
         {
             tournamentInfoData.prices[i] = allGameModesSpecs[i].tournamentCost;
             tournamentInfoData.selected[i] = false;
+            tournamentInfoData.tournamentNames[i] = allGameModesSpecs[i].tournamentName;
         }
         SaveTourneyData();
         
@@ -61,4 +62,5 @@ public class TournamentInfoData
     public int[] prices = {0,0,0,0};
     public bool[] selected = {false, false, false, false};
     public bool[] unlocked = {true, false, false, false};
+    public string[] tournamentNames = {"a", "b", "c", "d"};
 }

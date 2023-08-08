@@ -5,6 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class TournamentModesInfo
 {
+    public string tournamentName;
     public int tournamentID;
     public int tournamentCost;
     public int tournamentUnlockCost;

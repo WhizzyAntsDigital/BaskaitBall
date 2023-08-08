@@ -5063,6 +5063,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a301de45b8c388f4da58a01f31037bde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tournamentName: {fileID: 1370346795}
   touchArea: {fileID: 352308515}
   gameOverScene: {fileID: 1472134172}
   finalScore: {fileID: 0}
