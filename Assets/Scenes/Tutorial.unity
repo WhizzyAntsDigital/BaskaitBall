@@ -1277,7 +1277,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &989410194
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5810,12 +5810,12 @@ Cloth:
     collisionSphereDistance: 3.4028235e+38
   m_CapsuleColliders: []
   m_SphereColliders:
-  - first: {fileID: 0}
-    second: {fileID: 0}
-  - first: {fileID: 0}
-    second: {fileID: 0}
-  - first: {fileID: 0}
-    second: {fileID: 0}
+  - first: {fileID: 1478512969}
+    second: {fileID: 1478512969}
+  - first: {fileID: 1631026209}
+    second: {fileID: 1631026209}
+  - first: {fileID: 174809294}
+    second: {fileID: 174809294}
   m_SelfCollisionDistance: 0
   m_SelfCollisionStiffness: 0.2
   m_SelfAndInterCollisionIndices: 
