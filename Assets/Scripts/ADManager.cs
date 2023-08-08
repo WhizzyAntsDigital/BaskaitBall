@@ -5,12 +5,15 @@ using UnityEngine.UI;
 public enum TypeOfRewardedAD
 {
     AddCoins,
+    AddGems,
     BonusLevel
 }
 public class ADManager : MonoBehaviour
 {
     public static ADManager Instance;
     [field: SerializeField] GameObject removeADsButton;
+    [field: SerializeField] int amountOfCoinsForAdding = 200;
+    [field: SerializeField] int amountOfGemsForAdding = 5;
     //Do not change these values
     private const string _androidAppID = "1a193215d";
     private TypeOfRewardedAD typeOfAd;
@@ -105,14 +108,18 @@ public class ADManager : MonoBehaviour
 
     public void OnRewardedADComplete()
     {
+        MissionTracker.instance.AdjustValues(Quest.WatchRewardedAD);
         if (typeOfAd == TypeOfRewardedAD.AddCoins)
         {
-            MissionTracker.instance.AdjustValues(Quest.WatchRewardedAD);
-            CurrencyManager.instance.AdjustCoins(500);
+            CurrencyManager.instance.AdjustCoins(amountOfCoinsForAdding);
         }
         else if (typeOfAd == TypeOfRewardedAD.BonusLevel)
         {
             DailyBonusLevelManager.instance.LoadBonusLevel();
+        }
+        else if (typeOfAd == TypeOfRewardedAD.AddGems)
+        {
+            CurrencyManager.instance.AdjustGems(amountOfGemsForAdding);
         }
     }
     public void onInterstitialAdComplete()
