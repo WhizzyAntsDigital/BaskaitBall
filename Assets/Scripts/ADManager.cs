@@ -138,7 +138,7 @@ public class ADManager : MonoBehaviour
     }
     public void LoadInterstitialAd()
     {
-        Debug.Log("Load interstial Started");
+        HelperClass.DebugMessage("Load interstial Started");
         IronSource.Agent.loadInterstitial();
     }
     public void ShowInterstitialAd()
