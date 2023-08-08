@@ -27,8 +27,7 @@ public class MainMenuUIManager : MonoBehaviour
     [field: SerializeField] private ShopManager shopManager;
 
     [field: Header("For Internet Connection")]
-    [field: SerializeField] private Button tournamentButton;
-    [field: SerializeField] private Button noADsButton;
+    [field: SerializeField] private GameObject noInternetPanel;
 
     [field: HideInInspector] public bool isOpen = false;
     private void Start()
@@ -50,8 +49,12 @@ public class MainMenuUIManager : MonoBehaviour
 
         if (!InternetConnectivityChecker.Instance.CheckForInternetConnectionUponCommand())
         {
-            tournamentButton.interactable = false;
-            noADsButton.interactable = false;
+            Time.timeScale = 0;
+            noInternetPanel.SetActive(true);
+        }
+        else
+        {
+            noInternetPanel.SetActive(false);
         }
 
         if (MiscellaneousDataHandler.instance.ReturnSavedValues().hasComeFromMainGame)
@@ -63,12 +66,10 @@ public class MainMenuUIManager : MonoBehaviour
     }
     private void OnEnable()
     {
-        InternetConnectivityChecker.Instance.IsConnectedToInternet += () => { OnInternetConnectionChange(true); };
         InternetConnectivityChecker.Instance.IsDisconnectedFromInternet += () => { OnInternetConnectionChange(false); };
     }
     private void OnDisable()
     {
-        InternetConnectivityChecker.Instance.IsConnectedToInternet -= () => { OnInternetConnectionChange(true); };
         InternetConnectivityChecker.Instance.IsDisconnectedFromInternet -= () => { OnInternetConnectionChange(false); };
     }
 
@@ -213,7 +214,7 @@ public class MainMenuUIManager : MonoBehaviour
     }
     private void OnInternetConnectionChange(bool connected)
     {
-        tournamentButton.interactable = connected;
-        noADsButton.interactable = connected;
+        Time.timeScale = 0;
+        noInternetPanel.SetActive(true);
     }
 }

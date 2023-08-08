@@ -20,6 +20,7 @@ public class PracticeGameFlow : MonoBehaviour
     [field: SerializeField] TMP_FontAsset practiceTimerText;
     [field: SerializeField] private AudioSource audioSource;
     [field: SerializeField] private AudioClip countDownSFX;
+    [field: SerializeField] private GameObject noInternetPopup;
     bool startedCountdownSFX = false;
     public bool dontActivateInput = false;
     private bool startPracticeTimer = false;
@@ -36,7 +37,36 @@ public class PracticeGameFlow : MonoBehaviour
         ArcadeLevel.Instance.ballsInScene[ArcadeLevel.Instance.ballID].GetComponent<BallInput>().hasGotInput = true;
         GameManager.instance.OnGameOver += () => { GameManager.instance.isGameOver = true; startCountDown = false; startPracticeTimer = false; };
         targetScore.text = startingTarget.ToString();
+
+        if (!InternetConnectivityChecker.Instance.CheckForInternetConnectionUponCommand())
+        {
+            OnInternetConnectionChange(false);
+        }
+        else
+        {
+            noInternetPopup.SetActive(false);
+        }
     }
+    private void OnEnable()
+    {
+        InternetConnectivityChecker.Instance.IsDisconnectedFromInternet += () => { OnInternetConnectionChange(false); };
+    }
+
+
+    private void OnDisable()
+    {
+        InternetConnectivityChecker.Instance.IsDisconnectedFromInternet += () => { OnInternetConnectionChange(false); };
+    }
+
+    private void OnInternetConnectionChange(bool connected)
+    {
+        if (!connected)
+        {
+            Time.timeScale = 0;
+            noInternetPopup.SetActive(true);
+        }
+    }
+
     private void Update()
     {
         #region Count Down

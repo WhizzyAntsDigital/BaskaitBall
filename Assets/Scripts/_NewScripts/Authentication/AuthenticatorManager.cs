@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 [RequireComponent(typeof(AnonymousSignIn), typeof(GPManager))]
 public class AuthenticatorManager : MonoBehaviour
 {
+
+    [SerializeField] private GameObject noInternetPanel;
+
     public static AuthenticatorManager Instance { get; private set; }
     private AnonymousSignIn anonymousSignIn;
     private GPManager googleSignInManager;
@@ -19,6 +22,10 @@ public class AuthenticatorManager : MonoBehaviour
         googleSignInManager = GetComponent<GPManager>();
         anonymousSignIn.OnAnonymouslyLoggedIn += OnLoggedIn;
         googleSignInManager.OnGoogleLoginComplete += OnLoggedIn;
+
+        anonymousSignIn.OnAnonymouslyLogInFailed += OnInternetConnectionFailed;
+        googleSignInManager.OnGoogleLoginFailed += OnInternetConnectionFailed;
+
         UnityServices.InitializeAsync();
     }
     private void OnLoggedIn()
@@ -27,6 +34,7 @@ public class AuthenticatorManager : MonoBehaviour
     }
     void Start()
     {
+        noInternetPanel.SetActive(false);
         if (!AuthenticationService.Instance.IsSignedIn)
         {
 #if UNITY_EDITOR
@@ -44,5 +52,11 @@ public class AuthenticatorManager : MonoBehaviour
     private void InvokeOnCompleteStuff()
     {
         OnLoggedInCompleted?.Invoke();
+    }
+
+    private void OnInternetConnectionFailed()
+    {
+        Time.timeScale = 0f;
+        noInternetPanel?.SetActive(true);
     }
 }

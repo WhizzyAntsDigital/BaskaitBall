@@ -11,6 +11,7 @@ public class GPManager : MonoBehaviour
     public string token;
     public string error;
     public Action OnGoogleLoginComplete;
+    public Action OnGoogleLoginFailed;
     public void Init()
     {
         //Initialize PlayGamesPlatform
@@ -68,12 +69,14 @@ public class GPManager : MonoBehaviour
         }
         catch (AuthenticationException ex)
         {
+            OnGoogleLoginFailed?.Invoke();
             // Compare error code to AuthenticationErrorCodes
             // Notify the player with the proper error message
             Debug.LogException(ex);
         }
         catch (RequestFailedException ex)
         {
+            OnGoogleLoginFailed?.Invoke();
             // Compare error code to CommonErrorCodes
             // Notify the player with the proper error message
             Debug.LogException(ex);

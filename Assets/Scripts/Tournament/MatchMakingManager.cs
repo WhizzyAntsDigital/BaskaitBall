@@ -19,6 +19,7 @@ public class MatchMakingManager : MonoBehaviour
     [field: SerializeField] private int maxTimeToSearchForPlayer = 10;
     [field: SerializeField] private int timeToGoToGame = 5;
     [field: SerializeField] private string mainGameSceneName = "TournamentMode";
+    [field: SerializeField] private Button exitButton;
     [field: SerializeField] AudioSource audioSource;
     [field: SerializeField] AudioClip coinAudioClip;
     [field: SerializeField] AudioClip playerFound;
@@ -46,6 +47,7 @@ public class MatchMakingManager : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         audioSource.volume = SettingsDataHandler.instance.ReturnSavedValues().soundAmount;
+        exitButton.interactable = true;
 
 
         playerSearchingTime = Random.Range(3, maxTimeToSearchForPlayer);
@@ -128,6 +130,7 @@ public class MatchMakingManager : MonoBehaviour
 
     private void SetValues()
     {
+        exitButton.interactable = false;
         for (int i = 0; i <= 3; i++)
         {
             if (TournamentInfoDataHandler.instance.ReturnSavedValues().selected[i] == true)

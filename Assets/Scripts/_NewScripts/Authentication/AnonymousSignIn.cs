@@ -9,6 +9,7 @@ using UnityEngine.EventSystems;
 public class AnonymousSignIn : MonoBehaviour
 {
     public Action OnAnonymouslyLoggedIn;
+    public Action OnAnonymouslyLogInFailed;
     public async void SignInAnonymouslyAsync()
     {
         try
@@ -19,12 +20,14 @@ public class AnonymousSignIn : MonoBehaviour
         }
         catch (AuthenticationException ex)
         {
+            OnAnonymouslyLogInFailed?.Invoke();
             // Compare error code to AuthenticationErrorCodes
             // Notify the player with the proper error message
             Debug.LogException(ex);
         }
         catch (RequestFailedException ex)
         {
+            OnAnonymouslyLogInFailed?.Invoke();
             // Compare error code to CommonErrorCodes
             // Notify the player with the proper error message
             Debug.LogException(ex);
