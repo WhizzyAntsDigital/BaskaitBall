@@ -41,7 +41,7 @@ public class GetInternetTime : MonoBehaviour
         StartCoroutine(GetRealDateTimeFromAPI());
     }
 
-    public DateTime GetCurrentDateTime() 
+    public DateTime GetCurrentDateTime()
     {
         return _currentDateTime.AddSeconds(Time.realtimeSinceStartup);
     }

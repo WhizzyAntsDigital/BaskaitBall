@@ -104,7 +104,6 @@ public class TutorialBallInput : MonoBehaviour
                             GetComponent<Rigidbody>().useGravity = true;
                             InputValues.instance.PlayWhoosh();
                             GetComponent<Rigidbody>().AddForce(new Vector3((directionOfShot.x), (CalculateForce()), (worldAngle.z * InputValues.instance.forwardSpeed)));
-                            Debug.Log("Add Force");
                             hasGotInput = true;
                             controller.MoveBallToCentre();
                         }

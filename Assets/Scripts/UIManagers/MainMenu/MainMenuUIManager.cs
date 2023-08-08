@@ -40,7 +40,7 @@ public class MainMenuUIManager : MonoBehaviour
         shopManager = GetComponent<ShopManager>();
         CurrencyManager.instance.UpdateCurrencysAmount();
         loadingScreenCanvas.SetActive(true); ;
-        mainMenuCanvas.SetActive(false); ;
+        mainMenuCanvas.SetActive(true); ;
         settingsCanvas.SetActive(false);
         profileCanvas.SetActive(false);
         shopCanvas.SetActive(false);
