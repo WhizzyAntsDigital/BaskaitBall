@@ -6,32 +6,32 @@ using TMPro;
 public class DailyRewards : MonoBehaviour
 {
     [field: Header("Daily Rewards Manager")]
-    [field: SerializeField] private GameObject dailyRewardPanel;
-    [field: SerializeField] private TextMeshProUGUI dailyRewardAmountText;
+    [field: SerializeField] private Button dailyRewardButton;
+    //[field: SerializeField] private TextMeshProUGUI dailyRewardAmountText;
     [field: SerializeField] private int dailyRewardAmount = 500;
     private void Start()
     {
-        dailyRewardAmountText.text = dailyRewardAmount.ToString();
+        //dailyRewardAmountText.text = dailyRewardAmount.ToString();
        
         if (InternetConnectivityChecker.Instance.CheckForInternetConnectionUponCommand())
         {
-            dailyRewardPanel.SetActive(true);
+            dailyRewardButton.interactable = true;
             CheckIfDailyRewardClaimed();
         }
         else
         {
-            dailyRewardPanel.SetActive(false);
+            dailyRewardButton.interactable = false;
         }
     }
     private void OnEnable()
     {
         InternetConnectivityChecker.Instance.IsConnectedToInternet += () => { CheckIfDailyRewardClaimed(); };
-        InternetConnectivityChecker.Instance.IsDisconnectedFromInternet += () => { dailyRewardPanel.SetActive(false); };
+        InternetConnectivityChecker.Instance.IsDisconnectedFromInternet += () => { dailyRewardButton.interactable = false; };
     }
     private void OnDisable()
     {
         InternetConnectivityChecker.Instance.IsConnectedToInternet -= () => { CheckIfDailyRewardClaimed(); };
-        InternetConnectivityChecker.Instance.IsDisconnectedFromInternet -= () => { dailyRewardPanel.SetActive(false); };
+        InternetConnectivityChecker.Instance.IsDisconnectedFromInternet -= () => { dailyRewardButton.interactable = true; };
     }
 
     public void CheckIfDailyRewardClaimed()
@@ -41,16 +41,16 @@ public class DailyRewards : MonoBehaviour
             DateTime lastClaim = DateTime.Parse(MiscellaneousDataHandler.instance.ReturnSavedValues().Date_And_Time_DailyReward);
             if (lastClaim.Date != GetInternetTime.Instance.GetCurrentDateTime().Date)
             {
-                dailyRewardPanel.SetActive(true);
+                dailyRewardButton.interactable = true;
             }
             else
             {
-                dailyRewardPanel.SetActive(false);
+                dailyRewardButton.interactable = false;
             }
         }
         else
         {
-            dailyRewardPanel.SetActive(true);
+            dailyRewardButton.interactable = true;
         }
     }    
 

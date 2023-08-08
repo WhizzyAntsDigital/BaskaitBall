@@ -11,7 +11,8 @@ public class CurrencyDataHandler : MonoBehaviour
 {
     public static CurrencyDataHandler instance;
     [SerializeField] private CurrencyData currencyData;
-    public Image img;
+    public Image profilePic;
+    public Image profileProfilePic;
     private void Awake()
     {
         instance = this;
@@ -37,7 +38,8 @@ public class CurrencyDataHandler : MonoBehaviour
         {
             if (SceneManager.GetActiveScene().name == "MainMenu")
             {
-                AssignImg(img, true);
+                AssignImg(profilePic, true);
+                AssignImg(profileProfilePic, true);
             }
         }
     }
@@ -52,7 +54,7 @@ public class CurrencyDataHandler : MonoBehaviour
             {
                 //imageTemp = Sprite.Create(Social.localUser.image, new Rect(0, 0, Social.localUser.image.width, Social.localUser.image.height), new Vector2(0.5f, 0.5f));
                 currencyData.playerPFP = EncodePreview(Social.localUser.image);
-                AssignImg(img, true);
+                AssignImg(profilePic, true);
                 SaveCurrencyData();
                 break;
             }

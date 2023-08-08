@@ -6,6 +6,7 @@ using UnityEngine;
 public class ProfileStatsManager : MonoBehaviour
 {
     [field: Header("Profile & Statistics")]
+    [field: SerializeField] private TextMeshProUGUI usernameOfPlayer;
     [field: SerializeField] private TextMeshProUGUI practiceHighScoreText;
     [field: SerializeField] private TextMeshProUGUI tournamentWinsText;
     [field: SerializeField] private TextMeshProUGUI tournamentLossesText;
@@ -19,5 +20,6 @@ public class ProfileStatsManager : MonoBehaviour
         tournamentLossesText.text = UserDataHandler.instance.ReturnSavedValues().numberOfLosses.ToString();
         numberOfBasketsText.text = UserDataHandler.instance.ReturnSavedValues().numberOfBaskets.ToString();
         numberOfThreePointersText.text = UserDataHandler.instance.ReturnSavedValues().numberOf3Pointers.ToString();
+        usernameOfPlayer.text = Social.localUser.userName;
     }    
 }

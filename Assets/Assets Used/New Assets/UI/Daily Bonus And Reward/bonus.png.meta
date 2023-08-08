@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f786bee62b2c6464e807dd45bc38dc72
+guid: 3ad5b90bf3960b04b997d315e68c74f4
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -136,13 +136,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: stats sprite_2
+      name: bonus_0
       rect:
         serializedVersion: 2
-        x: 18
-        y: 13759
-        width: 835
-        height: 848
+        x: 1607
+        y: 14617
+        width: 2517
+        height: 839
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -150,20 +150,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1f6af34831d9909468cbb4bcfef51b9e
-      internalID: 1586569471
+      spriteID: 15bde5210cfde6c458892575bee6be1a
+      internalID: 621160551
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: stats sprite_10
+      name: bonus_1
       rect:
         serializedVersion: 2
-        x: 83
-        y: 3795
-        width: 6372
-        height: 7682
+        x: 27
+        y: 13408
+        width: 6183
+        height: 840
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -171,20 +171,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3fef0d69e354003468de941b3337cc28
-      internalID: 337926916
+      spriteID: ec5e31e436886ee468c1e17985afee59
+      internalID: 1156480499
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: stats sprite_11
+      name: bonus_2
       rect:
         serializedVersion: 2
-        x: 29
-        y: 1399
-        width: 6454
-        height: 1824
+        x: 1843
+        y: 10960
+        width: 2538
+        height: 1249
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -192,20 +192,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cf1a5f0daf5bd6a4bab4060e2a8071b6
-      internalID: 145394227
+      spriteID: 57f97f4b2330e8c4584d4c78d7934567
+      internalID: 109619335
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: stats sprite_12
+      name: bonus_3
       rect:
         serializedVersion: 2
-        x: 2324
-        y: 0
-        width: 1992
-        height: 903
+        x: 6457
+        y: 11988
+        width: 308
+        height: 309
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -213,8 +213,113 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b120447da17c1e845a73eaf71c96e45c
-      internalID: 294160405
+      spriteID: ea62270f493afdf459f6d07f97bd0891
+      internalID: -1480694406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bonus_4
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 4853
+        width: 6169
+        height: 5682
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0553a2238db1dc48a31ee641c45b4ce
+      internalID: 851369795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bonus_5
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 1770
+        width: 1868
+        height: 935
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b53ee4eec329d6947a13eb0ec96ed58b
+      internalID: -326767876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bonus_6
+      rect:
+        serializedVersion: 2
+        x: 3559
+        y: 1615
+        width: 2542
+        height: 1253
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 122eec64fa4ba3341a11c893da357adb
+      internalID: -405488174
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bonus_7
+      rect:
+        serializedVersion: 2
+        x: 1074
+        y: 38
+        width: 1532
+        height: 598
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c51954af71d75734a8ec327c87e4cb2e
+      internalID: -675070967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bonus_8
+      rect:
+        serializedVersion: 2
+        x: 5702
+        y: 6
+        width: 1529
+        height: 601
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f5465b1b351742b43b2c143d9cf2580d
+      internalID: -44847522
       vertices: []
       indices: 
       edges: []
@@ -222,7 +327,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 87033cbcef91b5e4d90f76a431de3d16
+    spriteID: 152a3ea307aa6cd488646ddb53dec21e
     internalID: 0
     vertices: []
     indices: 
@@ -230,20 +335,16 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      stats sprite_0: 710261909
-      stats sprite_1: -248481921
-      stats sprite_10: 337926916
-      stats sprite_11: 145394227
-      stats sprite_12: 294160405
-      stats sprite_13: -151914103
-      stats sprite_2: 1586569471
-      stats sprite_3: -1545810137
-      stats sprite_4: -881670813
-      stats sprite_5: -1096002389
-      stats sprite_6: 2142733511
-      stats sprite_7: -1766804170
-      stats sprite_8: 378483927
-      stats sprite_9: 557945286
+      bonus_0: 621160551
+      bonus_1: 1156480499
+      bonus_2: 109619335
+      bonus_3: -1480694406
+      bonus_4: 851369795
+      bonus_5: -326767876
+      bonus_6: -405488174
+      bonus_7: -675070967
+      bonus_8: -44847522
+      bonus_9: 142282580
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
