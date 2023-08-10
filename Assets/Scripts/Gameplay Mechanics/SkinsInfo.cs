@@ -11,4 +11,5 @@ public class SkinsInfo
     public int skinPrice;
     public bool isOwned = false;
     public bool isEquipped = false;
+    public bool isGems = true;
 }

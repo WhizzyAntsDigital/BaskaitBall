@@ -63,15 +63,15 @@ public class ShopManager : MonoBehaviour
                 infoOnSkins[i].isEquipped = false;
             }
         }
-        if(MiscellaneousDataHandler.instance.ReturnSavedValues().hasPlayedTutorial)
+        if (MiscellaneousDataHandler.instance.ReturnSavedValues().hasPlayedTutorial)
         {
-            for (int i = 0; i< infoOnSkins.Count; i++)
+            for (int i = 0; i < infoOnSkins.Count; i++)
             {
                 infoOnSkins[i].isOwned = SkinsOwnershipDataHandler.instance.ReturnSavedValues().isOwned[i];
             }
         }
 
-        for(int i = 0; i < infoOnSkins.Count; i++)
+        for (int i = 0; i < infoOnSkins.Count; i++)
         {
             scalesOfSkins.Add(infoOnSkins[i].skinObject.transform.localScale);
         }
@@ -82,7 +82,7 @@ public class ShopManager : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "MainMenu" && Input.touchCount > 0 && shopPanel.activeInHierarchy)
         {
             Touch touch = Input.GetTouch(0);
-            
+
             if (touch.phase == TouchPhase.Began)
             {
                 fingerDownPosition = touch.position;
@@ -110,7 +110,7 @@ public class ShopManager : MonoBehaviour
                 if (deltaX > 0)
                 {
                     //Right
-                    switch(poc)
+                    switch (poc)
                     {
                         case 1: ScrollThroughSkins(false); break;
                         case 2: ScrollThroughIAP(false); break;
@@ -137,7 +137,7 @@ public class ShopManager : MonoBehaviour
         if (idkman == true)
         {
             currentSkin++;
-            if (currentSkin > infoOnSkins.Count-1)
+            if (currentSkin > infoOnSkins.Count - 1)
             {
                 currentSkin = 0;
             }
@@ -147,7 +147,7 @@ public class ShopManager : MonoBehaviour
             currentSkin--;
             if (currentSkin < 0)
             {
-                currentSkin = infoOnSkins.Count-1;
+                currentSkin = infoOnSkins.Count - 1;
             }
         }
         ScrollingEffect(previousSkin);
@@ -155,7 +155,7 @@ public class ShopManager : MonoBehaviour
 
     private void ScrollThroughIAP(bool idkman)
     {
-        if(coinsIAPPanel.activeInHierarchy)
+        if (coinsIAPPanel.activeInHierarchy)
         {
             coinsIAPPanel.SetActive(false);
             gemsIAPPanel.SetActive(true);
@@ -248,7 +248,7 @@ public class ShopManager : MonoBehaviour
             }
         }
 
-        if(infoOnSkins[currentSkin].isOwned == false)
+        if (infoOnSkins[currentSkin].isOwned == false)
         {
             purchasableText.SetActive(true);
             purchasedText.SetActive(false);
@@ -288,18 +288,25 @@ public class ShopManager : MonoBehaviour
     {
         if (infoOnSkins[currentSkin].isOwned == false)
         {
-            Debug.Log("purchased");
             infoOnSkins[currentSkin].isOwned = true;
             SkinsOwnershipDataHandler.instance.ReturnSavedValues().isOwned[currentSkin] = true;
             SkinsOwnershipDataHandler.instance.SaveSkinData();
-            CurrencyManager.instance.AdjustCoins(-infoOnSkins[currentSkin].skinPrice);
+
+            switch (infoOnSkins[currentSkin].isGems)
+            {
+                case true:
+                    CurrencyManager.instance.AdjustGems(-infoOnSkins[currentSkin].skinPrice);
+                    break;
+                case false:
+                    CurrencyManager.instance.AdjustCoins(-infoOnSkins[currentSkin].skinPrice);
+                    break;
+            }
         }
         else
         {
-            Debug.Log("equipped");
             EquipSkin();
         }
-            UpdateActionButton();
+        UpdateActionButton();
     }
     private void CheckUITouch(Vector2 position, ref int poc)
     {
@@ -316,9 +323,9 @@ public class ShopManager : MonoBehaviour
                 poc = 1;
                 break;
             }
-            else if(result.gameObject.CompareTag(bottomPanelTag))
+            else if (result.gameObject.CompareTag(bottomPanelTag))
             {
-                poc = 2; 
+                poc = 2;
                 break;
             }
         }
@@ -337,7 +344,6 @@ public class ShopManager : MonoBehaviour
     {
         for (int i = 0; i < iapTexts.Count; i++)
         {
-            //iapTexts[i].text = CodelessIAPStoreListener.Instance.GetProduct(iapButtons[i].productId).metadata.localizedPriceString;
             iapTexts[i].text = CodelessIAPStoreListener.Instance.StoreController.products.WithID(iapButtons[i].productId).metadata.localizedPriceString;
         }
     }

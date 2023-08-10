@@ -4006,9 +4006,9 @@ RectTransform:
   - {fileID: 1057264902}
   m_Father: {fileID: 536439139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1772.12, y: -700.99066}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1001, y: 1001}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &187712173
@@ -4394,31 +4394,37 @@ MonoBehaviour:
     skinPrice: 0
     isOwned: 1
     isEquipped: 1
+    isGems: 1
   - skinID: 1
     skinObject: {fileID: 5111656337089342861}
-    skinPrice: 5000
+    skinPrice: 25
     isOwned: 0
     isEquipped: 0
+    isGems: 1
   - skinID: 2
     skinObject: {fileID: 9204466431082067467}
-    skinPrice: 10000
+    skinPrice: 50
     isOwned: 0
     isEquipped: 0
+    isGems: 1
   - skinID: 3
     skinObject: {fileID: 1419790217383935169}
-    skinPrice: 30000
+    skinPrice: 100
     isOwned: 0
     isEquipped: 0
+    isGems: 1
   - skinID: 4
     skinObject: {fileID: 5438419266801520448}
-    skinPrice: 60000
+    skinPrice: 200
     isOwned: 0
     isEquipped: 0
+    isGems: 1
   - skinID: 5
     skinObject: {fileID: 4151516082358467147}
-    skinPrice: 100000
+    skinPrice: 500
     isOwned: 0
     isEquipped: 0
+    isGems: 1
   actionButton: {fileID: 1610901368}
   audioSource: {fileID: 1243442864}
   clip: {fileID: 8300000, guid: e00a86ce2e8067c4687b0133d99f6371, type: 3}
@@ -9753,9 +9759,9 @@ RectTransform:
   - {fileID: 1298663666}
   m_Father: {fileID: 536439139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1074.81, y: -700.99066}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1001, y: 1001}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &451313926
@@ -12232,7 +12238,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &535565688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17423,6 +17429,11 @@ MonoBehaviour:
     prices: 00000000000000000000000000000000
     selected: 00000000
     unlocked: 01000000
+    tournamentNames:
+    - a
+    - b
+    - c
+    - d
   allGameModesSpecs:
   - tournamentName: Hoop Mania
     tournamentID: 0
@@ -22975,9 +22986,9 @@ RectTransform:
   - {fileID: 1317011999}
   m_Father: {fileID: 536439139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 377.5, y: -700.99066}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1001, y: 1001}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &805790080
@@ -36742,7 +36753,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1337650880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39251,7 +39262,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1446563936
 MonoBehaviour:
   m_ObjectHideFlags: 0
