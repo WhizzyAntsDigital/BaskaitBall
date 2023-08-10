@@ -52,7 +52,6 @@ public class ShopManager : MonoBehaviour
     {
         for (int i = 0; i < infoOnSkins.Count; i++)
         {
-            Debug.Log(i);
             if (SkinsOwnershipDataHandler.instance.ReturnSavedValues().isEquipped[i] == true)
             {
                 infoOnSkins[i].isEquipped = true;

@@ -1,3 +1,4 @@
+using AssetKits.ParticleImage;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -39,6 +40,12 @@ public class InGameUI : MonoBehaviour
     [field: HideInInspector] public MatchResult matchResult;
 
     [field: SerializeField] private TextMeshProUGUI highScore;
+    
+    [field: Header("Animating Coins")]
+    [field: SerializeField] private ParticleImage particleImage;
+    [field: SerializeField] private RectTransform playerContainer;
+    [field: SerializeField] private RectTransform opponentContainer;
+
 
     [field: Header("Bonus Level Stuff")]
     [field: SerializeField] TextMeshProUGUI amountOfGemsEarned;
@@ -168,6 +175,7 @@ public class InGameUI : MonoBehaviour
             UserDataHandler.instance.ReturnSavedValues().losingStreak = 0;
             playerWonIcon.SetActive(true);
             opponentWonIcon.SetActive(false);
+            particleImage.attractorTarget = playerContainer;
         }
         else
         {
@@ -176,6 +184,7 @@ public class InGameUI : MonoBehaviour
             UserDataHandler.instance.ReturnSavedValues().winningStreak = 0;
             playerWonIcon.SetActive(false);
             opponentWonIcon.SetActive(true);
+            particleImage.attractorTarget = opponentContainer;
         }
         UserDataHandler.instance.SaveUserData();
         MiscellaneousDataHandler.instance.SaveMiscData();
@@ -186,7 +195,7 @@ public class InGameUI : MonoBehaviour
             MiscellaneousDataHandler.instance.ReturnSavedValues().hasComeFromMainGame = true;
             MiscellaneousDataHandler.instance.SaveMiscData();
         }
-
+        particleImage.enabled = true;
         AnimateCoins();
     }
     private async void SceneChange(string sceneName)

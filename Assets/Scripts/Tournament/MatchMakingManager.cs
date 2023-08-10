@@ -4,11 +4,14 @@ using UnityEngine.UI;
 using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using System.Linq.Expressions;
+using AssetKits.ParticleImage;
+using System.Collections.Generic;
 
 public class MatchMakingManager : MonoBehaviour
 {
     [field: Header("Tournament Bracket Generator")]
     [field: SerializeField] private TextMeshProUGUI tournamentName;
+    [field: SerializeField] private List<ParticleImage> particleImages;
     [field: SerializeField] private TextMeshProUGUI playerUsernameText;
     [field: SerializeField] private TextMeshProUGUI playerCoinsText;
     [field: SerializeField] private Image playerPFP;
@@ -194,6 +197,10 @@ public class MatchMakingManager : MonoBehaviour
     private async void GoToCoinAnimation()
     {
         await Task.Delay(1000);
+        for(int i = 0; i < particleImages.Count; i++)
+        {
+            particleImages[i].enabled = true;
+        }
         AnimateCoins();
     }
 }
