@@ -256,7 +256,17 @@ public class ShopManager : MonoBehaviour
             purchasableText.SetActive(true);
             purchasedText.SetActive(false);
             actionButton.gameObject.GetComponent<Image>().sprite = purchaseSkin;
-            if (infoOnSkins[currentSkin].skinPrice <= CurrencyDataHandler.instance.ReturnSavedValues().amountOfCoins)
+            int amountOfCurrencyToConsider;
+            switch(infoOnSkins[currentSkin].isGems)
+            {
+                case true:
+                    amountOfCurrencyToConsider = CurrencyDataHandler.instance.ReturnSavedValues().amountOfGems;
+                    break;
+                    case false:
+                    amountOfCurrencyToConsider = CurrencyDataHandler.instance.ReturnSavedValues().amountOfCoins;
+                    break;
+            }
+            if (infoOnSkins[currentSkin].skinPrice <= amountOfCurrencyToConsider)
             {
                 actionButton.interactable = true;
             }

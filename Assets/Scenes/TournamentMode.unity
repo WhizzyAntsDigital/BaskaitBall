@@ -7320,16 +7320,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicFiles:
-  - {fileID: 8300000, guid: c076962262cb694458f0a924e1a4c362, type: 3}
-  - {fileID: 8300000, guid: bbb77138efd62bb4199a24167a40e7d4, type: 3}
-  - {fileID: 8300000, guid: 2d140af0524dbe14e8b857502a8667fc, type: 3}
-  - {fileID: 8300000, guid: a2c4b1ca66a61e946a1abc6cff3cec07, type: 3}
-  - {fileID: 8300000, guid: 09362b711485eea479430aa7a4a530f6, type: 3}
-  - {fileID: 8300000, guid: 38edca77d7d80b0479bf322ae6ad71be, type: 3}
-  - {fileID: 8300000, guid: ee52651d645967242b1dcc3817360864, type: 3}
-  - {fileID: 8300000, guid: 12759de4fad4425479b1dc3484ccfd48, type: 3}
-  - {fileID: 8300000, guid: e42c0a8400c6cb64cb4f2f61e0739c4d, type: 3}
-  - {fileID: 8300000, guid: 3396f8b59670e0146b87562632aba69a, type: 3}
+  - {fileID: 8300000, guid: 2ed2f44ea7020f7459acf6f2a46175b1, type: 3}
+  - {fileID: 8300000, guid: 0fc9c8cd5eb35e446ab877d1a3e6ed41, type: 3}
+  - {fileID: 8300000, guid: b562c912b4155194c96dc7545c90b458, type: 3}
+  - {fileID: 8300000, guid: a6e08c419065c4b43b4fbf01c1de5c63, type: 3}
   musicSource: {fileID: 1466604158}
 --- !u!114 &1466604161
 MonoBehaviour:

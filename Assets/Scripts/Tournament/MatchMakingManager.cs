@@ -171,12 +171,12 @@ public class MatchMakingManager : MonoBehaviour
     }
     private async void SetOpponentUsernameFirstRound()
     {
-        GetImage.Instance.StartImageDownload(opponentPFP, false);
         await Task.Delay(playerSearchingTime * 1000);
         audioSource.clip = playerFound;
         audioSource.Play();
         CurrencyDataHandler.instance.ReturnSavedValues().opponentName = AINamesGenerator.Utils.GetRandomName();
         CurrencyDataHandler.instance.SaveCurrencyData();
+        GetImage.Instance.StartImageDownload(opponentPFP, false);
         opponentUsernameText.text = CurrencyDataHandler.instance.ReturnSavedValues().opponentName;
         timerText.text = "Starting...";
         GoToCoinAnimation();

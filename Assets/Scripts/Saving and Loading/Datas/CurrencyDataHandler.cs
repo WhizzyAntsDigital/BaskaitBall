@@ -120,7 +120,7 @@ public class CurrencyDataHandler : MonoBehaviour
 [System.Serializable]
 public class CurrencyData
 {
-    public int amountOfCoins = 1000;
+    public int amountOfCoins = 300;
     public int amountOfGems = 10;
     public bool hasAddedInitialDataToLeaderBoard = false;
     public string playerPFP;

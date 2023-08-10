@@ -205,9 +205,9 @@ public class BallInput : MonoBehaviour
         {
             hasHitOtherObjects = true;
         }
-        if (collision.relativeVelocity.magnitude > 7.5f) 
-        {
-            InputValues.instance.PlayBounce();
-        }
+        //if (collision.relativeVelocity.magnitude > 7.5f) 
+        //{
+        //    InputValues.instance.PlayBounce();
+        //}
     }
 }
