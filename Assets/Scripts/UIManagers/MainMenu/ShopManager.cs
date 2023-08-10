@@ -12,6 +12,7 @@ public class ShopManager : MonoBehaviour
 {
     [field: Header("Shop Manager")]
     [field: SerializeField] private List<SkinsInfo> infoOnSkins;
+    [field: SerializeField] private TextMeshProUGUI nameOfBall;
     [field: SerializeField] private Button actionButton;
     [field: SerializeField] private AudioSource audioSource;
     [field: SerializeField] private AudioClip clip;
@@ -51,11 +52,13 @@ public class ShopManager : MonoBehaviour
     {
         for (int i = 0; i < infoOnSkins.Count; i++)
         {
+            Debug.Log(i);
             if (SkinsOwnershipDataHandler.instance.ReturnSavedValues().isEquipped[i] == true)
             {
                 infoOnSkins[i].isEquipped = true;
                 infoOnSkins[i].skinObject.SetActive(true);
                 currentSkin = i;
+                nameOfBall.text = infoOnSkins[currentSkin].skinName;
                 UpdateActionButton();
             }
             else
@@ -175,6 +178,7 @@ public class ShopManager : MonoBehaviour
     private void ScrollingEffect(int previousSkin)
     {
         audioSource.clip = clip;
+        nameOfBall.text = infoOnSkins[currentSkin].skinName;
         audioSource.Play();
         float transitionDuration = 0.1f;
         float targetScaleOfPreviousObject = 0.2f;

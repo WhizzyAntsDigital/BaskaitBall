@@ -6,6 +6,7 @@ using UnityEngine.UI;
 [System.Serializable]
 public class SkinsInfo
 {
+    public string skinName;
     public int skinID;
     public GameObject skinObject;
     public int skinPrice;
