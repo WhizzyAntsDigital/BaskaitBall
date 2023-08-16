@@ -33,7 +33,7 @@ public class AssignLBValues : MonoBehaviour
         {
             if(!isPLayer)
             {
-                GetImage.Instance.StartImageDownload(profilePicture, true);
+                GetImage.Instance.StartImageDownload(profilePicture, false);
             }
             else
             {
