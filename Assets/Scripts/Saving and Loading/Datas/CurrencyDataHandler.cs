@@ -30,8 +30,13 @@ public class CurrencyDataHandler : MonoBehaviour
             LeaderboardManager.Instance.AddScore(currencyData.amountOfCoins, TypeOfLeaderBoard.DailyLeaderboard);
             LeaderboardManager.Instance.AddScore(currencyData.amountOfCoins, TypeOfLeaderBoard.WeeklyLeaderboard);
             LeaderboardManager.Instance.AddScore(currencyData.amountOfCoins, TypeOfLeaderBoard.MonthlyLeaderboard);
-            AuthenticationService.Instance.UpdatePlayerNameAsync(Social.localUser.userName);
-            StartCoroutine(KeepCheckingAvatar());
+            string usernameForPlayer = AINamesGenerator.Utils.GetRandomName();
+            currencyData.playerUsername = usernameForPlayer;
+            SaveCurrencyData();
+            AuthenticationService.Instance.UpdatePlayerNameAsync(usernameForPlayer);
+            GetImage.Instance.StartImageDownload(profilePic, true);
+            //AssignImg(profilePic, true);
+            //StartCoroutine(KeepCheckingAvatar());
             currencyData.hasAddedInitialDataToLeaderBoard = true;
         }
         else
@@ -54,6 +59,7 @@ public class CurrencyDataHandler : MonoBehaviour
             {
                 //imageTemp = Sprite.Create(Social.localUser.image, new Rect(0, 0, Social.localUser.image.width, Social.localUser.image.height), new Vector2(0.5f, 0.5f));
                 currencyData.playerPFP = EncodePreview(Social.localUser.image);
+                GetImage.Instance.StartImageDownload(profilePic, true);
                 AssignImg(profilePic, true);
                 SaveCurrencyData();
                 break;
@@ -126,4 +132,5 @@ public class CurrencyData
     public string playerPFP;
     public string opponentPFP;
     public string opponentName;
+    public string playerUsername;
 }

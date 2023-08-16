@@ -75,6 +75,11 @@ public class GetImage : MonoBehaviour
                             CurrencyDataHandler.instance.ReturnSavedValues().opponentPFP = CurrencyDataHandler.instance.EncodePreview(texture);
                             CurrencyDataHandler.instance.SaveCurrencyData();
                         }
+                        else
+                        {
+                            CurrencyDataHandler.instance.ReturnSavedValues().playerPFP = CurrencyDataHandler.instance.EncodePreview(texture);
+                            CurrencyDataHandler.instance.SaveCurrencyData();
+                        }
                         imageTarget.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
                     }
                 }

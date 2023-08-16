@@ -156,7 +156,8 @@ public class InGameUI : MonoBehaviour
     private void GameOverUI()
     {
         tournamentName.text = TournamentInfoDataHandler.instance.ReturnSavedValues().tournamentNames[selectedTournamentID];
-        playerUsername.text = Social.localUser.userName;
+        //playerUsername.text = Social.localUser.userName;
+        playerUsername.text = CurrencyDataHandler.instance.ReturnSavedValues().playerUsername;
         opponentUsername.text = CurrencyDataHandler.instance.ReturnSavedValues().opponentName;
         CurrencyDataHandler.instance.AssignImg(playerPFP, true);
         CurrencyDataHandler.instance.AssignImg(opponentPFP, false);

@@ -148,7 +148,7 @@ public class MatchMakingManager : MonoBehaviour
         exitButton.interactable = false;
         
         playerCoinsText.text = TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID].ToString();
-        playerUsernameText.text = Social.localUser.userName;
+        playerUsernameText.text = CurrencyDataHandler.instance.ReturnSavedValues().playerUsername;
         CurrencyDataHandler.instance.AssignImg(playerPFP, true);
 
         opponentCoinsText.text = TournamentInfoDataHandler.instance.ReturnSavedValues().prices[selectedTournamentID].ToString();

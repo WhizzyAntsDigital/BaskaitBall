@@ -4,7 +4,7 @@ using System;
 using Unity.Services.Core;
 using System.Threading.Tasks;
 
-[RequireComponent(typeof(AnonymousSignIn), typeof(GPManager))]
+[RequireComponent(typeof(AnonymousSignIn), typeof(AppleAuthentication))]
 public class AuthenticatorManager : MonoBehaviour
 {
 
@@ -12,19 +12,19 @@ public class AuthenticatorManager : MonoBehaviour
 
     public static AuthenticatorManager Instance { get; private set; }
     private AnonymousSignIn anonymousSignIn;
-    private GPManager googleSignInManager;
+    private AppleAuthentication appleSignInManager;
     public Action OnLoggedInCompleted;
     private void Awake()
     {
         Instance = this;
         HelperClass.DebugMessage("called authentication");
         anonymousSignIn = GetComponent<AnonymousSignIn>();
-        googleSignInManager = GetComponent<GPManager>();
+        appleSignInManager = GetComponent<AppleAuthentication>();
         anonymousSignIn.OnAnonymouslyLoggedIn += OnLoggedIn;
-        googleSignInManager.OnGoogleLoginComplete += OnLoggedIn;
+        //appleSignInManager.OnAppleLoginComplete += OnLoggedIn;
 
         anonymousSignIn.OnAnonymouslyLogInFailed += OnInternetConnectionFailed;
-        googleSignInManager.OnGoogleLoginFailed += OnInternetConnectionFailed;
+        //appleSignInManager.OnAppleLoginComplete += OnInternetConnectionFailed;
 
         UnityServices.InitializeAsync();
     }
@@ -37,12 +37,11 @@ public class AuthenticatorManager : MonoBehaviour
         noInternetPanel.SetActive(false);
         if (!AuthenticationService.Instance.IsSignedIn)
         {
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
             anonymousSignIn.SignInAnonymouslyAsync();
-#elif UNITY_ANDROID
-        googleSignInManager.Init();
-       googleSignInManager.LoginGooglePlayGames();
-#endif
+//#elif UNITY_IOS
+        //appleSignInManager.StartSignInWithApple();
+//#endif
         }
         else
         {

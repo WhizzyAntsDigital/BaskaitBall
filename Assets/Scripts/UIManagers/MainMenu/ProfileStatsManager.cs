@@ -20,6 +20,6 @@ public class ProfileStatsManager : MonoBehaviour
         tournamentLossesText.text = UserDataHandler.instance.ReturnSavedValues().numberOfLosses.ToString();
         numberOfBasketsText.text = UserDataHandler.instance.ReturnSavedValues().numberOfBaskets.ToString();
         numberOfThreePointersText.text = UserDataHandler.instance.ReturnSavedValues().numberOf3Pointers.ToString();
-        usernameOfPlayer.text = Social.localUser.userName;
+        usernameOfPlayer.text = CurrencyDataHandler.instance.ReturnSavedValues().playerUsername;
     }    
 }

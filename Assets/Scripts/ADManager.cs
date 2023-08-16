@@ -1,3 +1,4 @@
+using Unity.Advertisement.IosSupport;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,7 +16,7 @@ public class ADManager : MonoBehaviour
     [field: SerializeField] int amountOfCoinsForAdding = 200;
     [field: SerializeField] int amountOfGemsForAdding = 5;
     //Do not change these values
-    private const string _androidAppID = "1a193215d";
+    private const string _androidAppID = "1a26eb165";
     private TypeOfRewardedAD typeOfAd;
     private void Awake()
     {
@@ -24,16 +25,14 @@ public class ADManager : MonoBehaviour
     private void OnEnable()
     {
         IronSourceEvents.onSdkInitializationCompletedEvent += SdkInitializationCompletedEvent;
+        #region Popup Request
+        IronSourceEvents.onConsentViewDidAcceptEvent += onConsentViewDidAcceptEvent;
+        IronSourceEvents.onConsentViewDidFailToLoadWithErrorEvent += onConsentViewDidFailToLoadWithErrorEvent;
+        IronSourceEvents.onConsentViewDidLoadSuccessEvent += onConsentViewDidLoadSuccessEvent;
+        IronSourceEvents.onConsentViewDidFailToShowWithErrorEvent += onConsentViewDidFailToShowWithErrorEvent;
+        IronSourceEvents.onConsentViewDidShowSuccessEvent += onConsentViewDidShowSuccessEvent;
+        #endregion
         #region Rewarded Ads
-        //Rewarded Ads
-        //IronSourceEvents.onRewardedVideoAdOpenedEvent += RewardedVideoAdOpenedEvent;
-        //IronSourceEvents.onRewardedVideoAdClickedEvent += RewardedVideoAdClickedEvent;
-        //IronSourceEvents.onRewardedVideoAdClosedEvent += RewardedVideoAdClosedEvent;
-        //IronSourceEvents.onRewardedVideoAvailabilityChangedEvent += RewardedVideoAvailabilityChangedEvent;
-        //IronSourceEvents.onRewardedVideoAdStartedEvent += RewardedVideoAdStartedEvent;
-        //IronSourceEvents.onRewardedVideoAdEndedEvent += RewardedVideoAdEndedEvent;
-        //IronSourceEvents.onRewardedVideoAdRewardedEvent += RewardedVideoAdRewardedEvent;
-        //IronSourceEvents.onRewardedVideoAdShowFailedEvent += RewardedVideoAdShowFailedEvent;
         //Rewarded Ads
         IronSourceRewardedVideoEvents.onAdOpenedEvent += RewardedVideoOnAdOpenedEvent;
         IronSourceRewardedVideoEvents.onAdClosedEvent += RewardedVideoOnAdClosedEvent;
@@ -57,16 +56,16 @@ public class ADManager : MonoBehaviour
     private void OnDisable()
     {
         IronSourceEvents.onSdkInitializationCompletedEvent -= SdkInitializationCompletedEvent;
+
+        #region Popup Request
+        IronSourceEvents.onConsentViewDidAcceptEvent -= onConsentViewDidAcceptEvent;
+        IronSourceEvents.onConsentViewDidFailToLoadWithErrorEvent -= onConsentViewDidFailToLoadWithErrorEvent;
+        IronSourceEvents.onConsentViewDidLoadSuccessEvent -= onConsentViewDidLoadSuccessEvent;
+        IronSourceEvents.onConsentViewDidFailToShowWithErrorEvent -= onConsentViewDidFailToShowWithErrorEvent;
+        IronSourceEvents.onConsentViewDidShowSuccessEvent -= onConsentViewDidShowSuccessEvent;
+        #endregion
+
         #region Rewarded Ads
-        //Rewarded Ads
-        //IronSourceEvents.onRewardedVideoAdOpenedEvent -= RewardedVideoAdOpenedEvent;
-        //IronSourceEvents.onRewardedVideoAdClickedEvent -= RewardedVideoAdClickedEvent;
-        //IronSourceEvents.onRewardedVideoAdClosedEvent -= RewardedVideoAdClosedEvent;
-        //IronSourceEvents.onRewardedVideoAvailabilityChangedEvent -= RewardedVideoAvailabilityChangedEvent;
-        //IronSourceEvents.onRewardedVideoAdStartedEvent -= RewardedVideoAdStartedEvent;
-        //IronSourceEvents.onRewardedVideoAdEndedEvent -= RewardedVideoAdEndedEvent;
-        //IronSourceEvents.onRewardedVideoAdRewardedEvent -= RewardedVideoAdRewardedEvent;
-        //IronSourceEvents.onRewardedVideoAdShowFailedEvent -= RewardedVideoAdShowFailedEvent;
         //Rewarded Ads
         IronSourceRewardedVideoEvents.onAdOpenedEvent -= RewardedVideoOnAdOpenedEvent;
         IronSourceRewardedVideoEvents.onAdClosedEvent -= RewardedVideoOnAdClosedEvent;
@@ -164,13 +163,14 @@ public class ADManager : MonoBehaviour
     }
     private void SdkInitializationCompletedEvent()
     {
+        IronSource.Agent.loadConsentViewWithType("pre");
     }
     #region Rewarded Ads
    
  
     //Listeners
     /************* RewardedVideo AdInfo Delegates *************/
-    // Indicates that there’s an available ad.
+    // Indicates that thereï¿½s an available ad.
     // The adInfo object includes information about the ad that was loaded successfully
     // This replaces the RewardedVideoAvailabilityChangedEvent(true) event
     void RewardedVideoOnAdAvailable(IronSourceAdInfo adInfo)
@@ -203,7 +203,7 @@ public class ADManager : MonoBehaviour
     }
     // Invoked when the video ad was clicked.
     // This callback is not supported by all networks, and we recommend using it only if
-    // it’s supported by all networks you included in your build.
+    // itï¿½s supported by all networks you included in your build.
     void RewardedVideoOnAdClickedEvent(IronSourcePlacement placement, IronSourceAdInfo adInfo)
     {
     }
@@ -258,4 +258,33 @@ public class ADManager : MonoBehaviour
             }
         }
     }
+    #region Consent View
+    // Consent View was loaded successfully
+    private void onConsentViewDidShowSuccessEvent(string consentViewType)
+    {
+    }
+    // Consent view was failed to load
+    private void onConsentViewDidFailToShowWithErrorEvent(string consentViewType, IronSourceError error)
+    {
+    }
+
+    // Consent view was displayed successfully
+    private void onConsentViewDidLoadSuccessEvent(string consentViewType)
+    {
+        if (ATTrackingStatusBinding.GetAuthorizationTrackingStatus() == ATTrackingStatusBinding.AuthorizationTrackingStatus.NOT_DETERMINED)
+        {
+            IronSource.Agent.showConsentViewWithType("pre");
+        }
+    }
+
+    // Consent view was not displayed, due to error
+    private void onConsentViewDidFailToLoadWithErrorEvent(string consentViewType, IronSourceError error)
+    {
+    }
+    // The user pressed the Settings or Next buttons
+    private void onConsentViewDidAcceptEvent(string consentViewType)
+    {
+        ATTrackingStatusBinding.RequestAuthorizationTracking();
+    }
+    #endregion
 }

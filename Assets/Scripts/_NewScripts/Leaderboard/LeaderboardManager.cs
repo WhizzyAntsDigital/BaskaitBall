@@ -125,7 +125,7 @@ public class LeaderboardManager : MonoBehaviour
         }
         else
         {
-            playerValuesObject.GetComponent<AssignLBValues>().AssignValues(Social.localUser.userName, 0, 0 , null, true);
+            playerValuesObject.GetComponent<AssignLBValues>().AssignValues(CurrencyDataHandler.instance.ReturnSavedValues().playerUsername, 0, 0 , null, true);
         }
     }
     public async void AddScore(int score, TypeOfLeaderBoard typeOfLeaderBoard)
