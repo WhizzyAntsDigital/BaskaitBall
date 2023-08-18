@@ -1,10 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Diagnostics;
+using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -20,7 +17,12 @@ public class TutorialController : MonoBehaviour
 
     [field: Header("Instructions")]
     [field: SerializeField] private TextMeshProUGUI instructionsText;
+    [field: SerializeField] private Image characterImage;
     [field: SerializeField] private List<string> instructionsTextToDisplay;
+    [field: SerializeField] private List<Sprite> maleImagesToDisplay;
+    [field: SerializeField] private List<Sprite> femaleImagesToDisplay;
+    [field: SerializeField] private Sprite tryAgainImageMale;
+    [field: SerializeField] private Sprite tryAgainImageFemale;
     [field: SerializeField] private int indexOfFirstInput;
     [field: SerializeField] private int indexOfGoalBased;
     [field: SerializeField] private int targetToCompleteTutorial = 10;
@@ -44,6 +46,8 @@ public class TutorialController : MonoBehaviour
     bool firstInput = false;
     bool secondInput = false;
 
+    bool usingMale = false;
+
     private void Start()
     {
         timerText.text = "00";
@@ -53,6 +57,9 @@ public class TutorialController : MonoBehaviour
         GoToNextInstruction();
         AdjustInput(true);
         timer = timeLimit;
+
+        int randomNumber = Random.Range(0, 2);
+        usingMale = randomNumber == 0 ? true : false;
     }
 
     private void Update()
@@ -75,22 +82,23 @@ public class TutorialController : MonoBehaviour
                 //}
                 //else
                 //{
-                    ballObj.GetComponent<TutorialBallInput>().hasGotInput = false;
+                ballObj.GetComponent<TutorialBallInput>().hasGotInput = false;
                 //}
                 ballObj = null;
             }
         }
 
-        if(startTimer)
+        if (startTimer)
         {
             timer -= Time.deltaTime;
             timerText.text = Mathf.RoundToInt(timer).ToString();
-            if(timer <= 0)
+            if (timer <= 0)
             {
                 timerText.text = "END";
-                if(currentScore < targetToCompleteTutorial) 
+                if (currentScore < targetToCompleteTutorial)
                 {
                     instructionsText.text = "Let's try that again...";
+                    characterImage.sprite = usingMale == true ? tryAgainImageMale : tryAgainImageFemale;
                     timer = timeLimit;
                     timerText.text = "0";
                     currentScore = 0;
@@ -101,17 +109,18 @@ public class TutorialController : MonoBehaviour
     }
     public void GoToNextInstruction()
     {
-        if(currentInstructionsIndex == indexOfFirstInput)
+        if (currentInstructionsIndex == indexOfFirstInput)
         {
             continueTextButton.interactable = false;
             FirstInput();
         }
-        if(currentInstructionsIndex == indexOfGoalBased)
+        if (currentInstructionsIndex == indexOfGoalBased)
         {
             continueTextButton.interactable = false;
             SecondInput();
         }
         instructionsText.text = instructionsTextToDisplay[currentInstructionsIndex];
+        characterImage.sprite = usingMale == true ? maleImagesToDisplay[currentInstructionsIndex] : femaleImagesToDisplay[currentInstructionsIndex];
         currentInstructionsIndex++;
     }
 
@@ -137,7 +146,9 @@ public class TutorialController : MonoBehaviour
 
     private void EnableOnCompletionButtonHolder()
     {
+        GoToNextInstruction();
         onCompletionButtonsHolder.SetActive(true);
+        AnalyticsManager.instance.TriggerTheEvent("Finished_Tutorial");
     }
 
     public void RestartTutorial()
@@ -169,7 +180,7 @@ public class TutorialController : MonoBehaviour
             ballsInScene[ballID].GetComponent<TutorialBallInput>().kinematic = false;
             ballsInScene[ballID].GetComponent<Rigidbody>().isKinematic = false;
         }
-        
+
     }
     public void MoveBallToCentre()
     {
@@ -181,18 +192,18 @@ public class TutorialController : MonoBehaviour
 
     public void OnBallEnterBasket()
     {
-        if(!firstInput)
+        if (!firstInput)
         {
             AdjustInput(true);
             continueTextButton.interactable = true;
             GoToNextInstruction();
             firstInput = true;
         }
-        else if(!secondInput) 
+        else if (!secondInput)
         {
             currentScore++;
             playerScore.text = currentScore.ToString();
-            if(currentScore == targetToCompleteTutorial)
+            if (currentScore == targetToCompleteTutorial)
             {
                 AdjustInput(true);
                 OnTargetAchieved();

@@ -1,0 +1,129 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2861163044664525439
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6511795292802172666}
+  - component: {fileID: 3181427584044172743}
+  - component: {fileID: 8869474418925385628}
+  m_Layer: 0
+  m_Name: TutorialController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6511795292802172666
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2861163044664525439}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3181427584044172743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2861163044664525439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3faaae6cb89c6a74db455788ba195b0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tutorialSceneName: Tutorial
+  mainMenuSceneName: MainMenu
+  onCompletionButtonsHolder: {fileID: 0}
+  continueTextButton: {fileID: 0}
+  ballsInScene:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  timeLimit: 30
+  instructionsText: {fileID: 0}
+  characterImage: {fileID: 0}
+  instructionsTextToDisplay:
+  - Hey there playa! <br> Tap anywhere to continue...
+  - Ya ready for some real arcade basketball experience?
+  - So yeah, as you can see, the orange text screen is the timer.
+  - It shows you how much time you have left.
+  - The green text shows your score while the red one shows your opponent's score.
+  - Your goal is obvious, score more than your opponent within the time limit.
+  - So, let's start your practice yeah?
+  - Just swipe in the direction you want the ball to go.
+  - Now try scoring a basket.
+  - Ayyy you got it! Now, score 10 baskets for me.
+  - Lessgo! You seem ready for the real matches now.
+  - Good luck playa! Rank high on the leaderboards!
+  maleImagesToDisplay:
+  - {fileID: -2086898121, guid: 40e3a84d18026924fbd55df169273377, type: 3}
+  - {fileID: 1683671630, guid: 40e3a84d18026924fbd55df169273377, type: 3}
+  - {fileID: -2086898121, guid: 40e3a84d18026924fbd55df169273377, type: 3}
+  - {fileID: -2086898121, guid: 40e3a84d18026924fbd55df169273377, type: 3}
+  - {fileID: 1683671630, guid: 40e3a84d18026924fbd55df169273377, type: 3}
+  - {fileID: -2086898121, guid: 40e3a84d18026924fbd55df169273377, type: 3}
+  - {fileID: -2086898121, guid: 40e3a84d18026924fbd55df169273377, type: 3}
+  - {fileID: 1683671630, guid: 40e3a84d18026924fbd55df169273377, type: 3}
+  - {fileID: 1330441444, guid: 40e3a84d18026924fbd55df169273377, type: 3}
+  - {fileID: 1683671630, guid: 40e3a84d18026924fbd55df169273377, type: 3}
+  - {fileID: 2014453106, guid: 40e3a84d18026924fbd55df169273377, type: 3}
+  - {fileID: 1330441444, guid: 40e3a84d18026924fbd55df169273377, type: 3}
+  femaleImagesToDisplay:
+  - {fileID: 1805506791, guid: 957de65a767aa2849ab5b1c2dbb7243b, type: 3}
+  - {fileID: -91732963, guid: 957de65a767aa2849ab5b1c2dbb7243b, type: 3}
+  - {fileID: -91732963, guid: 957de65a767aa2849ab5b1c2dbb7243b, type: 3}
+  - {fileID: -91732963, guid: 957de65a767aa2849ab5b1c2dbb7243b, type: 3}
+  - {fileID: 565040400, guid: 957de65a767aa2849ab5b1c2dbb7243b, type: 3}
+  - {fileID: 565040400, guid: 957de65a767aa2849ab5b1c2dbb7243b, type: 3}
+  - {fileID: 1805506791, guid: 957de65a767aa2849ab5b1c2dbb7243b, type: 3}
+  - {fileID: 1805506791, guid: 957de65a767aa2849ab5b1c2dbb7243b, type: 3}
+  - {fileID: 1761066332, guid: 957de65a767aa2849ab5b1c2dbb7243b, type: 3}
+  - {fileID: 1805506791, guid: 957de65a767aa2849ab5b1c2dbb7243b, type: 3}
+  - {fileID: 1761066332, guid: 957de65a767aa2849ab5b1c2dbb7243b, type: 3}
+  - {fileID: 1761066332, guid: 957de65a767aa2849ab5b1c2dbb7243b, type: 3}
+  tryAgainImage: {fileID: 1683671630, guid: 40e3a84d18026924fbd55df169273377, type: 3}
+  indexOfFirstInput: 8
+  indexOfGoalBased: 9
+  targetToCompleteTutorial: 10
+  spawnPoint: {fileID: 0}
+  speedOfMovingToSpawn: 5
+  timerText: {fileID: 0}
+  playerScore: {fileID: 0}
+  targetScore: {fileID: 0}
+--- !u!114 &8869474418925385628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2861163044664525439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42f34c22bc8d7294887cbd512223fbf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  userData:
+    userName: 
+    practiceHighScore: 0
+    numberOfWins: 0
+    numberOfLosses: 0
+    numberOfBaskets: 0
+    numberOf3Pointers: 0
+    playerRankPoints: 0
+    winningStreak: 0
+    losingStreak: 0
+  mainGameModeSceneName: TournamentMode

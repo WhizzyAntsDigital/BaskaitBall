@@ -46,6 +46,10 @@ public class InGameUI : MonoBehaviour
     [field: SerializeField] private RectTransform playerContainer;
     [field: SerializeField] private RectTransform opponentContainer;
 
+    [field: Header("Other Stuff")]
+    [field: SerializeField] GameObject particleEffectForWinning;
+    [field: SerializeField] TextMeshProUGUI timerText;
+
 
     [field: Header("Bonus Level Stuff")]
     [field: SerializeField] TextMeshProUGUI amountOfGemsEarned;
@@ -86,7 +90,16 @@ public class InGameUI : MonoBehaviour
         {
             if (GameManager.instance.isMainGame)
             {
-                GameOverUI();
+                timerText = GameManager.instance.neededGameObjects.timerText;
+                if (matchResult == MatchResult.PlayerWon)
+                {
+                    timerText.text = "WIN";
+                }
+                if (matchResult == MatchResult.PlayerLost)
+                {
+                    timerText.text = "LOSS";
+                }
+                Invoke(HelperClass.GetActionName(GameOverUI), 3);
                 confirmExit.SetActive(false);
             }
             else
@@ -167,6 +180,7 @@ public class InGameUI : MonoBehaviour
 
         if (matchResult == MatchResult.PlayerWon)
         {
+            particleEffectForWinning.SetActive(true);
             UserDataHandler.instance.ReturnSavedValues().numberOfWins++;
             if (UserDataHandler.instance.ReturnSavedValues().numberOfWins % 5 == 0 && MiscellaneousDataHandler.instance.ReturnSavedValues().hasRequestedReview == true)
             {
@@ -261,6 +275,7 @@ public class InGameUI : MonoBehaviour
         if (ScoreCalculator.instance.scoreValue > AIScore.instance.opponentScore)
         {
             matchResult = MatchResult.PlayerWon;
+            AnalyticsManager.instance.TriggerTheEvent("Won_Match");
             audioSource.clip = winSound;
             audioSource.Play();
             MissionTracker.instance.AdjustValues(Quest.WinMatches);
@@ -270,6 +285,7 @@ public class InGameUI : MonoBehaviour
         else if (ScoreCalculator.instance.scoreValue < AIScore.instance.opponentScore)
         {
             matchResult = MatchResult.PlayerLost;
+            AnalyticsManager.instance.TriggerTheEvent("Lost_Match");
             audioSource.clip = loseSound;
             audioSource.Play();
             MissionTracker.instance.AdjustValues(Quest.LoseMatches);
